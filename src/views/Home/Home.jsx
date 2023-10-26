@@ -8,12 +8,12 @@ import Aside from "../../Components/Aside/Aside.jsx";
 import imagenes from "../../imagenes/images.js";
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
-import Data from "../../Assets/Data/DummieData.js";
-//import { addProductInfo } from "../../redux/actions/actions.js";
+import { addProductInfo } from "../../redux/actions/actions.js";
+import { dummieData } from "./Data.js";
 
 function Home() {
   const dispatch = useDispatch();
-  // const allProducts = useSelector((state) => state.allProducts);
+  //const allProducts = useSelector((state) => state.allProducts);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -35,7 +35,7 @@ function Home() {
 
         if (response.status === 200) {
           const { data } = response;
-          // dispatch(addProductInfo(data.results));
+          dispatch(addProductInfo(data.results));
 
           setCount(data.count);
           setLimit(data.limit);
@@ -103,7 +103,7 @@ function Home() {
             ) : error ? (
               <p>{error}</p>
             ) : (
-              Data?.map((e) => (
+              dummieData?.map((e) => (
                 <Card
                   key={e.id}
                   name={e.name}
@@ -111,9 +111,8 @@ function Home() {
                   description={e.description}
                   size={e.size}
                   price={e.price}
-                  Material={e.materialName}
-                  Category={e.categoryName}
-                  onDeleteCard={"handleDeleteCard"}
+                  material={e.Material}
+                  categoryName={e.Category}
                 />
               ))
             )}
