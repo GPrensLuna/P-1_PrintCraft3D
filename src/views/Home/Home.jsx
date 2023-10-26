@@ -112,7 +112,6 @@ function Home() {
                   price={e.price}
                   material={e.Material}
                   categoryName={e.Category}
-                  onDeleteCard={handleDeleteCard}
                 />
               ))
             )}

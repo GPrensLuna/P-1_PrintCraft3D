@@ -1,4 +1,4 @@
-import { ADD_PRODUCTS_INFO, DELETE_PRODUCT } from "./actions/actions_types.js";
+import { ADD_PRODUCTS_INFO } from "./actions/actions_types.js";
 
 const initialState = {
   filterProducts: [],
