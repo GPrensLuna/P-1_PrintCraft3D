@@ -115,6 +115,7 @@ function Home() {
                   price={e.price}
                   Material={e.Material}
                   Category={e.Category}
+
                 />
               ))
             )}
