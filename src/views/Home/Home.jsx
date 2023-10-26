@@ -25,6 +25,7 @@ function Home() {
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(pokemonPerPage);
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -35,7 +36,6 @@ function Home() {
         if (response.status === 200) {
           const { data } = response;
           dispatch(addProductInfo(data.results));
-
           setCount(data.count);
           setLimit(data.limit);
           setLoading(false);
@@ -77,7 +77,8 @@ function Home() {
         </div>
 
         <div className={style.ContainerHome}>
-          <div className={style.ContainerFilter}>
+         <dir className={style.ContainerFilter}>
+
             <button
               className={style.BTNPreviu}
               onClick={() => loadPage(currentPage - 1)}
@@ -95,7 +96,9 @@ function Home() {
             >
               Siguiente
             </button>
-          </div>
+         </dir>
+            
+
           <div className={style.ContainerCards}>
             {loading ? (
               <p>Cargando productos...</p>
@@ -110,8 +113,9 @@ function Home() {
                   description={e.description}
                   size={e.size}
                   price={e.price}
-                  material={e.Material}
-                  categoryName={e.Category}
+                  Material={e.Material}
+                  Category={e.Category}
+
                 />
               ))
             )}

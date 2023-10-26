@@ -8,7 +8,7 @@ const initialState = {
 const rootReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case ADD_PRODUCTS_INFO:
-     return { ...state, allProducts: payload, filterProducts: payload };
+      return { ...state, allProducts: payload, filterProducts: payload };
 
     default:
       return state;

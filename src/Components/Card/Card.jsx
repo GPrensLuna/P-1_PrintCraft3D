@@ -1,8 +1,18 @@
+// Card.js
 import React from "react";
 import style from "./Card.module.css";
 
 const Card = (props) => {
-  const { name, image, description, size, price, Material, Category } = props;
+  const {
+    name,
+    image,
+    description,
+    size,
+    price,
+    Material,
+    Category,
+    onDeleteCard,
+  } = props;
   const nameM = name ? name.toUpperCase() : "Nombre no disponible";
   const sizeM = size ? size.toUpperCase() : "Tamaño no disponible";
 
@@ -15,8 +25,15 @@ const Card = (props) => {
     currency: "USD",
   });
 
+  const handleDelete = () => {
+    // Lógica para eliminar la tarjeta
+    onDeleteCard(name);
+  };
   return (
     <div className={style.Card}>
+      <button className={style.onClonse} onClick={handleDelete}>
+        X
+      </button>
       <img className={style.Imagen} src={image} alt={name} />
       <div className={style.Container}>
         <h3 className={style.name}>{nameM}</h3>
