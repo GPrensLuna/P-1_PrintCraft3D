@@ -8,6 +8,7 @@ import Aside from "../../Components/Aside/Aside.jsx";
 import imagenes from "../../imagenes/images.js";
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
+import Data from "../../Assets/Data/DummieData.js";
 //import { addProductInfo } from "../../redux/actions/actions.js";
 
 function Home() {
@@ -65,19 +66,6 @@ function Home() {
     setCurrentPage(page);
   };
 
-  const dummieData = [
-    {
-      id: 1,
-      name: "Alligator",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJc5ok_qHjIrP6pUw8tZBiVJaoH2w0MxwQXA&usqp=CAU",
-      description: "figura 3d impresa en resina de un cocodrilo",
-      size: "18 cm",
-      price: "20 USD",
-      stock: 10,
-    },
-  ];
-
   return (
     <main className={style.main}>
       <div className={style.ContainerCarusel}>
@@ -115,7 +103,7 @@ function Home() {
             ) : error ? (
               <p>{error}</p>
             ) : (
-              dummieData?.map((e) => (
+              Data?.map((e) => (
                 <Card
                   key={e.id}
                   name={e.name}
@@ -123,8 +111,9 @@ function Home() {
                   description={e.description}
                   size={e.size}
                   price={e.price}
-                  material={e.Material}
-                  categoryName={e.Category}
+                  Material={e.materialName}
+                  Category={e.categoryName}
+                  onDeleteCard={"handleDeleteCard"}
                 />
               ))
             )}

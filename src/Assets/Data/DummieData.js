@@ -1,4 +1,4 @@
-const dummieData = [
+const Data = [
   {
     id: 1,
     name: "Alligator",
@@ -102,4 +102,4 @@ const dummieData = [
   },
 ];
 
-export default dummieData;
+export default Data;
