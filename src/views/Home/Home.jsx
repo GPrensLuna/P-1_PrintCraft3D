@@ -25,10 +25,6 @@ function Home() {
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(pokemonPerPage);
 
-  const [priceFilter, setPriceFilter] = useState(null);
-  const [sizeFilter, setSizeFilter] = useState(null);
-  const [materialFilter, setMaterialFilter] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,12 +32,10 @@ function Home() {
         const response = await axios.get(
           `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`
         );
-        console.log(response);
 
         if (response.status === 200) {
           const { data } = response;
           dispatch(addProductInfo(data.results));
-
           setCount(data.count);
           setLimit(data.limit);
           setLoading(false);
@@ -83,7 +77,8 @@ function Home() {
         </div>
 
         <div className={style.ContainerHome}>
-          <div className={style.ContainerFilter}>
+         <dir className={style.ContainerFilter}>
+
             <button
               className={style.BTNPreviu}
               onClick={() => loadPage(currentPage - 1)}
@@ -101,48 +96,8 @@ function Home() {
             >
               Siguiente
             </button>
-            <div className={style.FilterInputs}>
-              <input
-                type="number"
-                placeholder="Precio máximo"
-                value={priceFilter || ""}
-                onChange={(e) =>
-                  setPriceFilter(
-                    e.target.value === "" ? null : parseFloat(e.target.value)
-                  )
-                }
-              />
-              <select
-                value={sizeFilter || ""}
-                onChange={(e) =>
-                  setSizeFilter(e.target.value === "" ? null : e.target.value)
-                }
-              >
-                <option value="">Tamaño</option>
-                <option value="s">S</option>
-                <option value="l">L</option>
-                <option value="m">M</option>
-              </select>
-              <select
-                value={materialFilter}
-                onChange={(e) => setMaterialFilter(e.target.value)}
-              >
-                <option value="">Material</option>
-                <option value="PLA">PLA</option>
-                <option value="ABS">ABS</option>
-                {/* Agregar más opciones de materiales según tu necesidad */}
-              </select>
-              <select
-                value={categoryFilter}
-                onChange={(e) => setCategoryFilter(e.target.value)}
-              >
-                <option value="">Categoría</option>
-                <option value="accesorio">accesorio</option>
-                <option value="Figuras">Figuras</option>
-                {/* Agregar más opciones de categorías según tu necesidad */}
-              </select>
-            </div>
-          </div>
+         </dir>
+            
 
           <div className={style.ContainerCards}>
             {loading ? (
