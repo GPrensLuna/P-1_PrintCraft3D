@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { URL } from "../../config.js";
 import Footer from "../../Components/Footer/Footer";
 import Carousel from "../../Components/Carousel";
@@ -8,11 +8,11 @@ import Aside from "../../Components/Aside/Aside.jsx";
 import imagenes from "../../imagenes/images.js";
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
-import { addProductInfo } from "../../redux/actions/actions.js";
+//import { addProductInfo } from "../../redux/actions/actions.js";
 
 function Home() {
   const dispatch = useDispatch();
-  const allProducts = useSelector((state) => state.allProducts);
+  // const allProducts = useSelector((state) => state.allProducts);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -34,7 +34,7 @@ function Home() {
 
         if (response.status === 200) {
           const { data } = response;
-          dispatch(addProductInfo(data.results));
+          // dispatch(addProductInfo(data.results));
 
           setCount(data.count);
           setLimit(data.limit);
@@ -64,6 +64,19 @@ function Home() {
     }
     setCurrentPage(page);
   };
+
+  const dummieData = [
+    {
+      id: 1,
+      name: "Alligator",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJc5ok_qHjIrP6pUw8tZBiVJaoH2w0MxwQXA&usqp=CAU",
+      description: "figura 3d impresa en resina de un cocodrilo",
+      size: "18 cm",
+      price: "20 USD",
+      stock: 10,
+    },
+  ];
 
   return (
     <main className={style.main}>
@@ -102,7 +115,7 @@ function Home() {
             ) : error ? (
               <p>{error}</p>
             ) : (
-              allProducts?.map((e) => (
+              dummieData?.map((e) => (
                 <Card
                   key={e.id}
                   name={e.name}
