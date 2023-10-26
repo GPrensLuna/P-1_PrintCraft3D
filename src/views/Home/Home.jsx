@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { URL } from "../../config.js";
 import Footer from "../../Components/Footer/Footer";
 import Carousel from "../../Components/Carousel";
@@ -9,11 +9,10 @@ import imagenes from "../../imagenes/images.js";
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
-import { dummieData } from "./Data.js";
 
 function Home() {
   const dispatch = useDispatch();
-  //const allProducts = useSelector((state) => state.allProducts);
+  const allProducts = useSelector((state) => state.allProducts);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,12 +25,18 @@ function Home() {
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(pokemonPerPage);
 
+  const [priceFilter, setPriceFilter] = useState(null);
+  const [sizeFilter, setSizeFilter] = useState(null);
+  const [materialFilter, setMaterialFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
           `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`
         );
+        console.log(response);
 
         if (response.status === 200) {
           const { data } = response;
@@ -96,14 +101,56 @@ function Home() {
             >
               Siguiente
             </button>
+            <div className={style.FilterInputs}>
+              <input
+                type="number"
+                placeholder="Precio máximo"
+                value={priceFilter || ""}
+                onChange={(e) =>
+                  setPriceFilter(
+                    e.target.value === "" ? null : parseFloat(e.target.value)
+                  )
+                }
+              />
+              <select
+                value={sizeFilter || ""}
+                onChange={(e) =>
+                  setSizeFilter(e.target.value === "" ? null : e.target.value)
+                }
+              >
+                <option value="">Tamaño</option>
+                <option value="s">S</option>
+                <option value="l">L</option>
+                <option value="m">M</option>
+              </select>
+              <select
+                value={materialFilter}
+                onChange={(e) => setMaterialFilter(e.target.value)}
+              >
+                <option value="">Material</option>
+                <option value="PLA">PLA</option>
+                <option value="ABS">ABS</option>
+                {/* Agregar más opciones de materiales según tu necesidad */}
+              </select>
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+              >
+                <option value="">Categoría</option>
+                <option value="accesorio">accesorio</option>
+                <option value="Figuras">Figuras</option>
+                {/* Agregar más opciones de categorías según tu necesidad */}
+              </select>
+            </div>
           </div>
+
           <div className={style.ContainerCards}>
             {loading ? (
               <p>Cargando productos...</p>
             ) : error ? (
               <p>{error}</p>
             ) : (
-              dummieData?.map((e) => (
+              allProducts?.map((e) => (
                 <Card
                   key={e.id}
                   name={e.name}
@@ -111,8 +158,8 @@ function Home() {
                   description={e.description}
                   size={e.size}
                   price={e.price}
-                  material={e.Material}
-                  categoryName={e.Category}
+                  Material={e.Material}
+                  Category={e.Category}
                 />
               ))
             )}

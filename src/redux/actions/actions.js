@@ -1,5 +1,4 @@
 import { ADD_PRODUCTS_INFO } from "./actions_types.js";
-import { DELETE_PRODUCT } from "./actions_types.js";
 
 export const addProductInfo = (addProductInfo) => {
   console.log(addProductInfo);
@@ -9,10 +8,6 @@ export const addProductInfo = (addProductInfo) => {
   };
 };
 
-export const deleteProduct = (productName) => ({
-  type: DELETE_PRODUCT,
-  payload: productName,
-});
 
 // export const filterPokemonType = (typesAll) => {
 //   return {
