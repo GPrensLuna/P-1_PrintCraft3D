@@ -108,6 +108,7 @@ function Home() {
               allProducts?.map((e) => (
                 <Card
                   key={e.id}
+                  id={e.id}
                   name={e.name}
                   image={e.image}
                   description={e.description}
