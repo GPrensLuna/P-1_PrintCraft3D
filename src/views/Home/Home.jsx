@@ -3,12 +3,12 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { URL } from "../../config.js";
 import Footer from "../../Components/Footer/Footer";
-import Carousel from "../../Components/Carousel";
 import Aside from "../../Components/Aside/Aside.jsx";
-import imagenes from "../../imagenes/images.js";
+
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
+import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx"
 
 function Home() {
   const dispatch = useDispatch();
@@ -67,9 +67,7 @@ function Home() {
 
   return (
     <main className={style.main}>
-      <div className={style.ContainerCarusel}>
-        <Carousel imagenes={imagenes} />
-      </div>
+      <CarouselHome/>
 
       <div className={style.Container}>
         <div className={style.ContainerAsaider}>
