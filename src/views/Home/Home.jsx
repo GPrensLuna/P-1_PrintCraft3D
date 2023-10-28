@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { URL } from "../../config.js";
 import Footer from "../../Components/Footer/Footer";
 import Aside from "../../Components/Aside/Aside.jsx";
-
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
@@ -25,12 +24,14 @@ function Home() {
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(pokemonPerPage);
 
-  // Nuevos estados para los filtros
   const [material, setMaterial] = useState("");
   const [categoria, setCategoria] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [tamaño, setTamaño] = useState("");
+
+  const [materialOptions, setMaterialOptions] = useState([]);
+  const [categoriaOptions, setCategoriaOptions] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,6 +63,27 @@ function Home() {
     localStorage.setItem("currentPage", currentPage);
   }, [currentPage]);
 
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const materialResponse = await axios.get(`${URL}Materials`);
+        const categoriaResponse = await axios.get(`${URL}Categories`);
+
+        if (
+          materialResponse.status === 200 &&
+          categoriaResponse.status === 200
+        ) {
+          setMaterialOptions(materialResponse.data);
+          setCategoriaOptions(categoriaResponse.data);
+        }
+      } catch (error) {
+        console.error("Error fetching options:", error);
+      }
+    };
+
+    fetchOptions();
+  }, []);
+
   const totalPages = Math.ceil(count / limit);
 
   const loadPage = (page) => {
@@ -86,19 +108,30 @@ function Home() {
 
         <div className={style.ContainerHome}>
           <div className={style.ContainerFilter}>
-            {/* Agregar controles para los filtros */}
-            <input
-              type="text"
-              placeholder="Material"
+            <select
               value={material}
               onChange={(e) => setMaterial(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Categoria"
+            >
+              <option value="">Material</option>
+              {materialOptions.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+
+            <select
               value={categoria}
               onChange={(e) => setCategoria(e.target.value)}
-            />
+            >
+              <option value="">Categoria</option>
+              {categoriaOptions.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+
             <input
               type="number"
               placeholder="Precio mínimo"
