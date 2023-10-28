@@ -1,8 +1,7 @@
-import axios from "axios";
 import React, { useState } from "react";
 import style from "./Login.module.css";
-import { URL } from "../../config.js";
 import Register from "./Register.jsx";
+import { URL } from "../../config.js";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -16,21 +15,37 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${URL}login`, formData);
+      // Enviar la información de correo electrónico y contraseña al servidor usando fetch
+      const response = await fetch(`${URL}login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      if (response.status === 200) {
-        alert("Login successful");
+      if (response.ok) {
+        // Obtener el token del encabezado de la respuesta
+        const token = response.headers.get("Authorization");
+
+        // Almacenar el token en el almacenamiento local
+        localStorage.setItem("token", token);
+
+        // Redirigir al usuario a la página de inicio (o a donde desees)
+        window.location.href = "/home";
       } else {
-        alert("Login failed");
+        const errorData = await response.json(); // Intenta parsear la respuesta como JSON
+        console.error("Error en la respuesta:", errorData);
+        alert("Inicio de sesión fallido");
       }
     } catch (error) {
-      console.error("Error during login:", error);
-      alert("An error occurred during login");
+      console.error("Error durante el inicio de sesión:", error);
+      alert("Se produjo un error durante el inicio de sesión");
     }
   };
 
   const mostrarRegistroHandler = () => {
-    setMostrarRegistro(!mostrarRegistro); // Toggle the state
+    setMostrarRegistro(!mostrarRegistro);
   };
 
   return (
