@@ -4,14 +4,14 @@ import React, { useEffect, useState } from "react";
 import styles from "./DetailProduct.module.css";
 import { URL } from "../../config.js";
 function DetailProduct() {
-  const { id } = useParams();
+  const { name } = useParams();
   const [Producto, setProducto] = useState([]);
 
   useEffect(() => {
-    axios.get(`${URL}Inventario/${id}`).then((response) => {
+    axios.get(`${URL}Producto/${name}`).then((response) => {
       setProducto(response.data);
     });
-  }, [id]);
+  }, [name]);
 
   return (
     <div className={styles.productContainer}>

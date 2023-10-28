@@ -8,7 +8,6 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 const Card = (props) => {
   const {
-    id,
     name,
     image,
     description,
@@ -24,14 +23,12 @@ const Card = (props) => {
   const materialName = Material ? Material.name : "Material no disponible";
   const categoryName = Category ? Category.name : "Categoría no disponible";
 
-  // Formatear el precio como moneda basado en la configuración regional del navegador
   const priceFormatted = parseFloat(price).toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   });
 
   const handleDelete = () => {
-    // Lógica para eliminar la tarjeta
     onDeleteCard(name);
   };
   return (
@@ -44,7 +41,7 @@ const Card = (props) => {
       </button>
       <img className={style.Imagen} src={image} alt={name} />
       <div className={style.Container}>
-        <Link className={style.Link} to={`Inventario/${id}`}>
+        <Link className={style.Link} to={`Producto/${name}`}>
           <h3 className={style.name}>{nameM}</h3>
         </Link>
         <p className={style.description}>{description}</p>

@@ -10,13 +10,13 @@ import DetailProduct from "./views/DetailProduct/DetailProduct.jsx"
 function App() {
   return (
     <div className="App">
-      <NavBar /> 
+      <NavBar />
       <Routes>
         <Route path="/" element={<Home />}></Route>
 
         <Route path="/Registrarse" element={<Login />}></Route>
         <Route path="/Inventario" element={<Inventory />}></Route>
-        <Route path="/Inventario/:id" element={<DetailProduct />}></Route>
+        <Route path="/Producto/:name" element={<DetailProduct />}></Route>
       </Routes>
     </div>
   );

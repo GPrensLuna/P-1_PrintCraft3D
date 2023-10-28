@@ -29,7 +29,6 @@ function NavBar() {
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/Registrarse">Login up</Nav.Link>
           <Nav.Link href="/Inventario">Inventario</Nav.Link>
-          <Nav.Link href="#action2">Link</Nav.Link>
         </Nav>
       </Container>
 
