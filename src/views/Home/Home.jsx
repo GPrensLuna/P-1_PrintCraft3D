@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { URL } from "../../config.js";
 import Footer from "../../Components/Footer/Footer";
 import Aside from "../../Components/Aside/Aside.jsx";
-
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
@@ -25,11 +24,21 @@ function Home() {
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(pokemonPerPage);
 
+  // Nuevos estados para filtros
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`
+          `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`,
+          {
+            params: {
+              material: selectedMaterial,
+              category: selectedCategory,
+            },
+          }
         );
 
         if (response.status === 200) {
@@ -49,7 +58,7 @@ function Home() {
     };
 
     fetchData();
-  }, [currentPage, dispatch]);
+  }, [currentPage, selectedMaterial, selectedCategory, dispatch]);
 
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
@@ -74,7 +83,31 @@ function Home() {
         </div>
 
         <div className={style.ContainerHome}>
-          <dir className={style.ContainerFilter}>
+          <div className={style.ContainerFilter}>
+            <label htmlFor="materialSelect">Material:</label>
+            <select
+              id="materialSelect"
+              value={selectedMaterial}
+              onChange={(e) => setSelectedMaterial(e.target.value)}
+            >
+              <option value="">Todos</option>
+              <option value="1">TPU</option>
+              <option value="2">Material 2</option>
+              {/* Agrega más opciones según tus materiales */}
+            </select>
+
+            <label htmlFor="categorySelect">Categoría:</label>
+            <select
+              id="categorySelect"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="">Todas</option>
+              <option value="category1">Categoría 1</option>
+              <option value="category2">Categoría 2</option>
+              {/* Agrega más opciones según tus categorías */}
+            </select>
+
             <button
               className={style.BTNPreviu}
               onClick={() => loadPage(currentPage - 1)}
@@ -92,7 +125,7 @@ function Home() {
             >
               Siguiente
             </button>
-          </dir>
+          </div>
 
           <div className={style.ContainerCards}>
             {loading ? (
