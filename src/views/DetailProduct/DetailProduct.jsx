@@ -11,10 +11,32 @@ function DetailProduct() {
     axios
       .get(`${URL}Producto/${name}`)
       .then((response) => {
-        setProducto(response.data);
+        // Verificar que la respuesta tenga la estructura esperada
+        if (response && response.data) {
+          setProducto(response.data);
+        } else {
+          console.error("Error fetching product: Invalid response structure");
+        }
       })
       .catch((error) => {
-        console.error("Error fetching product:", error);
+        // Manejar errores de manera más descriptiva
+        if (error.response) {
+          // El servidor respondió con un código de estado diferente de 2xx
+          console.error(
+            `Error fetching product: Server responded with ${error.response.status} - ${error.response.data}`
+          );
+        } else if (error.request) {
+          // La solicitud fue hecha pero no se recibió respuesta
+          console.error(
+            "Error fetching product: No response received from the server"
+          );
+        } else {
+          // Algo sucedió en la configuración de la solicitud que desencadenó un error
+          console.error(
+            "Error fetching product: Request configuration error",
+            error.message
+          );
+        }
       });
   }, [name]);
 
