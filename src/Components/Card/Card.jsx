@@ -39,7 +39,9 @@ const Card = (props) => {
       <button className={style.BtnCarrito}>
         <FontAwesomeIcon icon={faShoppingCart} />
       </button>
-      <img className={style.Imagen} src={image} alt={name} />
+      <Link className={style.Link} to={`Producto/${name}`}>
+        <img className={style.Imagen} src={image} alt={name} />
+      </Link>
       <div className={style.Container}>
         <Link className={style.Link} to={`Producto/${name}`}>
           <h3 className={style.name}>{nameM}</h3>
