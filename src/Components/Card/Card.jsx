@@ -36,6 +36,7 @@ const Card = (props) => {
       <button className={style.onClonse} onClick={handleDelete}>
         X
       </button>
+      <button className={style.BtnCarrito}>Carrito</button>
       <img className={style.Imagen} src={image} alt={name} />
       <div className={style.Container}>
         <Link to={`Inventario/${id}`}>
@@ -47,7 +48,6 @@ const Card = (props) => {
         <p className={style.Material}>Material: {materialName}</p>
         <p className={style.Category}>Categoría: {categoryName}</p>
       </div>
-      <button className={style.BtnCarrito}>Carrito</button>
     </div>
   );
 };
