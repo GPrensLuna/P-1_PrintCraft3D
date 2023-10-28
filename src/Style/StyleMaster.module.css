@@ -29,6 +29,11 @@
     --btn-paginado-background: #007bff;
     --btn-paginado-hover: #0056b3;
     
+    /*login*/
+    --BTN-Reginster: #0056b3;
+    --text-Text: #fff;
+    --BTN-Reginster: #007bff;
+    --BTN-hover: #00b383;
+}
 
     
-}
