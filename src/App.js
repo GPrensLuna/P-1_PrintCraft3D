@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { Login, Inventory } from "./views";
 import NavBar from "./Components/NavBar/NavBar.jsx";
 import DetailProduct from "./views/DetailProduct/DetailProduct.jsx"
-import Register from './views/Register/Register';
+//import Register from './views/Register/Register';
 
 
 function App() {

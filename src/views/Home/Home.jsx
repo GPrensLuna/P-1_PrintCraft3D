@@ -1,3 +1,4 @@
+// Home.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,23 +25,39 @@ function Home() {
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(pokemonPerPage);
 
-  // Nuevos estados para filtros
-  const [selectedMaterial, setSelectedMaterial] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedMaterials, setSelectedMaterials] = useState([]);
+  const [selectedTechniques, setSelectedTechniques] = useState([]);
+
+  const handleMaterialChange = (material) => {
+    setSelectedMaterials((prevMaterials) => {
+      return prevMaterials.includes(material)
+        ? prevMaterials.filter((m) => m !== material)
+        : [...prevMaterials, material];
+    });
+  };
+
+  const handleTechniqueChange = (technique) => {
+    setSelectedTechniques((prevTechniques) => {
+      return prevTechniques.includes(technique)
+        ? prevTechniques.filter((t) => t !== technique)
+        : [...prevTechniques, technique];
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("Before axios.get");
         const response = await axios.get(
           `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`,
+
           {
             params: {
-              material: selectedMaterial,
-              category: selectedCategory,
+              material: selectedMaterials,
             },
           }
         );
-
+        console.log("After successful response", response.data);
         if (response.status === 200) {
           const { data } = response;
           dispatch(addProductInfo(data.results));
@@ -50,15 +67,27 @@ function Home() {
         } else {
           setError("No se pudieron cargar los productos.");
           setLoading(false);
+          console.error("Error en la solicitud:", response.status);
+          alert(
+            "Hubo un error al cargar los productos. Por favor, inténtelo de nuevo."
+          );
         }
       } catch (error) {
         setError("Hubo un error al recuperar los productos.");
         setLoading(false);
+        console.error("Error en la solicitud:", error.message);
+        alert(
+          "Hubo un error al cargar los productos. Por favor, inténtelo de nuevo."
+        );
       }
     };
 
     fetchData();
-  }, [currentPage, selectedMaterial, selectedCategory, dispatch]);
+  }, [currentPage, selectedMaterials, selectedTechniques, dispatch]);
+
+  useEffect(() => {
+    localStorage.setItem("currentPage", currentPage);
+  }, [currentPage]);
 
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
@@ -79,35 +108,14 @@ function Home() {
 
       <div className={style.Container}>
         <div className={style.ContainerAsaider}>
-          <Aside />
+          <Aside
+            onMaterialChange={handleMaterialChange}
+            onTechniqueChange={handleTechniqueChange}
+          />
         </div>
 
         <div className={style.ContainerHome}>
-          <div className={style.ContainerFilter}>
-            <label htmlFor="materialSelect">Material:</label>
-            <select
-              id="materialSelect"
-              value={selectedMaterial}
-              onChange={(e) => setSelectedMaterial(e.target.value)}
-            >
-              <option value="">Todos</option>
-              <option value="1">TPU</option>
-              <option value="2">Material 2</option>
-              {/* Agrega más opciones según tus materiales */}
-            </select>
-
-            <label htmlFor="categorySelect">Categoría:</label>
-            <select
-              id="categorySelect"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              <option value="">Todas</option>
-              <option value="category1">Categoría 1</option>
-              <option value="category2">Categoría 2</option>
-              {/* Agrega más opciones según tus categorías */}
-            </select>
-
+          <dir className={style.ContainerFilter}>
             <button
               className={style.BTNPreviu}
               onClick={() => loadPage(currentPage - 1)}
@@ -125,7 +133,7 @@ function Home() {
             >
               Siguiente
             </button>
-          </div>
+          </dir>
 
           <div className={style.ContainerCards}>
             {loading ? (

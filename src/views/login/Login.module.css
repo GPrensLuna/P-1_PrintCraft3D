@@ -31,10 +31,10 @@
     border: var(--border);
     display: flex;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
     align-items: center;
     border-radius: 20px;
     justify-content: center;
-    backdrop-filter: blur(20px);
     background-color: var(--color-dark) ;
 }
 

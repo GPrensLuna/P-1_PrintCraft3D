@@ -3,6 +3,9 @@ import React from "react";
 import style from "./Card.module.css";
 import { Link } from "react-router-dom";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+
 const Card = (props) => {
   const {
     id,
@@ -36,10 +39,12 @@ const Card = (props) => {
       <button className={style.onClonse} onClick={handleDelete}>
         X
       </button>
-      <button className={style.BtnCarrito}>Carrito</button>
+      <button className={style.BtnCarrito}>
+        <FontAwesomeIcon icon={faShoppingCart} />
+      </button>
       <img className={style.Imagen} src={image} alt={name} />
       <div className={style.Container}>
-        <Link to={`Inventario/${id}`}>
+        <Link className={style.Link} to={`Inventario/${id}`}>
           <h3 className={style.name}>{nameM}</h3>
         </Link>
         <p className={style.description}>{description}</p>
