@@ -8,7 +8,7 @@ import Aside from "../../Components/Aside/Aside.jsx";
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
-import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx"
+import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
 
 function Home() {
   const dispatch = useDispatch();
@@ -25,12 +25,18 @@ function Home() {
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(pokemonPerPage);
 
+  // Nuevos estados para los filtros
+  const [material, setMaterial] = useState("");
+  const [categoria, setCategoria] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [tamaño, setTamaño] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`
+          `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}&material=${material}&categoria=${categoria}&minPrice=${minPrice}&maxPrice=${maxPrice}&tamaño=${tamaño}`
         );
 
         if (response.status === 200) {
@@ -50,7 +56,7 @@ function Home() {
     };
 
     fetchData();
-  }, [currentPage, dispatch]);
+  }, [currentPage, dispatch, material, categoria, minPrice, maxPrice, tamaño]);
 
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
@@ -65,9 +71,13 @@ function Home() {
     setCurrentPage(page);
   };
 
+  const applyFilters = () => {
+    setCurrentPage(1);
+  };
+
   return (
     <main className={style.main}>
-      <CarouselHome/>
+      <CarouselHome />
 
       <div className={style.Container}>
         <div className={style.ContainerAsaider}>
@@ -75,7 +85,40 @@ function Home() {
         </div>
 
         <div className={style.ContainerHome}>
-         <dir className={style.ContainerFilter}>
+          <div className={style.ContainerFilter}>
+            {/* Agregar controles para los filtros */}
+            <input
+              type="text"
+              placeholder="Material"
+              value={material}
+              onChange={(e) => setMaterial(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Categoria"
+              value={categoria}
+              onChange={(e) => setCategoria(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="Precio mínimo"
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="Precio máximo"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Tamaño"
+              value={tamaño}
+              onChange={(e) => setTamaño(e.target.value)}
+            />
+
+            <button onClick={applyFilters}>Aplicar Filtros</button>
 
             <button
               className={style.BTNPreviu}
@@ -94,8 +137,7 @@ function Home() {
             >
               Siguiente
             </button>
-         </dir>
-            
+          </div>
 
           <div className={style.ContainerCards}>
             {loading ? (
@@ -114,7 +156,6 @@ function Home() {
                   price={e.price}
                   Material={e.Material}
                   Category={e.Category}
-
                 />
               ))
             )}
