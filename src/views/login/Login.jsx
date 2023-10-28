@@ -28,11 +28,16 @@ export default function Login() {
         // Obtener el token del encabezado de la respuesta
         const token = response.headers.get("Authorization");
 
-        // Almacenar el token en el almacenamiento local
-        localStorage.setItem("token", token);
-
-        // Redirigir al usuario a la página de inicio (o a donde desees)
-        window.location.href = "/home";
+        if (!token) {
+          console.error(
+            "El token no está presente en la respuesta del servidor"
+          );
+          alert("Inicio de sesión fallido"); // Puedes personalizar esto según tus necesidades
+        } else {
+          localStorage.setItem("token", token);
+          console.log("Token almacenado:", token);
+          window.location.href = "/";
+        }
       } else {
         const errorData = await response.json(); // Intenta parsear la respuesta como JSON
         console.error("Error en la respuesta:", errorData);
