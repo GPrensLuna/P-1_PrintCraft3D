@@ -26,7 +26,9 @@ function Home() {
   const [limit, setLimit] = useState(pokemonPerPage);
 
   const [selectedMaterials, setSelectedMaterials] = useState([]);
-  const [selectedTechniques, setSelectedTechniques] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [priceRange, setPriceRange] = useState({ min: null, max: null });
 
   const handleMaterialChange = (material) => {
     setSelectedMaterials((prevMaterials) => {
@@ -36,28 +38,34 @@ function Home() {
     });
   };
 
-  const handleTechniqueChange = (technique) => {
-    setSelectedTechniques((prevTechniques) => {
-      return prevTechniques.includes(technique)
-        ? prevTechniques.filter((t) => t !== technique)
-        : [...prevTechniques, technique];
-    });
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category === selectedCategory ? null : category);
+  };
+
+  const handleSizeChange = (size) => {
+    setSelectedSize(size === selectedSize ? null : size);
+  };
+
+  const handlePriceRangeChange = ({ min, max }) => {
+    setPriceRange({ min, max });
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("Before axios.get");
         const response = await axios.get(
           `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`,
-
           {
             params: {
               material: selectedMaterials,
+              categoria: selectedCategory,
+              tamaño: selectedSize,
+              minPrice: priceRange.min,
+              maxPrice: priceRange.max,
             },
           }
         );
-        console.log("After successful response", response.data);
+
         if (response.status === 200) {
           const { data } = response;
           dispatch(addProductInfo(data.results));
@@ -83,11 +91,14 @@ function Home() {
     };
 
     fetchData();
-  }, [currentPage, selectedMaterials, selectedTechniques, dispatch]);
-
-  useEffect(() => {
-    localStorage.setItem("currentPage", currentPage);
-  }, [currentPage]);
+  }, [
+    currentPage,
+    selectedMaterials,
+    selectedCategory,
+    selectedSize,
+    priceRange,
+    dispatch,
+  ]);
 
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
@@ -110,12 +121,14 @@ function Home() {
         <div className={style.ContainerAsaider}>
           <Aside
             onMaterialChange={handleMaterialChange}
-            onTechniqueChange={handleTechniqueChange}
+            onCategoryChange={handleCategoryChange}
+            onSizeChange={handleSizeChange}
+            onPriceRangeChange={handlePriceRangeChange}
           />
         </div>
 
         <div className={style.ContainerHome}>
-          <dir className={style.ContainerFilter}>
+          <div className={style.ContainerFilter}>
             <button
               className={style.BTNPreviu}
               onClick={() => loadPage(currentPage - 1)}
@@ -133,7 +146,7 @@ function Home() {
             >
               Siguiente
             </button>
-          </dir>
+          </div>
 
           <div className={style.ContainerCards}>
             {loading ? (
