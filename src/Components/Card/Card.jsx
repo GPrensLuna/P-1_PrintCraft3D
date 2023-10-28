@@ -37,16 +37,17 @@ const Card = (props) => {
         X
       </button>
       <Link to={`Inventario/${id}`}>
-      <img className={style.Imagen} src={image} alt={name} />
-      <div className={style.Container}>
-        <h3 className={style.name}>{nameM}</h3>
-        <p className={style.description}>{description}</p>
-        <p className={style.size}>Tamaño: {sizeM}</p>
-        <p className={style.price}>Precio: {priceFormatted}</p>
-        <p className={style.Material}>Material: {materialName}</p>
-        <p className={style.Category}>Categoría: {categoryName}</p>
-      </div>
+        <img className={style.Imagen} src={image} alt={name} />
+        <div className={style.Container}>
+          <h3 className={style.name}>{nameM}</h3>
+          <p className={style.description}>{description}</p>
+          <p className={style.size}>Tamaño: {sizeM}</p>
+          <p className={style.price}>Precio: {priceFormatted}</p>
+          <p className={style.Material}>Material: {materialName}</p>
+          <p className={style.Category}>Categoría: {categoryName}</p>
+        </div>
       </Link>
+      <button className={style.BtnCarrito}>Carrito</button>
     </div>
   );
 };
