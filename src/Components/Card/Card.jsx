@@ -36,17 +36,17 @@ const Card = (props) => {
       <button className={style.onClonse} onClick={handleDelete}>
         X
       </button>
-      <Link to={`Inventario/${id}`}>
-        <img className={style.Imagen} src={image} alt={name} />
-        <div className={style.Container}>
+      <img className={style.Imagen} src={image} alt={name} />
+      <div className={style.Container}>
+        <Link to={`Inventario/${id}`}>
           <h3 className={style.name}>{nameM}</h3>
-          <p className={style.description}>{description}</p>
-          <p className={style.size}>Tamaño: {sizeM}</p>
-          <p className={style.price}>Precio: {priceFormatted}</p>
-          <p className={style.Material}>Material: {materialName}</p>
-          <p className={style.Category}>Categoría: {categoryName}</p>
-        </div>
-      </Link>
+        </Link>
+        <p className={style.description}>{description}</p>
+        <p className={style.size}>Tamaño: {sizeM}</p>
+        <p className={style.price}>Precio: {priceFormatted}</p>
+        <p className={style.Material}>Material: {materialName}</p>
+        <p className={style.Category}>Categoría: {categoryName}</p>
+      </div>
       <button className={style.BtnCarrito}>Carrito</button>
     </div>
   );
