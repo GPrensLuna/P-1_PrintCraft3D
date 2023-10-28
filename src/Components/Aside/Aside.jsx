@@ -10,7 +10,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
           <h2>Materiales</h2>
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>ABS</p>
+              ABS
               <input
                 className={style.AsideInput}
                 type="checkbox"
@@ -22,7 +22,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
           </div>
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>PLA</p>
+              PLA
               <input
                 className={style.AsideInput}
                 type="checkbox"
@@ -35,7 +35,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
 
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>TPU</p>
+              TPU
               <input
                 className={style.AsideInput}
                 type="checkbox"
@@ -51,7 +51,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
           <h2>Categori</h2>
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>Accesorio</p>
+              Accesorio
               <input
                 className={style.AsideInput}
                 type="checkbox"
@@ -63,7 +63,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
           </div>
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p> figura</p>
+              figura
               <input
                 className={style.AsideInput}
                 type="checkbox"
@@ -76,7 +76,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
 
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>Decoracion</p>
+              Decoracion
               <input
                 className={style.AsideInput}
                 type="checkbox"
@@ -92,7 +92,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
           <h2>Tamaño</h2>
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>M</p>
+              M
               <input
                 className={style.AsideInput}
                 type="checkbox"
@@ -104,7 +104,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
           </div>
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>S</p>
+              S
               <input
                 className={style.AsideInput}
                 type="checkbox"
@@ -116,7 +116,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
           </div>
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>L</p>
+              L
               <input
                 className={style.AsideInput}
                 type="checkbox"
@@ -128,7 +128,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
           </div>{" "}
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>X</p>
+              X
               <input
                 className={style.AsideInput}
                 type="checkbox"
