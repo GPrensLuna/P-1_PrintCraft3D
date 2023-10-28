@@ -46,6 +46,10 @@
   margin: 0;
 }
 
+.name:hover {
+  font-size: 25px;
+}
+
 .description {
   font-size: var(--font-size);
 }
@@ -65,4 +69,8 @@
 .Category {
   font-size: var(--font-size);
 }
-
+.BtnCarritoñ{
+  position: absolute;
+  top: 35%;
+  left: 5%;
+}
