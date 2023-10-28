@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { URL } from "../../config.js";
 import Footer from "../../Components/Footer/Footer";
 import Aside from "../../Components/Aside/Aside.jsx";
+
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
@@ -24,20 +25,11 @@ function Home() {
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(pokemonPerPage);
 
-  const [material, setMaterial] = useState("");
-  const [categoria, setCategoria] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [tamaño, setTamaño] = useState("");
-
-  const [materialOptions, setMaterialOptions] = useState([]);
-  const [categoriaOptions, setCategoriaOptions] = useState([]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}&material=${material}&categoria=${categoria}&minPrice=${minPrice}&maxPrice=${maxPrice}&tamaño=${tamaño}`
+          `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`
         );
 
         if (response.status === 200) {
@@ -57,32 +49,11 @@ function Home() {
     };
 
     fetchData();
-  }, [currentPage, dispatch, material, categoria, minPrice, maxPrice, tamaño]);
+  }, [currentPage, dispatch]);
 
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
   }, [currentPage]);
-
-  useEffect(() => {
-    const fetchOptions = async () => {
-      try {
-        const materialResponse = await axios.get(`${URL}Materials`);
-        const categoriaResponse = await axios.get(`${URL}Categories`);
-
-        if (
-          materialResponse.status === 200 &&
-          categoriaResponse.status === 200
-        ) {
-          setMaterialOptions(materialResponse.data);
-          setCategoriaOptions(categoriaResponse.data);
-        }
-      } catch (error) {
-        console.error("Error fetching options:", error);
-      }
-    };
-
-    fetchOptions();
-  }, []);
 
   const totalPages = Math.ceil(count / limit);
 
@@ -91,10 +62,6 @@ function Home() {
       return;
     }
     setCurrentPage(page);
-  };
-
-  const applyFilters = () => {
-    setCurrentPage(1);
   };
 
   return (
@@ -107,52 +74,7 @@ function Home() {
         </div>
 
         <div className={style.ContainerHome}>
-          <div className={style.ContainerFilter}>
-            <select
-              value={material}
-              onChange={(e) => setMaterial(e.target.value)}
-            >
-              <option value="">Material</option>
-              {materialOptions.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.name}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={categoria}
-              onChange={(e) => setCategoria(e.target.value)}
-            >
-              <option value="">Categoria</option>
-              {categoriaOptions.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.name}
-                </option>
-              ))}
-            </select>
-
-            <input
-              type="number"
-              placeholder="Precio mínimo"
-              value={minPrice}
-              onChange={(e) => setMinPrice(e.target.value)}
-            />
-            <input
-              type="number"
-              placeholder="Precio máximo"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Tamaño"
-              value={tamaño}
-              onChange={(e) => setTamaño(e.target.value)}
-            />
-
-            <button onClick={applyFilters}>Aplicar Filtros</button>
-
+          <dir className={style.ContainerFilter}>
             <button
               className={style.BTNPreviu}
               onClick={() => loadPage(currentPage - 1)}
@@ -170,7 +92,7 @@ function Home() {
             >
               Siguiente
             </button>
-          </div>
+          </dir>
 
           <div className={style.ContainerCards}>
             {loading ? (
