@@ -15,7 +15,6 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      // Enviar la información de correo electrónico y contraseña al servidor usando fetch
       const response = await fetch(`${URL}login`, {
         method: "POST",
         headers: {
@@ -25,21 +24,26 @@ export default function Login() {
       });
 
       if (response.ok) {
-        // Obtener el token del encabezado de la respuesta
-        const token = response.headers.get("Authorization");
+        // Usa response.json() para obtener el cuerpo de la respuesta como objeto JSON
+        const responseData = await response.json();
+
+        // Verifica si el token está presente en la respuesta
+        const token = responseData.token;
 
         if (!token) {
           console.error(
             "El token no está presente en la respuesta del servidor"
           );
-          alert("Inicio de sesión fallido"); // Puedes personalizar esto según tus necesidades
+          alert("Inicio de sesión fallido");
         } else {
+          // Almacena el token en el almacenamiento local
           localStorage.setItem("token", token);
-          console.log("Token almacenado:", token);
+          // Redirige a la página principal u otra página deseada
           window.location.href = "/";
         }
       } else {
-        const errorData = await response.json(); // Intenta parsear la respuesta como JSON
+        // Maneja la respuesta en caso de un error (puede ser un error de red o un error en el servidor)
+        const errorData = await response.json();
         console.error("Error en la respuesta:", errorData);
         alert("Inicio de sesión fallido");
       }
