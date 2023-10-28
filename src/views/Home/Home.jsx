@@ -26,9 +26,8 @@ function Home() {
   const [limit, setLimit] = useState(pokemonPerPage);
 
   const [selectedMaterials, setSelectedMaterials] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
-  const [priceRange, setPriceRange] = useState({ min: null, max: null });
+  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [selectedSize, setSelectedSize] = useState([]);
 
   const handleMaterialChange = (material) => {
     setSelectedMaterials((prevMaterials) => {
@@ -39,15 +38,19 @@ function Home() {
   };
 
   const handleCategoryChange = (category) => {
-    setSelectedCategory(category === selectedCategory ? null : category);
+    setSelectedCategory((prevCategory) => {
+      return prevCategory.includes(category)
+        ? prevCategory.filter((c) => c !== category)
+        : [...prevCategory, category];
+    });
   };
 
   const handleSizeChange = (size) => {
-    setSelectedSize(size === selectedSize ? null : size);
-  };
-
-  const handlePriceRangeChange = ({ min, max }) => {
-    setPriceRange({ min, max });
+    setSelectedSize((prevSize) => {
+      return prevSize.includes(size)
+        ? prevSize.filter((c) => c !== size)
+        : [...prevSize, size];
+    });
   };
 
   useEffect(() => {
@@ -60,8 +63,6 @@ function Home() {
               material: selectedMaterials,
               categoria: selectedCategory,
               tamaño: selectedSize,
-              minPrice: priceRange.min,
-              maxPrice: priceRange.max,
             },
           }
         );
@@ -96,7 +97,6 @@ function Home() {
     selectedMaterials,
     selectedCategory,
     selectedSize,
-    priceRange,
     dispatch,
   ]);
 
@@ -123,7 +123,6 @@ function Home() {
             onMaterialChange={handleMaterialChange}
             onCategoryChange={handleCategoryChange}
             onSizeChange={handleSizeChange}
-            onPriceRangeChange={handlePriceRangeChange}
           />
         </div>
 
