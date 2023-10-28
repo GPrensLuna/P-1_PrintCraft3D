@@ -1,4 +1,3 @@
-// Aside.jsx
 import React from "react";
 import style from "./Aside.module.css";
 
