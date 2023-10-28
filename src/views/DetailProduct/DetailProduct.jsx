@@ -8,9 +8,14 @@ function DetailProduct() {
   const [Producto, setProducto] = useState([]);
 
   useEffect(() => {
-    axios.get(`${URL}Producto/${name}`).then((response) => {
-      setProducto(response.data);
-    });
+    axios
+      .get(`${URL}Producto/${name}`)
+      .then((response) => {
+        setProducto(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching product:", error);
+      });
   }, [name]);
 
   return (
