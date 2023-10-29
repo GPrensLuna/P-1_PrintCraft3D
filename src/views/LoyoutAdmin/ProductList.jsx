@@ -10,7 +10,7 @@ export default function ProductList() {
     // Función para obtener la lista de productos
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${URL}Producto`);
+        const response = await fetch(`${URL}ProductsLista`);
         const data = await response.json();
         setProducts(data);
       } catch (error) {
@@ -29,7 +29,7 @@ export default function ProductList() {
   const handleUpdate = async () => {
     // Función para actualizar un producto
     try {
-      const response = await fetch(`${URL}Producto/${editingProduct.id}`, {
+      const response = await fetch(`${URL}ProductsLista/${editingProduct.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
