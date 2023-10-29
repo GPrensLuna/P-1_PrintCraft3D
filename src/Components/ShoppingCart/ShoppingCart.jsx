@@ -1,31 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { clearCart, delFromCart } from "../../redux/actions/actions.js";
 import CardCart from "../CardCart/CardCart.jsx";
+import style from "./SoppingCart.module.css";
 
 const ShoppingCart = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
-  const [total, setTotal] = useState(0);
+  // const [total, setTotal] = useState(0);
+  let total = 0;
+  cart.map((item) => (total = total + item.price * item.cantidad));
 
   return (
     <div>
       <h1>Carrito de Compras</h1>
-      <article>
-        <button onClick={() => dispatch(clearCart())}>Limpiar Carrito</button>
+      <button onClick={() => dispatch(clearCart())}>Limpiar Carrito</button>
+      <article className={style.ContainerCards}>
         {cart.map((item, index) => (
           <CardCart
             key={index}
             data={item}
             delOneFromCart={() => dispatch(delFromCart(item.id))}
             delAllFromCart={() => dispatch(delFromCart(item.id, true))}
-            total={total}
-            setTotal={setTotal}
           />
         ))}
       </article>
-      <h1>{total}</h1>
+      <h1>Total = ${total}</h1>
       <button>Comprar</button>
     </div>
   );
