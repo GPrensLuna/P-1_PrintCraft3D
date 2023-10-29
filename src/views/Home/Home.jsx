@@ -8,7 +8,7 @@ import Aside from "../../Components/Aside/Aside.jsx";
 import imagenes from "../../imagenes/images.js";
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
-import { addProductInfo } from "../../redux/actions/actions.js";
+import { addProductInfo, addToCart } from "../../redux/actions/actions.js";
 
 function Home() {
   const dispatch = useDispatch();
@@ -24,7 +24,6 @@ function Home() {
   const pokemonPerPage = 12;
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(pokemonPerPage);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,8 +76,7 @@ function Home() {
         </div>
 
         <div className={style.ContainerHome}>
-         <dir className={style.ContainerFilter}>
-
+          <dir className={style.ContainerFilter}>
             <button
               className={style.BTNPreviu}
               onClick={() => loadPage(currentPage - 1)}
@@ -96,8 +94,7 @@ function Home() {
             >
               Siguiente
             </button>
-         </dir>
-            
+          </dir>
 
           <div className={style.ContainerCards}>
             {loading ? (
@@ -108,6 +105,7 @@ function Home() {
               allProducts?.map((e) => (
                 <Card
                   key={e.id}
+                  id={e.id}
                   name={e.name}
                   image={e.image}
                   description={e.description}
@@ -115,7 +113,7 @@ function Home() {
                   price={e.price}
                   Material={e.Material}
                   Category={e.Category}
-
+                  addToCart={() => dispatch(addToCart(e.id))}
                 />
               ))
             )}

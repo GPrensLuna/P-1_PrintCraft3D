@@ -1,8 +1,13 @@
-// Card.js
 import React from "react";
-import style from "./Card.module.css";
+import style from "./CardCart.module.css";
 
-const Card = (props) => {
+const CardCart = ({
+  data,
+  delOneFromCart,
+  delAllFromCart,
+  total,
+  setTotal,
+}) => {
   const {
     id,
     name,
@@ -11,10 +16,9 @@ const Card = (props) => {
     size,
     price,
     Material,
+    cantidad,
     Category,
-    onDeleteCard,
-    addToCart,
-  } = props;
+  } = data;
   const nameM = name ? name.toUpperCase() : "Nombre no disponible";
   const sizeM = size ? size.toUpperCase() : "Tamaño no disponible";
 
@@ -26,17 +30,16 @@ const Card = (props) => {
     style: "currency",
     currency: "USD",
   });
+  const subTotal = price * cantidad;
+  // const resultado = total + subTotal;
+  // setTotal(resultado);
+  const subTotalS = parseFloat(subTotal).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
 
-  const handleDelete = () => {
-    // Lógica para eliminar la tarjeta
-    onDeleteCard(name);
-  };
   return (
     <div className={style.Card}>
-      <button onClick={() => addToCart(id)}>Agregar al Carrito</button>
-      <button className={style.onClonse} onClick={handleDelete}>
-        X
-      </button>
       <img className={style.Imagen} src={image} alt={name} />
       <div className={style.Container}>
         <h3 className={style.name}>{nameM}</h3>
@@ -45,9 +48,17 @@ const Card = (props) => {
         <p className={style.price}>Precio: {priceFormatted}</p>
         <p className={style.Material}>Material: {materialName}</p>
         <p className={style.Category}>Categoría: {categoryName}</p>
+        <p>
+          <b>
+            {priceFormatted} x {cantidad} = {subTotalS}
+          </b>
+        </p>
+        <button onClick={() => delOneFromCart(id)}>Eliminar Uno</button>
+        <br />
+        <button onClick={() => delAllFromCart(id, true)}>Eliminar Todos</button>
       </div>
     </div>
   );
 };
 
-export default Card;
+export default CardCart;
