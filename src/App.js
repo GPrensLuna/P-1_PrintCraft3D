@@ -6,6 +6,7 @@ import Home from "./views/Home/Home.jsx";
 import { Login, Inventory, Profile, UserList, ProductList } from "./views";
 import NavBar from "./Components/NavBar/NavBar.jsx";
 import DetailProduct from "./views/DetailProduct/DetailProduct.jsx";
+import PagoPaypal from "./Components/PagoPaypal/PagoPaypal";
 import { useSelector, useDispatch } from "react-redux";
 import { LoginUser } from "./redux/actions/actions.js";
 import { URL } from "./config.js"; // Import URL from your config fileimport PagoPaypal from "./Components/PagoPaypal/PagoPaypal.jsx";
@@ -64,7 +65,7 @@ const logout = async () => {
         <Route path="/LoginUp" element={<Login />} />
         <Route path="/Profile" element={<Profile userData={userData} />} />
         <Route path="/Inventario" element={<Inventory />} />
-        
+        <Route path="/Pagar" element={<PagoPaypal />}></Route>
         <Route path="/UserList" element={<UserList />} />
         <Route path="/ProductList" element={<ProductList />} />
         <Route path="/Producto/:name" element={<DetailProduct />} />
