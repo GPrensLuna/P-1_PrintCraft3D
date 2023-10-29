@@ -14,7 +14,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
               <input
                 className={style.AsideInput}
                 type="checkbox"
-                value="ABS"
+                value="3"
                 onChange={() => onMaterialChange("3")}
               />
               <span className={style.span}></span>

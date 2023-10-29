@@ -48,7 +48,7 @@ function Home() {
   const handleSizeChange = (size) => {
     setSelectedSize((prevSize) => {
       return prevSize.includes(size)
-        ? prevSize.filter((c) => c !== size)
+        ? prevSize.filter((s) => s !== size)
         : [...prevSize, size];
     });
   };
