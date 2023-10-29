@@ -5,7 +5,9 @@ import styles from "./ProductList.module.css";
 export default function ProductList() {
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
+  console.log(products);
 
+  console.log(products);
   useEffect(() => {
     // Función para obtener la lista de productos
     const fetchProducts = async () => {
@@ -75,11 +77,11 @@ export default function ProductList() {
                 <td>{product.name}</td>
                 <td>{product.image}</td>
                 <td>{product.description}</td>
-                <td>{product.size}</td>
+                <td>{product.SizeId}</td>
                 <td>{product.price}</td>
                 <td>{product.stock}</td>
-                <td>{product.MaterialId}</td>
-                <td>{product.CategoryId}</td>
+                <td>{product.Material}</td>
+                <td>{product.Category}</td>
                 <td>
                   <button onClick={() => handleEdit(product)}>Edit</button>
                 </td>
