@@ -1,9 +1,11 @@
 // Card.js
 import React from "react";
 import style from "./Card.module.css";
+import { Link } from "react-router-dom";
 
 const Card = (props) => {
   const {
+    id,
     name,
     image,
     description,
@@ -34,6 +36,7 @@ const Card = (props) => {
       <button className={style.onClonse} onClick={handleDelete}>
         X
       </button>
+      <Link to={`Inventario/${id}`}>
       <img className={style.Imagen} src={image} alt={name} />
       <div className={style.Container}>
         <h3 className={style.name}>{nameM}</h3>
@@ -43,6 +46,7 @@ const Card = (props) => {
         <p className={style.Material}>Material: {materialName}</p>
         <p className={style.Category}>Categoría: {categoryName}</p>
       </div>
+      </Link>
     </div>
   );
 };

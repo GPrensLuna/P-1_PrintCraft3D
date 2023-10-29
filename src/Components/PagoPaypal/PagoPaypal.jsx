@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
+const { URL } = require('../../config.js')
 //import { useHistory } from 'react-router-dom';
 
 export default function PagoPaypal () {
+  const base = "https://api-m.sandbox.paypal.com";
     useEffect( () => {
-              window.paypal
-              .Buttons({
+              window.paypal.Buttons({
                 async createOrder() {
                   try {
-                    const response = await fetch("/api/orders", {
+                    const response = await fetch(`${URL}api/orders`, {
                       method: "POST",
                       headers: {
                         "Content-Type": "application/json",
@@ -30,11 +31,8 @@ export default function PagoPaypal () {
                       return orderData.id;
                     } else {
                       const errorDetail = orderData?.details?.[0];
-                      const errorMessage = errorDetail
-                        ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})`
-                        : JSON.stringify(orderData);
-                      
-                      throw new Error(errorMessage);
+                      const errorMessage = errorDetail ? `${errorDetail.issue} ${errorDetail.description} (${orderData.debug_id})` : JSON.stringify(orderData);
+                        throw new Error(errorMessage);
                     }
                   } catch (error) {
                     console.error(error);
@@ -43,7 +41,7 @@ export default function PagoPaypal () {
                 },
                 async onApprove(data, actions) {
                   try {
-                    const response = await fetch(`/api/orders/${data.orderID}/capture`, {
+                    const response = await fetch(`${URL}api/orders/${data.orderID}/capture`, {
                       method: "POST",
                       headers: {
                         "Content-Type": "application/json",
