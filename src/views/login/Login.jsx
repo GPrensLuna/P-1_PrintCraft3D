@@ -42,7 +42,7 @@ export default function Login() {
           // Accede al token almacenado y decódificalo
 
           // Redirige a la página principal u otra página deseada
-          window.location.href = "/";
+          window.location.href = "/Profile";
         }
       } else {
         // Maneja la respuesta en caso de un error (puede ser un error de red o un error en el servidor)

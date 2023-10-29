@@ -6,11 +6,11 @@ import Button from "react-bootstrap/Button";
 
 import logo from "../../imagenes/logo.png";
 
-function NavBar() {
+function NavBar({ userData, logout }) {
   return (
     <Navbar expand="lg" bg="primary" data-bs-theme="dark" fixed="top">
       <Container fluid>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <img
             className="d-inline-block align-top"
             src={logo}
@@ -27,9 +27,13 @@ function NavBar() {
           navbarScroll
         >
           <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="/Registrarse">Login up</Nav.Link>
           <Nav.Link href="/Inventario">Inventario</Nav.Link>
-          <Nav.Link href="/Profile">Perfil</Nav.Link>
+          <Nav.Link href="/Profile">{userData ? userData.name : ""}</Nav.Link>
+          {userData ? (
+            <Nav.Link onClick={logout}>Logout</Nav.Link>
+          ) : (
+            <Nav.Link href="/LoginUp">Login up</Nav.Link>
+          )}
         </Nav>
       </Container>
 

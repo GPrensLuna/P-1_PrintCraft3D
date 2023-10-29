@@ -1,4 +1,4 @@
-import { ADD_PRODUCTS_INFO } from "./actions_types.js";
+import { ADD_PRODUCTS_INFO, LOGIN_USER } from "./actions_types.js";
 
 export const addProductInfo = (addProductInfo) => {
   return {
@@ -6,3 +6,11 @@ export const addProductInfo = (addProductInfo) => {
     payload: addProductInfo,
   };
 };
+
+export const LoginUser = (LoginUser) => {
+  return {
+    type: LOGIN_USER,
+    payload: LoginUser,
+  };
+};
+
