@@ -52,7 +52,7 @@ function App() {
   const logout = async () => {
     try {
       // Llamada al endpoint del servidor para realizar el cierre de sesión
-      const response = await fetch("/ruta-del-endpoint-de-logout", {
+      const response = await fetch(`${URL}Logout`, {
         method: "POST", // Utiliza el método correcto (en tu caso, POST)
         headers: {
           "Content-Type": "application/json",
