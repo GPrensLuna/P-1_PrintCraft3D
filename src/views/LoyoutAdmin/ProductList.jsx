@@ -5,11 +5,7 @@ import styles from "./ProductList.module.css";
 export default function ProductList() {
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
-  console.log(products);
-
-  console.log(products);
   useEffect(() => {
-    // Función para obtener la lista de productos
     const fetchProducts = async () => {
       try {
         const response = await fetch(`${URL}ProductsLista`);
@@ -21,15 +17,13 @@ export default function ProductList() {
     };
 
     fetchProducts();
-  }, []); // Se ejecuta solo al montar el componente
+  }, []);
 
   const handleEdit = (product) => {
-    // Función para activar la edición de un producto
     setEditingProduct({ ...product });
   };
 
   const handleUpdate = async () => {
-    // Función para actualizar un producto
     try {
       const response = await fetch(`${URL}ProductsLista/${editingProduct.id}`, {
         method: "PUT",
@@ -40,12 +34,11 @@ export default function ProductList() {
       });
 
       if (response.ok) {
-        // Actualizar la lista de productos después de la edición
         const updatedProducts = products.map((p) =>
           p.id === editingProduct.id ? { ...p, ...editingProduct } : p
         );
         setProducts(updatedProducts);
-        setEditingProduct(null); // Desactivar la edición
+        setEditingProduct(null);
       } else {
         console.error("Error updating product");
       }
@@ -77,11 +70,11 @@ export default function ProductList() {
                 <td>{product.name}</td>
                 <td>{product.image}</td>
                 <td>{product.description}</td>
-                <td>{product.SizeId}</td>
+                <td>{product.size.name}</td>
                 <td>{product.price}</td>
                 <td>{product.stock}</td>
-                <td>{product.Material}</td>
-                <td>{product.Category}</td>
+                <td>{product.material.name}</td>
+                <td>{product.category.name}</td>
                 <td>
                   <button onClick={() => handleEdit(product)}>Edit</button>
                 </td>
@@ -91,7 +84,6 @@ export default function ProductList() {
         </table>
         {editingProduct && (
           <div className={styles.editForm}>
-            {/* Formulario para editar el producto */}
             <input
               type="text"
               value={editingProduct.name}
@@ -113,7 +105,6 @@ export default function ProductList() {
                 }
               />
             </label>
-            {/* Agrega más campos del producto según tus necesidades */}
             <button onClick={handleUpdate} className={styles.updateButton}>
               Update
             </button>
