@@ -9,12 +9,10 @@ import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
 import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
-import NavBar from "../../Components/NavBar/NavBar.jsx";
 
 function Home() {
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.allProducts);
-  const userData = useSelector((state) => state.userData);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -120,10 +118,6 @@ function Home() {
       <CarouselHome />
 
       <div className={style.Container}>
-        <div className={style.NavBarContainer}>
-          {/* Pass userData to NavBar component */}
-          <NavBar userData={userData} />
-        </div>
         <div className={style.ContainerAsaider}>
           <Aside
             onMaterialChange={handleMaterialChange}
@@ -166,7 +160,7 @@ function Home() {
                   name={e.name}
                   image={e.image}
                   description={e.description}
-                  size={e.size}
+                  Size={e.Size}
                   price={e.price}
                   Material={e.Material}
                   Category={e.Category}

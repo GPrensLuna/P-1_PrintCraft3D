@@ -11,17 +11,17 @@ const Card = (props) => {
     name,
     image,
     description,
-    size,
+    Size,
     price,
     Material,
     Category,
     onDeleteCard,
   } = props;
-  const nameM = name ? name.toUpperCase() : "Nombre no disponible";
-  const sizeM = size ? size.toUpperCase() : "Tamaño no disponible";
 
   const materialName = Material ? Material.name : "Material no disponible";
   const categoryName = Category ? Category.name : "Categoría no disponible";
+  const SizeName = Category ? Size.name : "Categoría no disponible";
+  const nameM = name ? name.toUpperCase() : "Nombre no disponible";
 
   const priceFormatted = parseFloat(price).toLocaleString("en-US", {
     style: "currency",
@@ -47,7 +47,7 @@ const Card = (props) => {
           <h3 className={style.name}>{nameM}</h3>
         </Link>
         <p className={style.description}>{description}</p>
-        <p className={style.size}>Tamaño: {sizeM}</p>
+        <p className={style.size}>Tamaño: {SizeName}</p>
         <p className={style.price}>Precio: {priceFormatted}</p>
         <p className={style.Material}>Material: {materialName}</p>
         <p className={style.Category}>Categoría: {categoryName}</p>
