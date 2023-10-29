@@ -85,7 +85,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/LoginUp" element={<Login />} />
-        <Route path="/Profile" element={<Profile />} />
+        <Route path="/Profile" element={<Profile userData={userData} />} />
         <Route path="/Inventario" element={<Inventory />} />
         <Route path="/Producto/:name" element={<DetailProduct />} />
       </Routes>
