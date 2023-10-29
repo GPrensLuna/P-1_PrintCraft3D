@@ -3,7 +3,6 @@ const { URL } = require('../../config.js')
 //import { useHistory } from 'react-router-dom';
 
 export default function PagoPaypal () {
-  const base = "https://api-m.sandbox.paypal.com";
     useEffect( () => {
               window.paypal.Buttons({
                 async createOrder() {
