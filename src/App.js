@@ -49,36 +49,21 @@ function App() {
   }, [dispatch]); // Include dispatch as a dependency
 
 
-  const logout = async () => {
-    try {
-      // Llamada al endpoint del servidor para realizar el cierre de sesión
-      const response = await fetch(`${URL}Logout`, {
-        method: "POST", // Utiliza el método correcto (en tu caso, POST)
-        headers: {
-          "Content-Type": "application/json",
-          // Puedes agregar otros encabezados según sea necesario
-        },
-        // Puedes enviar datos en el cuerpo si es necesario
-        // body: JSON.stringify({ key: 'value' }),
-      });
+const logout = async () => {
+  // Realiza cualquier otra lógica de cierre de sesión que puedas necesitar
 
-      // Verifica si la respuesta es exitosa (código 200)
-      if (response.status === 200) {
-        // Elimina el token almacenado en localStorage en el lado del cliente
-        localStorage.removeItem("token");
-        console.log("Cierre de sesión exitoso");
-      } else {
-        // Muestra un mensaje de error si la respuesta no es exitosa
-        console.error(
-          "Error durante el cierre de sesión:",
-          response.statusText
-        );
-      }
-    } catch (error) {
-      // Manejo de errores de red u otros errores
-      console.error("Error durante el cierre de sesión:", error.message);
-    }
-  };
+  // Elimina el token del usuario (esto depende de cómo esté implementado tu sistema de autenticación)
+  // Por ejemplo, si estás utilizando localStorage
+  localStorage.removeItem("token");
+
+  // O si estás utilizando cookies
+  document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+  // También puedes realizar alguna llamada a la API para invalidar el token en el servidor, dependiendo de tu implementación
+
+  // Redirige al usuario a la página de inicio de sesión u otra página relevante
+  window.location.href = "/login";
+};
   return (
     <div className="App">
       <NavBar userData={userData} logout={logout} />
