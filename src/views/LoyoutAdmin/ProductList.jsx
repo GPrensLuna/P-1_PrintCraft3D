@@ -23,7 +23,7 @@ export default function ProductList() {
 
   const handleEdit = (product) => {
     // Función para activar la edición de un producto
-    setEditingProduct(product);
+    setEditingProduct({ ...product });
   };
 
   const handleUpdate = async () => {
@@ -40,7 +40,7 @@ export default function ProductList() {
       if (response.ok) {
         // Actualizar la lista de productos después de la edición
         const updatedProducts = products.map((p) =>
-          p.id === editingProduct.id ? editingProduct : p
+          p.id === editingProduct.id ? { ...p, ...editingProduct } : p
         );
         setProducts(updatedProducts);
         setEditingProduct(null); // Desactivar la edición
@@ -87,7 +87,6 @@ export default function ProductList() {
             ))}
           </tbody>
         </table>
-
         {editingProduct && (
           <div className={styles.editForm}>
             {/* Formulario para editar el producto */}
@@ -99,6 +98,19 @@ export default function ProductList() {
               }
               className={styles.editInput}
             />
+            <label>
+              Account Enabled:
+              <input
+                type="checkbox"
+                checked={editingProduct.isAccountEnabled}
+                onChange={(e) =>
+                  setEditingProduct({
+                    ...editingProduct,
+                    isAccountEnabled: e.target.checked,
+                  })
+                }
+              />
+            </label>
             {/* Agrega más campos del producto según tus necesidades */}
             <button onClick={handleUpdate} className={styles.updateButton}>
               Update
