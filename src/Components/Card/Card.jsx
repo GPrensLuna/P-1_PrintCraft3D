@@ -3,32 +3,32 @@ import React from "react";
 import style from "./Card.module.css";
 import { Link } from "react-router-dom";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+
 const Card = (props) => {
   const {
-    id,
     name,
     image,
     description,
-    size,
+    Size,
     price,
     Material,
     Category,
     onDeleteCard,
   } = props;
-  const nameM = name ? name.toUpperCase() : "Nombre no disponible";
-  const sizeM = size ? size.toUpperCase() : "Tamaño no disponible";
 
   const materialName = Material ? Material.name : "Material no disponible";
   const categoryName = Category ? Category.name : "Categoría no disponible";
+  const SizeName = Category ? Size.name : "Categoría no disponible";
+  const nameM = name ? name.toUpperCase() : "Nombre no disponible";
 
-  // Formatear el precio como moneda basado en la configuración regional del navegador
   const priceFormatted = parseFloat(price).toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   });
 
   const handleDelete = () => {
-    // Lógica para eliminar la tarjeta
     onDeleteCard(name);
   };
   return (
@@ -36,17 +36,22 @@ const Card = (props) => {
       <button className={style.onClonse} onClick={handleDelete}>
         X
       </button>
-      <Link to={`Inventario/${id}`}>
-      <img className={style.Imagen} src={image} alt={name} />
+      <button className={style.BtnCarrito}>
+        <FontAwesomeIcon icon={faShoppingCart} />
+      </button>
+      <Link className={style.Link} to={`Producto/${name}`}>
+        <img className={style.Imagen} src={image} alt={name} />
+      </Link>
       <div className={style.Container}>
-        <h3 className={style.name}>{nameM}</h3>
+        <Link className={style.Link} to={`Producto/${name}`}>
+          <h3 className={style.name}>{nameM}</h3>
+        </Link>
         <p className={style.description}>{description}</p>
-        <p className={style.size}>Tamaño: {sizeM}</p>
+        <p className={style.size}>Tamaño: {SizeName}</p>
         <p className={style.price}>Precio: {priceFormatted}</p>
         <p className={style.Material}>Material: {materialName}</p>
         <p className={style.Category}>Categoría: {categoryName}</p>
       </div>
-      </Link>
     </div>
   );
 };

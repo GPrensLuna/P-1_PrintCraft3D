@@ -1,186 +1,133 @@
-import axios from "axios";
 import React, { useState } from "react";
 import style from "./Login.module.css";
+import Register from "./Register.jsx";
 import { URL } from "../../config.js";
 
 export default function Login() {
-  const [isRegistering, setIsRegistering] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    birthDate: "",
-    phoneNumber: "",
     email: "",
     password: "",
   });
 
+  const [mostrarRegistro, setMostrarRegistro] = useState(false);
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const { name, value } = e.target;
 
     try {
-      if (isRegistering) {
-        // Captura los valores ingresados por el usuario al registrarse
-        setFormData({
-          ...formData,
-          [name]: value,
-        });
+      const response = await fetch(`${URL}login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-        // Enviar datos de registro al servidor
-        const response = await axios.post(`${URL}Registro`, formData);
+      if (response.ok) {
+        // Usa response.json() para obtener el cuerpo de la respuesta como objeto JSON
+        const responseData = await response.json();
 
-        if (response.status === 201) {
-          alert("Registro exitoso");
+        // Verifica si el token está presente en la respuesta
+        const token = responseData.token;
+
+        if (!token) {
+          console.error(
+            "El token no está presente en la respuesta del servidor"
+          );
+          alert("Inicio de sesión fallido");
         } else {
-          alert("Hubo un error en el registro");
+          // Almacena el token en el almacenamiento local
+          localStorage.setItem("token", token);
+
+          // Accede al token almacenado y decódificalo
+
+          // Redirige a la página principal u otra página deseada
+          window.location.href = "/Profile";
         }
       } else {
-        alert("Inicio de sesión exitoso");
+        // Maneja la respuesta en caso de un error (puede ser un error de red o un error en el servidor)
+        const errorData = await response.json();
+        console.error("Error en la respuesta:", errorData);
+        alert("Inicio de sesión fallido");
       }
     } catch (error) {
-      console.error("Error:", error);
-      window.alert("Hubo un error al iniciar sesión o registrarse");
+      console.error("Error durante el inicio de sesión:", error);
+      alert("Se produjo un error durante el inicio de sesión");
     }
   };
 
+  const mostrarRegistroHandler = () => {
+    setMostrarRegistro(!mostrarRegistro);
+  };
+
   return (
-    <div className={style.formBackground}>
-      <div
-        className={
-          isRegistering ? style.formContainerRegister : style.formContainer
-        }
-      >
-        <form className={style.loginForm} onSubmit={handleFormSubmit}>
-          <h2 className={style.loginF}>
-            {isRegistering ? "REGISTRO" : "LOGIN"}
-          </h2>
+    <div>
+      {mostrarRegistro ? (
+        <Register />
+      ) : (
+        <div className={style.formBackground}>
+          <div className={style.formContainer}>
+            <form className={style.loginForm} onSubmit={handleFormSubmit}>
+              <h2 className={style.loginF}>LOGIN</h2>
 
-          {isRegistering && (
-            <div className={style.logiConten}>
-              <label htmlFor="firstName" className={style.formLabel}>
-                Nombre
-              </label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                className={style.formInput}
-                required
-                value={formData.firstName}
-                onChange={(e) =>
-                  setFormData({ ...formData, firstName: e.target.value })
-                }
-              />
-            </div>
-          )}
+              {/* Email input */}
+              <div className={style.logiConten}>
+                <label htmlFor="email" className={style.formLabel}>
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  className={style.formInput}
+                  required
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                />
+              </div>
 
-          {isRegistering && (
-            <div className={style.logiConten}>
-              <label htmlFor="lastName" className={style.formLabel}>
-                Apellido
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                className={style.formInput}
-                required
-                value={formData.lastName}
-                onChange={(e) =>
-                  setFormData({ ...formData, lastName: e.target.value })
-                }
-              />
-            </div>
-          )}
+              {/* Password input */}
+              <div className={style.logiConten}>
+                <label htmlFor="password" className={style.formLabel}>
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  className={style.formInput}
+                  required
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                />
+              </div>
 
-          {isRegistering && (
-            <div className={style.logiConten}>
-              <label htmlFor="birthDate" className={style.formLabel}>
-                Fecha de Nacimiento
-              </label>
-              <input
-                type="date"
-                id="birthDate"
-                name="birthDate"
-                className={style.formInput}
-                required
-                value={formData.birthDate}
-                onChange={(e) =>
-                  setFormData({ ...formData, birthDate: e.target.value })
-                }
-              />
-            </div>
-          )}
+              {/* Submit button */}
+              <div className={style.submitButtonConten}>
+                <button type="submit" className={style.submitButton}>
+                  INICIAR
+                </button>
+              </div>
 
-          {isRegistering && (
-            <div className={style.logiConten}>
-              <label htmlFor="phoneNumber" className={style.formLabel}>
-                Número de Teléfono
-              </label>
-              <input
-                type="tel"
-                id="phoneNumber"
-                name="phoneNumber"
-                className={style.formInput}
-                required
-                value={formData.phoneNumber}
-                onChange={(e) =>
-                  setFormData({ ...formData, phoneNumber: e.target.value })
-                }
-              />
-            </div>
-          )}
-
-          <div className={style.logiConten}>
-            <label htmlFor="email" className={style.formLabel}>
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className={style.formInput}
-              required
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-            />
+              {/* Registration link */}
+              <h4 className={style.subButton}>
+                ¿Aún no te has registrado?
+                <span
+                  onClick={mostrarRegistroHandler}
+                  className={style.registerLink}
+                >
+                  {" "}
+                  Regístrate
+                </span>
+              </h4>
+            </form>
           </div>
-
-          <div className={style.logiConten}>
-            <label htmlFor="password" className={style.formLabel}>
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className={style.formInput}
-              required
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-            />
-          </div>
-
-          <div className={style.submitButtonConten}>
-            <button className={style.submitButton}>
-              {isRegistering ? "REGISTRAR" : "INICIAR"}
-            </button>
-          </div>
-
-          <h4 className={style.subButton}>
-            {isRegistering
-              ? "¿Ya tienes una cuenta?"
-              : "¿Aún no te has registrado?"}{" "}
-            <span onClick={() => setIsRegistering(!isRegistering)}>
-              {isRegistering ? "Iniciar sesión" : "Regístrate"}
-            </span>
-          </h4>
-        </form>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

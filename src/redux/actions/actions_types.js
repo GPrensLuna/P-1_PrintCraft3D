@@ -1,2 +1,2 @@
 export const ADD_PRODUCTS_INFO = "ADD_PRODUCTS_INFO";
-export const DELETE_PRODUCT = "DELETE_PRODUCT";
+export const LOGIN_USER = "LOGIN_USER";

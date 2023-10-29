@@ -1,14 +1,14 @@
+// Home.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { URL } from "../../config.js";
 import Footer from "../../Components/Footer/Footer";
 import Aside from "../../Components/Aside/Aside.jsx";
-
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
-import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx"
+import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
 
 function Home() {
   const dispatch = useDispatch();
@@ -25,12 +25,46 @@ function Home() {
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(pokemonPerPage);
 
+  const [selectedMaterials, setSelectedMaterials] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [selectedSize, setSelectedSize] = useState([]);
+
+  const handleMaterialChange = (material) => {
+    setSelectedMaterials((prevMaterials) => {
+      return prevMaterials.includes(material)
+        ? prevMaterials.filter((m) => m !== material)
+        : [...prevMaterials, material];
+    });
+  };
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory((prevCategory) => {
+      return prevCategory.includes(category)
+        ? prevCategory.filter((c) => c !== category)
+        : [...prevCategory, category];
+    });
+  };
+
+  const handleSizeChange = (size) => {
+    setSelectedSize((prevSize) => {
+      return prevSize.includes(size)
+        ? prevSize.filter((s) => s !== size)
+        : [...prevSize, size];
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`
+          `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`,
+          {
+            params: {
+              material: selectedMaterials,
+              categoria: selectedCategory,
+              tamaño: selectedSize,
+            },
+          }
         );
 
         if (response.status === 200) {
@@ -42,15 +76,29 @@ function Home() {
         } else {
           setError("No se pudieron cargar los productos.");
           setLoading(false);
+          console.error("Error en la solicitud:", response.status);
+          alert(
+            "Hubo un error al cargar los productos. Por favor, inténtelo de nuevo."
+          );
         }
       } catch (error) {
         setError("Hubo un error al recuperar los productos.");
         setLoading(false);
+        console.error("Error en la solicitud:", error.message);
+        alert(
+          "Hubo un error al cargar los productos. Por favor, inténtelo de nuevo."
+        );
       }
     };
 
     fetchData();
-  }, [currentPage, dispatch]);
+  }, [
+    currentPage,
+    selectedMaterials,
+    selectedCategory,
+    selectedSize,
+    dispatch,
+  ]);
 
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
@@ -67,16 +115,19 @@ function Home() {
 
   return (
     <main className={style.main}>
-      <CarouselHome/>
+      <CarouselHome />
 
       <div className={style.Container}>
         <div className={style.ContainerAsaider}>
-          <Aside />
+          <Aside
+            onMaterialChange={handleMaterialChange}
+            onCategoryChange={handleCategoryChange}
+            onSizeChange={handleSizeChange}
+          />
         </div>
 
         <div className={style.ContainerHome}>
-         <dir className={style.ContainerFilter}>
-
+          <div className={style.ContainerFilter}>
             <button
               className={style.BTNPreviu}
               onClick={() => loadPage(currentPage - 1)}
@@ -94,8 +145,7 @@ function Home() {
             >
               Siguiente
             </button>
-         </dir>
-            
+          </div>
 
           <div className={style.ContainerCards}>
             {loading ? (
@@ -110,11 +160,10 @@ function Home() {
                   name={e.name}
                   image={e.image}
                   description={e.description}
-                  size={e.size}
+                  Size={e.Size}
                   price={e.price}
                   Material={e.Material}
                   Category={e.Category}
-
                 />
               ))
             )}
