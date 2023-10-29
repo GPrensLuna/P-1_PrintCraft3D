@@ -3,7 +3,7 @@ import "./App.css";
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./views/Home/Home.jsx";
-import { Login, Inventory, Profile } from "./views";
+import { Login, Inventory, Profile, UserList } from "./views";
 import NavBar from "./Components/NavBar/NavBar.jsx";
 import DetailProduct from "./views/DetailProduct/DetailProduct.jsx";
 import { useSelector, useDispatch } from "react-redux";
@@ -50,19 +50,10 @@ function App() {
 
 
 const logout = async () => {
-  // Realiza cualquier otra lógica de cierre de sesión que puedas necesitar
-
-  // Elimina el token del usuario (esto depende de cómo esté implementado tu sistema de autenticación)
-  // Por ejemplo, si estás utilizando localStorage
   localStorage.removeItem("token");
-
-  // O si estás utilizando cookies
   document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-  // También puedes realizar alguna llamada a la API para invalidar el token en el servidor, dependiendo de tu implementación
-
-  // Redirige al usuario a la página de inicio de sesión u otra página relevante
-  window.location.href = "/login";
+  window.location.href = "/LoginUp";
 };
   return (
     <div className="App">
@@ -72,6 +63,7 @@ const logout = async () => {
         <Route path="/LoginUp" element={<Login />} />
         <Route path="/Profile" element={<Profile userData={userData} />} />
         <Route path="/Inventario" element={<Inventory />} />
+        <Route path="/UserList" element={<UserList />} />
         <Route path="/Producto/:name" element={<DetailProduct />} />
       </Routes>
     </div>

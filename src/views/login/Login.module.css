@@ -86,3 +86,25 @@
 .subButton span:hover {
   text-decoration: underline;
 }
+
+/* Agrega estos estilos en tu archivo CSS (por ejemplo, Login.module.css) */
+
+.validationError {
+  color: #ff0000; /* Color rojo para el mensaje de error */
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Puedes ajustar estos estilos según tus necesidades */
+.formInput {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.loginForm {
+  max-width: 400px;
+  margin: auto;
+}
+
+/* Otros estilos... */

@@ -34,6 +34,8 @@ function NavBar({ userData, logout }) {
           ) : (
             <Nav.Link href="/LoginUp">Login up</Nav.Link>
           )}
+
+          <Nav.Link href="/UserList">UserList</Nav.Link>
         </Nav>
       </Container>
 
