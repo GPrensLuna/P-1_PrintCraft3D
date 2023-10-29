@@ -36,6 +36,7 @@ function NavBar({ userData, logout }) {
           )}
 
           <Nav.Link href="/UserList">UserList</Nav.Link>
+          <Nav.Link href="/ProductList">ProductList</Nav.Link>
         </Nav>
       </Container>
 
