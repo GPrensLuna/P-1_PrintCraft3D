@@ -14,20 +14,26 @@ export default function UserList() {
     password: "",
     role: "",
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(`${URL}User`);
+        console.log(response);
         if (!response.ok) {
           throw new Error("Error al obtener usuarios");
         }
 
         const data = await response.json();
         setUsers(data.users);
+        setLoading(false);
         console.log(data.users);
       } catch (error) {
         console.error(error.message);
+        setError("Error al obtener usuarios");
+        setLoading(false);
       }
     };
 
@@ -80,7 +86,13 @@ export default function UserList() {
   return (
     <div className={styles.tableContainer}>
       <h2>Lista de Usuarios</h2>
-      {users ? (
+      {loading && (
+        <p className={styles.loadingMessage}>
+          Cargando información de usuarios...
+        </p>
+      )}
+      {error && <p className={styles.errorMessage}>{error}</p>}
+      {users && !loading && !error && (
         <table>
           <thead>
             <tr>
@@ -259,10 +271,6 @@ export default function UserList() {
             ))}
           </tbody>
         </table>
-      ) : (
-        <p className={styles.loadingMessage}>
-          Cargando información de usuarios...
-        </p>
       )}
     </div>
   );

@@ -8,7 +8,12 @@ export default function ProductList() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${URL}ProductsLista`);
+        const response = await fetch(`${URL}ProductsLista`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         const data = await response.json();
         setProducts(data);
       } catch (error) {
@@ -66,7 +71,7 @@ export default function ProductList() {
           </thead>
           <tbody>
             {products.map((product) => (
-              <tr key={product.id}>
+              <tr key={product.name}>
                 <td>{product.name}</td>
                 <td>{product.image}</td>
                 <td>{product.description}</td>
