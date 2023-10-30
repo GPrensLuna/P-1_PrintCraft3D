@@ -39,9 +39,9 @@ export default function ProductList() {
       description: product.description,
       price: product.price,
       stock: product.stock,
-      material: product.material.name,
-      category: product.category.name,
-      deleted: product.deleted,
+      // material: product.material.name,
+      // category: product.category.name,
+      // deleted: product.deleted,
     });
   };
 
@@ -134,9 +134,9 @@ export default function ProductList() {
             <th>Description</th>
             <th>Price</th>
             <th>Stock</th>
-            <th>Material</th>
+            {/* <th>Material</th>
             <th>Category</th>
-            <th>Deleted</th>
+            <th>Deleted</th> */}
             <th>Actions</th>
           </tr>
         </thead>
@@ -148,9 +148,9 @@ export default function ProductList() {
               {renderTableCell(product, "description")}
               {renderTableCell(product, "price")}
               {renderTableCell(product, "stock")}
-              {renderTableCell(product, "material")}
+              {/* {renderTableCell(product, "material")}
               {renderTableCell(product, "category")}
-              {renderTableCell(product, "deleted")}
+              {renderTableCell(product, "deleted")} */}
               <td className={styles.actions}>
                 {editStatus[product.id]?.editing ? (
                   <>
