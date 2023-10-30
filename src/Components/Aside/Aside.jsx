@@ -2,6 +2,7 @@ import React from "react";
 import style from "./Aside.module.css";
 
 const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
+
   return (
     <div>
       <aside className={style.aside}>
