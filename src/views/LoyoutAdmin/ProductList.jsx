@@ -5,6 +5,7 @@ import styles from "./ProductList.module.css";
 export default function ProductList() {
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -24,98 +25,90 @@ export default function ProductList() {
     fetchProducts();
   }, []);
 
-  const handleEdit = (product) => {
-    setEditingProduct({ ...product });
+  const handleEdit = (productId) => {
+    setEditingProduct(productId);
   };
 
-  const handleUpdate = async () => {
+  const handleSave = async () => {
+    if (editingProduct === null) {
+      return;
+    }
+
     try {
-      const response = await fetch(`${URL}ProductsLista/${editingProduct.id}`, {
+      const editedProduct = products.find((p) => p.id === editingProduct);
+
+      const response = await fetch(`${URL}ProductsLista/${editingProduct}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(editingProduct),
+        body: JSON.stringify(editedProduct),
       });
 
-      if (response.ok) {
-        const updatedProducts = products.map((p) =>
-          p.id === editingProduct.id ? { ...p, ...editingProduct } : p
-        );
-        setProducts(updatedProducts);
-        setEditingProduct(null);
-      } else {
-        console.error("Error updating product");
+      if (!response.ok) {
+        console.error("Error updating product. Response:", response);
       }
+
+      setEditingProduct(null);
     } catch (error) {
       console.error("Error updating product:", error);
     }
   };
 
+  const handleCancelEdit = () => {
+    setEditingProduct(null);
+  };
+
   return (
-    <div>
-      <div className={styles.tableContainer}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Image</th>
-              <th>Description</th>
-              <th>Size</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>MaterialId</th>
-              <th>CategoryId</th>
-              <th>Actions</th>
+    <div className={styles.tableContainer}>
+      <h2>Product List</h2>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((product) => (
+            <tr key={product.id}>
+              <td>{product.name}</td>
+              <td>{product.image}</td>
+              <td>
+                {editingProduct === product.id ? (
+                  <input
+                    type="text"
+                    value={product.description}
+                    onChange={(e) => {
+                      setProducts((prevProducts) =>
+                        prevProducts.map((p) =>
+                          p.id === product.id
+                            ? { ...p, description: e.target.value }
+                            : p
+                        )
+                      );
+                    }}
+                  />
+                ) : (
+                  product.description
+                )}
+              </td>
+              <td className={styles.actions}>
+                {editingProduct === product.id ? (
+                  <>
+                    <button onClick={handleSave}>Save</button>
+                    <button onClick={handleCancelEdit}>Cancel</button>
+                  </>
+                ) : (
+                  <button onClick={() => handleEdit(product.id)}>Edit</button>
+                )}
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product.name}>
-                <td>{product.name}</td>
-                <td>{product.image}</td>
-                <td>{product.description}</td>
-                <td>{product.size.name}</td>
-                <td>{product.price}</td>
-                <td>{product.stock}</td>
-                <td>{product.material.name}</td>
-                <td>{product.category.name}</td>
-                <td>
-                  <button onClick={() => handleEdit(product)}>Edit</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {editingProduct && (
-          <div className={styles.editForm}>
-            <input
-              type="text"
-              value={editingProduct.name}
-              onChange={(e) =>
-                setEditingProduct({ ...editingProduct, name: e.target.value })
-              }
-              className={styles.editInput}
-            />
-            <label>
-              Account Enabled:
-              <input
-                type="checkbox"
-                checked={editingProduct.isAccountEnabled}
-                onChange={(e) =>
-                  setEditingProduct({
-                    ...editingProduct,
-                    isAccountEnabled: e.target.checked,
-                  })
-                }
-              />
-            </label>
-            <button onClick={handleUpdate} className={styles.updateButton}>
-              Update
-            </button>
-          </div>
-        )}
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
