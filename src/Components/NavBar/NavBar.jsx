@@ -1,22 +1,26 @@
-import { Container } from "react-bootstrap";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-
+import React, { useState, useEffect } from "react";
+import { Container, Navbar, Nav, Form } from "react-bootstrap";
 import logo from "../../imagenes/logo.png";
+import { useDispatch } from "react-redux";
+import { updateSearchValue } from "../../redux/actions/actions.js";
 
-function NavBar({ userData, logout, handleSearch }) {
-  const handleSearchChange = (e) => {
-    const term = e.target.value;
-    console.log("Término de búsqueda:", term);
-    handleSearch(term);
+function NavBar({ userData, logout }) {
+  const dispatch = useDispatch();
+
+  const [localSearchValue, setLocalSearchValue] = useState("");
+
+  const handleSearchChangeLocal = (event) => {
+    const newValue = event.target.value;
+    setLocalSearchValue(newValue);
   };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    // You can perform additional actions here if needed
-  };
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      dispatch(updateSearchValue(localSearchValue));
+    }, 500);
+    return () => clearTimeout(timerId);
+  }, [localSearchValue, dispatch]);
+
   return (
     <Navbar expand="lg" bg="primary" data-bs-theme="dark" fixed="top">
       <Container fluid>
@@ -51,15 +55,15 @@ function NavBar({ userData, logout, handleSearch }) {
       </Container>
 
       <Container>
-        <Form className="d-flex" onSubmit={handleSearchSubmit}>
+        <Form className="d-flex">
           <Form.Control
             type="search"
             placeholder="Search"
             className="me-2"
             aria-label="Search"
-            onChange={handleSearchChange}
+            onChange={handleSearchChangeLocal}
+            value={localSearchValue}
           />
-          <Button variant="outline-light">Search</Button>
         </Form>
       </Container>
     </Navbar>

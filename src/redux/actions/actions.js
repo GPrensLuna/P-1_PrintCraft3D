@@ -19,10 +19,10 @@ export const LoginUser = (LoginUser) => {
 };
 
 
-export const SetSearchResults = (results) => {
-  console.log(results);
+// searchActions.js
+export const updateSearchValue = (value) => {
   return {
-  type: SET_SEARCH_RESULTS,
-  payload: results,
+    type: SET_SEARCH_RESULTS,
+    payload: value,
   };
 };

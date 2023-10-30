@@ -7,7 +7,7 @@ import {
 const initialState = {
   filterProducts: [],
   allProducts: [],
-  searchResults: [],
+  searchValue: "",
   userData: null,
 };
 
@@ -18,7 +18,10 @@ const rootReducer = (state = initialState, { type, payload }) => {
     case LOGIN_USER:
       return { ...state, userData: payload };
     case SET_SEARCH_RESULTS:
-      return { ...state, searchResults: payload };
+      return {
+        ...state,
+        searchValue: payload,
+      };
 
     default:
       return state;

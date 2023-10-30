@@ -13,7 +13,7 @@ import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
 function Home() {
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.allProducts);
-  const searchResults = useSelector((state) => state.searchResults);
+  const searchValue = useSelector((state) => state.searchValue);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,8 +21,6 @@ function Home() {
     const savedPage = localStorage.getItem("currentPage");
     return savedPage ? parseInt(savedPage, 10) : 1;
   });
-
-  const [searchTerm, setSearchTerm] = useState("");
 
   const pokemonPerPage = 12;
   const [count, setCount] = useState(0);
@@ -56,13 +54,7 @@ function Home() {
     });
   };
 
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
   useEffect(() => {
-    console.log("Search Term:", searchTerm);
-
     const delayDebounceFn = setTimeout(() => {
       const fetchData = async () => {
         try {
@@ -73,12 +65,10 @@ function Home() {
                 material: selectedMaterials,
                 categoria: selectedCategory,
                 tamaño: selectedSize,
-                search: searchTerm,
+                search: searchValue,
               },
             }
           );
-
-          console.log("API Response:", response);
 
           if (response.status === 200) {
             const { data } = response;
@@ -105,16 +95,14 @@ function Home() {
       };
 
       fetchData();
-    }, 300); // Ajusta el tiempo de espera según tus necesidades
-
-    // Limpia el temporizador si el término de búsqueda cambia antes de que se complete el temporizador
+    }, 300);
     return () => clearTimeout(delayDebounceFn);
   }, [
     currentPage,
     selectedMaterials,
     selectedCategory,
     selectedSize,
-    searchTerm,
+    searchValue,
     dispatch,
   ]);
   useEffect(() => {
@@ -131,21 +119,6 @@ function Home() {
   };
   return (
     <main className={style.main}>
-      <div className={style.ContainerCards}>
-        {searchResults.map((e) => (
-          <Card
-            key={e.id}
-            id={e.id}
-            name={e.name}
-            image={e.image}
-            description={e.description}
-            Size={e.Size}
-            price={e.price}
-            Material={e.Material}
-            Category={e.Category}
-          />
-        ))}
-      </div>
       <CarouselHome />
 
       <div className={style.Container}>
@@ -158,12 +131,6 @@ function Home() {
         </div>
 
         <div className={style.ContainerHome}>
-          <input
-            type="text"
-            placeholder="Buscar productos..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
           <div className={style.ContainerFilter}>
             <button
               className={style.BTNPreviu}
