@@ -117,6 +117,24 @@ function Home() {
     }
     setCurrentPage(page);
   };
+
+  const handleProductDelete = async (idProduct) => {
+    try {
+      const response = await axios.delete(`${URL}DeleteProdut/${idProduct}`);
+
+      if (response.status === 200) {
+        const updatedProducts = response.data.products;
+        dispatch(addProductInfo(updatedProducts));
+        alert("Producto eliminado exitosamente");
+      } else {
+        alert("Error al eliminar el producto. Por favor, inténtelo de nuevo.");
+      }
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error.message);
+      alert("Error al eliminar el producto. Por favor, inténtelo de nuevo.");
+    }
+  };
+
   return (
     <main className={style.main}>
       <CarouselHome />
@@ -169,6 +187,7 @@ function Home() {
                     price={e.price}
                     Material={e.Material}
                     Category={e.Category}
+                    onDelete={handleProductDelete}
                   />
                 ))}
               </div>

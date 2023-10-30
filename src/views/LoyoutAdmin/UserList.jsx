@@ -11,6 +11,7 @@ export default function UserList() {
     birthDate: "",
     phoneNumber: "",
     email: "",
+    deleted: "",
     password: "",
     role: "",
   });
@@ -21,12 +22,12 @@ export default function UserList() {
     const fetchUsers = async () => {
       try {
         const response = await fetch(`${URL}User`);
-        console.log(response);
         if (!response.ok) {
           throw new Error("Error al obtener usuarios");
         }
 
         const data = await response.json();
+        console.log(data.users);
         setUsers(data.users);
         setLoading(false);
         console.log(data.users);
@@ -54,6 +55,7 @@ export default function UserList() {
       phoneNumber: "",
       email: "",
       password: "",
+      deleted: "",
       role: "",
     });
   };
@@ -104,6 +106,7 @@ export default function UserList() {
               <th>Email</th>
               <th>Password</th>
               <th>Rol</th>
+              <th>deleted</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -251,6 +254,26 @@ export default function UserList() {
                     </div>
                   ) : (
                     user.role
+                  )}
+                </td>{" "}
+                <td>
+                  {editingUserId === user.id ? (
+                    <div className={styles.inputContainer}>
+                      <label className={styles.inputLabel}>deleted:</label>
+                      <input
+                        className={styles.editInput}
+                        type="text"
+                        value={editedValues.deleted || ""} // Si editedValues.role es null, muestra una cadena vacía
+                        onChange={(e) =>
+                          setEditedValues({
+                            ...editedValues,
+                            deleted: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  ) : (
+                    String(user.deleted)
                   )}
                 </td>
                 <td className={styles.actions}>

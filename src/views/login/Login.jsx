@@ -24,10 +24,8 @@ export default function Login() {
       });
 
       if (response.ok) {
-        // Usa response.json() para obtener el cuerpo de la respuesta como objeto JSON
         const responseData = await response.json();
 
-        // Verifica si el token está presente en la respuesta
         const token = responseData.token;
 
         if (!token) {
@@ -36,19 +34,22 @@ export default function Login() {
           );
           alert("Inicio de sesión fallido");
         } else {
-          // Almacena el token en el almacenamiento local
           localStorage.setItem("token", token);
 
           // Accede al token almacenado y decódificalo
 
-          // Redirige a la página principal u otra página deseada
           window.location.href = "/Profile";
         }
       } else {
-        // Maneja la respuesta en caso de un error (puede ser un error de red o un error en el servidor)
         const errorData = await response.json();
-        console.error("Error en la respuesta:", errorData);
-        alert("Inicio de sesión fallido");
+
+        if (response.status === 403 && errorData.blocked) {
+          console.error("Cuenta bloqueada");
+          alert("La cuenta está bloqueada. Por favor, contacta al soporte.");
+        } else {
+          console.error("Error en la respuesta:", errorData);
+          alert("Inicio de sesión fallido");
+        }
       }
     } catch (error) {
       console.error("Error durante el inicio de sesión:", error);

@@ -8,6 +8,7 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 const Card = (props) => {
   const {
+    id,
     name,
     image,
     description,
@@ -15,7 +16,7 @@ const Card = (props) => {
     price,
     Material,
     Category,
-    onDeleteCard,
+    onDelete,
   } = props;
 
   const materialName = Material ? Material.name : "Material no disponible";
@@ -28,12 +29,13 @@ const Card = (props) => {
     currency: "USD",
   });
 
-  const handleDelete = () => {
-    onDeleteCard(name);
+  const handleDeleteClick = () => {
+    const idProduct = id; // Reemplaza con el ID real del producto que deseas eliminar
+    onDelete(idProduct);
   };
   return (
     <div className={style.Card}>
-      <button className={style.onClonse} onClick={handleDelete}>
+      <button className={style.onClonse} onClick={handleDeleteClick}>
         X
       </button>
       <button className={style.BtnCarrito}>
