@@ -32,16 +32,16 @@ export default function ProductList() {
       ...prevEditStatus,
       [productId]: { editing: true },
     }));
-    // Set initial values for edited fields based on the product
     setEditedFields({
       name: product.name,
       image: product.image,
       description: product.description,
       price: product.price,
       stock: product.stock,
-      // material: product.material.name,
-      // category: product.category.name,
-      // deleted: product.deleted,
+      material: product.material,
+      size: product.size,
+      category: product.category,
+      deleted: product.deleted,
     });
   };
 
@@ -51,9 +51,8 @@ export default function ProductList() {
       [fieldName]: fieldName === "price" ? parseFloat(value) : value,
     }));
   };
-
   const handleInlineUpdate = async (productId, e) => {
-    e.preventDefault(); // Evitar que el formulario se envíe por completo y recargue la página
+    e.preventDefault();
 
     try {
       const productToEdit = products.find((p) => p.id === productId);
@@ -67,8 +66,10 @@ export default function ProductList() {
         ...productToEdit,
         ...editedFields,
       };
-      console.log(editedProduct);
-
+      console.log(
+        "Enviando solicitud PUT con el siguiente contenido:",
+        editedProduct
+      );
       const response = await fetch(`${URL}ProductsLista/${productId}`, {
         method: "PUT",
         headers: {
@@ -76,7 +77,6 @@ export default function ProductList() {
         },
         body: JSON.stringify(editedProduct),
       });
-
       if (response.ok) {
         const updatedProduct = await response.json();
         setProducts((prevProducts) =>
@@ -116,13 +116,12 @@ export default function ProductList() {
       <td key={fieldName}>
         {isEditing
           ? renderInputField(fieldName, value, product[fieldName])
-          : fieldName === "material" || fieldName === "category"
-          ? value.name // Render only the 'name' property
+          : fieldName === "deleted"
+          ? value.toString() // Convert boolean to string
           : value}
       </td>
     );
   };
-
   return (
     <div className={styles.tableContainer}>
       <h2>Product List</h2>
@@ -134,9 +133,10 @@ export default function ProductList() {
             <th>Description</th>
             <th>Price</th>
             <th>Stock</th>
-            {/* <th>Material</th>
+            <th>Size</th>
+            <th>Material</th>
             <th>Category</th>
-            <th>Deleted</th> */}
+            <th>Deleted</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -148,9 +148,10 @@ export default function ProductList() {
               {renderTableCell(product, "description")}
               {renderTableCell(product, "price")}
               {renderTableCell(product, "stock")}
-              {/* {renderTableCell(product, "material")}
+              {renderTableCell(product, "size")}
+              {renderTableCell(product, "material")}
               {renderTableCell(product, "category")}
-              {renderTableCell(product, "deleted")} */}
+              {renderTableCell(product, "deleted")}
               <td className={styles.actions}>
                 {editStatus[product.id]?.editing ? (
                   <>
