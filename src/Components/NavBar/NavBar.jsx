@@ -6,7 +6,17 @@ import Button from "react-bootstrap/Button";
 
 import logo from "../../imagenes/logo.png";
 
-function NavBar({ userData, logout }) {
+function NavBar({ userData, logout, handleSearch }) {
+  const handleSearchChange = (e) => {
+    const term = e.target.value;
+    console.log("Término de búsqueda:", term);
+    handleSearch(term);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    // You can perform additional actions here if needed
+  };
   return (
     <Navbar expand="lg" bg="primary" data-bs-theme="dark" fixed="top">
       <Container fluid>
@@ -41,12 +51,13 @@ function NavBar({ userData, logout }) {
       </Container>
 
       <Container>
-        <Form className="d-flex">
+        <Form className="d-flex" onSubmit={handleSearchSubmit}>
           <Form.Control
             type="search"
             placeholder="Search"
             className="me-2"
             aria-label="Search"
+            onChange={handleSearchChange}
           />
           <Button variant="outline-light">Search</Button>
         </Form>

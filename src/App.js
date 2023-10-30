@@ -1,6 +1,9 @@
-// App.jsx
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./App.css";
-import React, { useEffect } from "react";
+import React, {
+   useEffect,
+    // useState 
+  } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./views/Home/Home.jsx";
 import { Login, Inventory, Profile, UserList, ProductList } from "./views";
@@ -10,7 +13,7 @@ import PagoPaypal from "./Components/PagoPaypal/PagoPaypal";
 import { useSelector, useDispatch } from "react-redux";
 import { LoginUser } from "./redux/actions/actions.js";
 import { URL } from "./config.js"; // Import URL from your config fileimport PagoPaypal from "./Components/PagoPaypal/PagoPaypal.jsx";
-
+// import {SetSearchResults} from "./redux/actions/actions.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -57,11 +60,40 @@ const logout = async () => {
 
   window.location.href = "/LoginUp";
 };
+
+//   const [searchTerm, setSearchTerm] = useState("");
+//   console.log(searchTerm);
+
+//   useEffect(() => {
+//     // Esta función se ejecutará cada vez que searchTerm cambie
+//     const searchProducts = async () => {
+//       const url = `${URL}Search/${searchTerm}`;
+
+
+// try {
+//   const response = await fetch(url);
+//   const data = await response.json();
+
+//   dispatch(SetSearchResults(data.results));
+// } catch (error) {
+//   console.error("Error fetching data:", error);
+// }
+//     };
+
+// const timeoutId = setTimeout(searchProducts, 300);
+
+// return () => clearTimeout(timeoutId);
+//   }, [searchTerm]);
+
   return (
     <div className="App">
-      <NavBar userData={userData} logout={logout} />
+      <NavBar
+        userData={userData}
+        logout={logout}
+        //  handleSearch={setSearchTerm}
+      />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home  />} />
         <Route path="/LoginUp" element={<Login />} />
         <Route path="/Profile" element={<Profile userData={userData} />} />
         <Route path="/Inventario" element={<Inventory />} />

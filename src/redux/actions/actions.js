@@ -1,4 +1,8 @@
-import { ADD_PRODUCTS_INFO, LOGIN_USER } from "./actions_types.js";
+import {
+  ADD_PRODUCTS_INFO,
+  LOGIN_USER,
+  SET_SEARCH_RESULTS,
+} from "./actions_types.js";
 
 export const addProductInfo = (addProductInfo) => {
   return {
@@ -14,3 +18,11 @@ export const LoginUser = (LoginUser) => {
   };
 };
 
+
+export const SetSearchResults = (results) => {
+  console.log(results);
+  return {
+  type: SET_SEARCH_RESULTS,
+  payload: results,
+  };
+};

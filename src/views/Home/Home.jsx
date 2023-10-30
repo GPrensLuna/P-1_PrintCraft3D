@@ -13,6 +13,7 @@ import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
 function Home() {
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.allProducts);
+  const searchResults = useSelector((state) => state.searchResults);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,6 +21,8 @@ function Home() {
     const savedPage = localStorage.getItem("currentPage");
     return savedPage ? parseInt(savedPage, 10) : 1;
   });
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   const pokemonPerPage = 12;
   const [count, setCount] = useState(0);
@@ -53,53 +56,67 @@ function Home() {
     });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`,
-          {
-            params: {
-              material: selectedMaterials,
-              categoria: selectedCategory,
-              tamaño: selectedSize,
-            },
-          }
-        );
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
-        if (response.status === 200) {
-          const { data } = response;
-          dispatch(addProductInfo(data.results));
-          setCount(data.count);
-          setLimit(data.limit);
+  useEffect(() => {
+    console.log("Search Term:", searchTerm);
+
+    const delayDebounceFn = setTimeout(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`,
+            {
+              params: {
+                material: selectedMaterials,
+                categoria: selectedCategory,
+                tamaño: selectedSize,
+                search: searchTerm,
+              },
+            }
+          );
+
+          console.log("API Response:", response);
+
+          if (response.status === 200) {
+            const { data } = response;
+            dispatch(addProductInfo(data.results));
+            setCount(data.count);
+            setLimit(data.limit);
+            setLoading(false);
+          } else {
+            setError("No se pudieron cargar los productos.");
+            setLoading(false);
+            console.error("Error en la solicitud:", response.status);
+            alert(
+              "Hubo un error al cargar los productos. Por favor, inténtelo de nuevo."
+            );
+          }
+        } catch (error) {
+          setError("Hubo un error al recuperar los productos.");
           setLoading(false);
-        } else {
-          setError("No se pudieron cargar los productos.");
-          setLoading(false);
-          console.error("Error en la solicitud:", response.status);
+          console.error("Error en la solicitud:", error.message);
           alert(
             "Hubo un error al cargar los productos. Por favor, inténtelo de nuevo."
           );
         }
-      } catch (error) {
-        setError("Hubo un error al recuperar los productos.");
-        setLoading(false);
-        console.error("Error en la solicitud:", error.message);
-        alert(
-          "Hubo un error al cargar los productos. Por favor, inténtelo de nuevo."
-        );
-      }
-    };
+      };
 
-    fetchData();
+      fetchData();
+    }, 300); // Ajusta el tiempo de espera según tus necesidades
+
+    // Limpia el temporizador si el término de búsqueda cambia antes de que se complete el temporizador
+    return () => clearTimeout(delayDebounceFn);
   }, [
     currentPage,
     selectedMaterials,
     selectedCategory,
     selectedSize,
+    searchTerm,
     dispatch,
   ]);
-
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
   }, [currentPage]);
@@ -112,9 +129,23 @@ function Home() {
     }
     setCurrentPage(page);
   };
-
   return (
     <main className={style.main}>
+      <div className={style.ContainerCards}>
+        {searchResults.map((e) => (
+          <Card
+            key={e.id}
+            id={e.id}
+            name={e.name}
+            image={e.image}
+            description={e.description}
+            Size={e.Size}
+            price={e.price}
+            Material={e.Material}
+            Category={e.Category}
+          />
+        ))}
+      </div>
       <CarouselHome />
 
       <div className={style.Container}>
@@ -127,6 +158,12 @@ function Home() {
         </div>
 
         <div className={style.ContainerHome}>
+          <input
+            type="text"
+            placeholder="Buscar productos..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
           <div className={style.ContainerFilter}>
             <button
               className={style.BTNPreviu}
@@ -152,20 +189,24 @@ function Home() {
               <p>Cargando productos...</p>
             ) : error ? (
               <p>{error}</p>
+            ) : allProducts && allProducts.length > 0 ? (
+              <div className={style.ContainerCards}>
+                {allProducts.map((e) => (
+                  <Card
+                    key={e.id}
+                    id={e.id}
+                    name={e.name}
+                    image={e.image}
+                    description={e.description}
+                    Size={e.Size}
+                    price={e.price}
+                    Material={e.Material}
+                    Category={e.Category}
+                  />
+                ))}
+              </div>
             ) : (
-              allProducts?.map((e) => (
-                <Card
-                  key={e.id}
-                  id={e.id}
-                  name={e.name}
-                  image={e.image}
-                  description={e.description}
-                  Size={e.Size}
-                  price={e.price}
-                  Material={e.Material}
-                  Category={e.Category}
-                />
-              ))
+              <p>No se encontraron productos.</p>
             )}
           </div>
         </div>
