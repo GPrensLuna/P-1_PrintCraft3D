@@ -1,10 +1,24 @@
 import React, { useEffect } from 'react';
+import style from './PagoPaypal.module.css'
+
 const { URL } = require('../../config.js')
+
 //import { useHistory } from 'react-router-dom';
 
 export default function PagoPaypal () {
     useEffect( () => {
+
+      const script = document.createElement('script');
+      script.src = 'https://www.paypal.com/sdk/js?client-id=AX9x2jfxzV8uGUYopXvUCznoG20uKrzb_eLQIyo2qmKN8N4L7JMuhNle5iwqa4pxY5L5oTbEPapXAE0v&currency=USD';
+      script.async = true;
+
+      script.onload = () => {
               window.paypal.Buttons({
+                style: {
+                  color: 'blue',
+                  shape: 'pill',
+                  label: 'pay',
+                },
                 async createOrder() {
                   try {
                     const response = await fetch(`${URL}api/orders`, {
@@ -17,8 +31,8 @@ export default function PagoPaypal () {
                       body: JSON.stringify({
                         cart: [
                           {
-                            id: "YOUR_PRODUCT_ID",
-                            quantity: "YOUR_PRODUCT_QUANTITY",
+                            id: 1,
+                            quantity: 2,
                           },
                         ],
                       }),
@@ -37,6 +51,9 @@ export default function PagoPaypal () {
                     console.error(error);
                     resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
                   }
+                },
+                async onCancel(data) {
+                  alert('Payment canceled')
                 },
                 async onApprove(data, actions) {
                   try {
@@ -86,8 +103,12 @@ export default function PagoPaypal () {
                     );
                   }
                 },
+                
               })
              .render("#paypal-button-container");
+            }
+
+            document.body.appendChild(script);
          
       // Example function to show a result to the user. Your site's UI library can be used instead.
       function resultMessage(message) {
@@ -101,7 +122,7 @@ export default function PagoPaypal () {
       <div>
         <h1>.</h1>
         <h1>Elija su metodo de pago</h1>
-        <div id="paypal-button-container"></div>
+        <div id="paypal-button-container" className={style.divPaypal}></div>
         {/* Resto del contenido de la página de Inventario */}
       </div>
     )
