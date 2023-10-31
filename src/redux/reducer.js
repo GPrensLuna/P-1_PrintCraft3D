@@ -23,6 +23,8 @@ const rootReducer = (state = initialState, { type, payload }) => {
         searchValue: payload,
       };
 
+ 
+
     default:
       return state;
   }

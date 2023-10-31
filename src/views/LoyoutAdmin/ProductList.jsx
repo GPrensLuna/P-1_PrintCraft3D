@@ -2,9 +2,15 @@ import React, { useState, useEffect } from "react";
 import { URL } from "../../config.js";
 import styles from "./ProductList.module.css";
 
-export default function ProductList() {
+const ProductList = () => {
   const [products, setProducts] = useState([]);
-  const [editingProduct, setEditingProduct] = useState(null);
+  const [editedProduct, setEditedProduct] = useState({});
+  const [editStatus, setEditStatus] = useState({});
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "asc",
+  });
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -24,98 +30,236 @@ export default function ProductList() {
     fetchProducts();
   }, []);
 
-  const handleEdit = (product) => {
-    setEditingProduct({ ...product });
+  const handleEdit = (productId, product) => {
+    setEditStatus((prevEditStatus) => ({
+      ...prevEditStatus,
+      [productId]: true,
+    }));
+    setEditedProduct({ ...product });
   };
 
-  const handleUpdate = async () => {
+  const handleFieldChange = (fieldName, value) => {
+    setEditedProduct((prevEditedProduct) => ({
+      ...prevEditedProduct,
+      [fieldName]: fieldName === "price" ? parseFloat(value) : value,
+    }));
+  };
+
+  const handleInlineUpdate = async (productId, e) => {
+    e.preventDefault();
+
     try {
-      const response = await fetch(`${URL}ProductsLista/${editingProduct.id}`, {
+      const response = await fetch(`${URL}ProductsLista/${productId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(editingProduct),
+        body: JSON.stringify(editedProduct),
       });
 
       if (response.ok) {
-        const updatedProducts = products.map((p) =>
-          p.id === editingProduct.id ? { ...p, ...editingProduct } : p
+        const updatedProduct = await response.json();
+        setProducts((prevProducts) =>
+          prevProducts.map((p) => (p.id === productId ? updatedProduct : p))
         );
-        setProducts(updatedProducts);
-        setEditingProduct(null);
+        setEditStatus((prevEditStatus) => ({
+          ...prevEditStatus,
+          [productId]: false,
+        }));
+        setEditedProduct({});
       } else {
-        console.error("Error updating product");
+        const errorData = await response.json();
+        console.error("Error updating product. Server response:", errorData);
       }
     } catch (error) {
       console.error("Error updating product:", error);
     }
   };
 
-  return (
-    <div>
-      <div className={styles.tableContainer}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Image</th>
-              <th>Description</th>
-              <th>Size</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>MaterialId</th>
-              <th>CategoryId</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product.name}>
-                <td>{product.name}</td>
-                <td>{product.image}</td>
-                <td>{product.description}</td>
-                <td>{product.size.name}</td>
-                <td>{product.price}</td>
-                <td>{product.stock}</td>
-                <td>{product.material.name}</td>
-                <td>{product.category.name}</td>
-                <td>
-                  <button onClick={() => handleEdit(product)}>Edit</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {editingProduct && (
-          <div className={styles.editForm}>
-            <input
-              type="text"
-              value={editingProduct.name}
-              onChange={(e) =>
-                setEditingProduct({ ...editingProduct, name: e.target.value })
-              }
-              className={styles.editInput}
-            />
-            <label>
-              Account Enabled:
-              <input
-                type="checkbox"
-                checked={editingProduct.isAccountEnabled}
-                onChange={(e) =>
-                  setEditingProduct({
-                    ...editingProduct,
-                    isAccountEnabled: e.target.checked,
-                  })
-                }
-              />
-            </label>
-            <button onClick={handleUpdate} className={styles.updateButton}>
-              Update
-            </button>
-          </div>
-        )}
-      </div>
+  const renderInputField = (fieldName, value, options = []) => (
+    <div className={styles.inputContainer}>
+      <label className={styles.inputLabel}>{fieldName}:</label>
+      {options.length ? (
+        <select
+          className={styles.editInput}
+          value={value !== undefined ? value : ""}
+          onChange={(e) => handleFieldChange(fieldName, e.target.value)}
+        >
+          <option value="">Select...</option>
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          className={styles.editInput}
+          type={fieldName === "deleted" ? "checkbox" : "text"}
+          value={
+            fieldName === "deleted" ? value : value !== undefined ? value : ""
+          }
+          onChange={(e) => handleFieldChange(fieldName, e.target.value)}
+        />
+      )}
     </div>
   );
-}
+
+  const renderTableHeader = () => {
+    const headers = [
+      "Name",
+      "Image",
+      "Description",
+      "Price",
+      "Stock",
+      "Size",
+      "Material",
+      "Category",
+      "Deleted",
+      "Actions",
+    ];
+
+    return (
+      <tr>
+        {headers.map((header) =>
+          renderHeaderCell(header.toLowerCase(), header)
+        )}
+      </tr>
+    );
+  };
+
+  const renderHeaderCell = (key, title) => (
+    <th key={key} onClick={() => handleSort(key)}>
+      {title}
+      {sortConfig.key === key && (
+        <span>{sortConfig.direction === "asc" ? " ▲" : " ▼"}</span>
+      )}
+    </th>
+  );
+
+  const renderTableCell = (product, fieldName) => {
+    const isEditing = editStatus[product.id];
+    const value = isEditing ? editedProduct[fieldName] : product[fieldName];
+
+    return (
+      <td key={fieldName}>
+        {isEditing ? (
+          fieldName === "deleted" ? (
+            <div className={styles.inputContainer}>
+              <label className={styles.inputLabel}></label>
+              <select
+                className={styles.editInput}
+                value={value || false}
+                onChange={(e) =>
+                  handleFieldChange(fieldName, e.target.value === "true")
+                }
+              >
+                <option value={true}>Sí</option>
+                <option value={false}>No</option>
+              </select>
+            </div>
+          ) : (
+            renderInputField(fieldName, value, getOptionsForField(fieldName))
+          )
+        ) : fieldName === "deleted" ? (
+          value ? (
+            "Sí"
+          ) : (
+            "No"
+          )
+        ) : (
+          value
+        )}
+      </td>
+    );
+  };
+  const renderTable = () => {
+    const sortedProducts = [...products].sort((a, b) => {
+      if (sortConfig.key) {
+        const keyA = a[sortConfig.key];
+        const keyB = b[sortConfig.key];
+        if (keyA < keyB) {
+          return sortConfig.direction === "asc" ? -1 : 1;
+        }
+        if (keyA > keyB) {
+          return sortConfig.direction === "asc" ? 1 : -1;
+        }
+      }
+      return 0;
+    });
+
+    return (
+      <table className={styles.table}>
+        <thead>{renderTableHeader()}</thead>
+        <tbody>
+          {sortedProducts.map((product) => (
+            <tr key={product.id}>
+              {renderTableCell(product, "name")}
+              {renderTableCell(product, "image")}
+              {renderTableCell(product, "description")}
+              {renderTableCell(product, "price")}
+              {renderTableCell(product, "stock")}
+              {renderTableCell(product, "size")}
+              {renderTableCell(product, "material")}
+              {renderTableCell(product, "category")}
+              {renderTableCell(product, "deleted")}
+              <td className={styles.actions}>
+                {editStatus[product.id] ? (
+                  <>
+                    <button onClick={(e) => handleInlineUpdate(product.id, e)}>
+                      Save
+                    </button>
+                    <button
+                      onClick={() =>
+                        setEditStatus((prevEditStatus) => ({
+                          ...prevEditStatus,
+                          [product.id]: false,
+                        }))
+                      }
+                    >
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <button onClick={() => handleEdit(product.id, product)}>
+                    Edit
+                  </button>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
+
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getOptionsForField = (fieldName) => {
+    switch (fieldName) {
+      case "size":
+        return ["S", "M", "L", "XL"];
+      case "category":
+        return ["accesorio", "figura", "decoracion"];
+      case "material":
+        return ["ABS", "PLA", "TPU"];
+      default:
+        return [];
+    }
+  };
+
+  return (
+    <div className={styles.tableContainer}>
+      <h2>Product List</h2>
+      {renderTable()}
+    </div>
+  );
+};
+
+export default ProductList;

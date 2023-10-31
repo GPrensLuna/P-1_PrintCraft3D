@@ -7,8 +7,8 @@ import Footer from "../../Components/Footer/Footer";
 import Aside from "../../Components/Aside/Aside.jsx";
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
-import { addProductInfo } from "../../redux/actions/actions.js";
 import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
+import { addProductInfo } from "../../redux/actions/actions.js";
 
 function Home() {
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ function Home() {
             {
               params: {
                 material: selectedMaterials,
-                categoria: selectedCategory,
+                category: selectedCategory,
                 tamaño: selectedSize,
                 search: searchValue,
               },
@@ -72,6 +72,8 @@ function Home() {
 
           if (response.status === 200) {
             const { data } = response;
+            console.log("data", data);
+            console.log("Data", data.results);
             dispatch(addProductInfo(data.results));
             setCount(data.count);
             setLimit(data.limit);
@@ -117,6 +119,24 @@ function Home() {
     }
     setCurrentPage(page);
   };
+
+  const handleProductDelete = async (idProduct) => {
+    try {
+      const response = await axios.delete(`${URL}DeleteProdut/${idProduct}`);
+
+      if (response.status === 200) {
+        const updatedProducts = response.data.products;
+        dispatch(addProductInfo(updatedProducts));
+        alert("Producto eliminado exitosamente");
+      } else {
+        alert("Error al eliminar el producto. Por favor, inténtelo de nuevo.");
+      }
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error.message);
+      alert("Error al eliminar el producto. Por favor, inténtelo de nuevo.");
+    }
+  };
+
   return (
     <main className={style.main}>
       <CarouselHome />
@@ -165,10 +185,11 @@ function Home() {
                     name={e.name}
                     image={e.image}
                     description={e.description}
-                    Size={e.Size}
+                    size={e.size}
                     price={e.price}
-                    Material={e.Material}
-                    Category={e.Category}
+                    material={e.material}
+                    category={e.category}
+                    onDelete={handleProductDelete}
                   />
                 ))}
               </div>

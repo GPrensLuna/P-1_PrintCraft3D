@@ -2,7 +2,6 @@ import React from "react";
 import style from "./Aside.module.css";
 
 const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
-
   return (
     <div>
       <aside className={style.aside}>
@@ -15,8 +14,8 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
               <input
                 className={style.AsideInput}
                 type="checkbox"
-                value="3"
-                onChange={() => onMaterialChange("3")}
+                value="ABS"
+                onChange={() => onMaterialChange("ABS")}
               />
               <span className={style.span}></span>
             </label>
@@ -28,7 +27,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
                 className={style.AsideInput}
                 type="checkbox"
                 value="PLA"
-                onChange={() => onMaterialChange("2")}
+                onChange={() => onMaterialChange("PLA")}
               />
               <span className={style.span}></span>
             </label>
@@ -41,7 +40,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
                 className={style.AsideInput}
                 type="checkbox"
                 value="TPU"
-                onChange={() => onMaterialChange("1")}
+                onChange={() => onMaterialChange("TPU")}
               />
               <span className={style.span}></span>
             </label>
@@ -57,7 +56,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
                 className={style.AsideInput}
                 type="checkbox"
                 value="accesorio"
-                onChange={() => onCategoryChange("1")}
+                onChange={() => onCategoryChange("Accesorio")}
               />
               <span className={style.span}></span>
             </label>
@@ -69,7 +68,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
                 className={style.AsideInput}
                 type="checkbox"
                 value="figura"
-                onChange={() => onCategoryChange("2")}
+                onChange={() => onCategoryChange("figura")}
               />
               <span className={style.span}></span>
             </label>
@@ -82,7 +81,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
                 className={style.AsideInput}
                 type="checkbox"
                 value="decoracion"
-                onChange={() => onCategoryChange("3")}
+                onChange={() => onCategoryChange("Decoracion")}
               />
               <span className={style.span}></span>
             </label>
@@ -98,7 +97,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
                 className={style.AsideInput}
                 type="checkbox"
                 value="M"
-                onChange={() => onSizeChange("1")}
+                onChange={() => onSizeChange("M")}
               />
               <span className={style.span}></span>
             </label>
@@ -110,7 +109,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
                 className={style.AsideInput}
                 type="checkbox"
                 value="S"
-                onChange={() => onSizeChange("2")}
+                onChange={() => onSizeChange("S")}
               />
               <span className={style.span}></span>
             </label>
@@ -122,7 +121,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
                 className={style.AsideInput}
                 type="checkbox"
                 value="L"
-                onChange={() => onSizeChange("3")}
+                onChange={() => onSizeChange("L")}
               />
               <span className={style.span}></span>
             </label>
@@ -134,7 +133,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
                 className={style.AsideInput}
                 type="checkbox"
                 value="X"
-                onChange={() => onSizeChange("4")}
+                onChange={() => onSizeChange("X")}
               />
               <span className={style.span}></span>
             </label>

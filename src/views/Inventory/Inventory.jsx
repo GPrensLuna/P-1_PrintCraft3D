@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import style from "./Inventario.module.css";
 import { URL } from "../../config.js";
+import axios from "axios";
 
 export default function Inventory() {
   const [errors, setErrors] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageSelected, setImageSelectd] = useState("");
   const [producto, setProducto] = useState({
     name: "",
     image: null,
     description: "",
-    sizeName: "",
+    size: "",
     price: "",
     stock: "",
-    materialName: "",
-    categoryName: "",
+    material: "",
+    category: "",
   });
 
   const handleInputChange = (e) => {
@@ -44,6 +46,18 @@ export default function Inventory() {
     } else {
       console.error("No se ha seleccionado una imagen");
     }
+  };
+
+  // funcion para subir imagenes a cloudinary
+  const uploadImage = () => {
+    const formData = new FormData()
+    formData.append("file", imageSelected)
+    formData.append("upload_preset", "PrintCraft3DImagenes")
+
+    axios.post("https://api.cloudinary.com/v1_1/deeufsn3k/image/upload",
+    formData).then((response) =>{
+      console.log(response);
+    });
   };
 
   const handleSubmit = (e) => {
@@ -105,6 +119,15 @@ export default function Inventory() {
           </div>
         </div>
         <div>
+      <input 
+        type="file"
+        onChange={(event) => {
+          setImageSelectd(event.target.files[0]);
+        }}
+      />
+      <button onClick={() => uploadImage()}>Subir Imagen</button>
+      </div>
+        <div>
           <label htmlFor="description" className={style.InventarioLabel}>
             Descripción:
           </label>
@@ -137,13 +160,13 @@ export default function Inventory() {
           </select>
         </div>
         <div>
-          <label htmlFor="MaterialId" className={style.InventarioLabel}>
+          <label htmlFor="material" className={style.InventarioLabel}>
             Material:
           </label>
           <select
-            id="MaterialId"
-            name="MaterialId"
-            value={producto.MaterialId}
+            id="material"
+            name="material"
+            value={producto.material}
             onChange={handleInputChange}
             required
             className={style.InventarioInput}
@@ -155,12 +178,12 @@ export default function Inventory() {
           </select>
         </div>
         <div>
-          <label htmlFor="CategoryId" className={style.InventarioLabel}>
+          <label htmlFor="category" className={style.InventarioLabel}>
             Categoria:
           </label>
           <select
-            id="CategoryId"
-            name="CategoryId"
+            id="category"
+            name="category"
             value={producto.CategoryId}
             onChange={handleInputChange}
             required

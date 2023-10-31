@@ -18,8 +18,6 @@ export const LoginUser = (LoginUser) => {
   };
 };
 
-
-// searchActions.js
 export const updateSearchValue = (value) => {
   return {
     type: SET_SEARCH_RESULTS,
