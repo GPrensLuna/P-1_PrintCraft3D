@@ -14,7 +14,7 @@ export default function Registering() {
     phoneNumber: "",
     email: "",
     password: "",
-    userRole: "Client", // Moved userRole here
+    roll: "Client", // Moved userRole here
   });
   const [mostrarLogin, setMostrarLogin] = useState(mostrarLoginState);
   const handleFormSubmit = async (e) => {
