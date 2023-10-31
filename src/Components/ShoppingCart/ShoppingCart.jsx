@@ -6,6 +6,7 @@ import style from "./SoppingCart.module.css";
 
 const ShoppingCart = () => {
   const cart = useSelector((state) => state.cart);
+  console.log(cart);
   const dispatch = useDispatch();
 
   // const [total, setTotal] = useState(0);

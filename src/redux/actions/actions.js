@@ -30,7 +30,9 @@ export const updateSearchValue = (value) => {
     payload: value,
   };
 };
-export const addToCart = (id) => ({ type: ADD_TO_CART, payload: id });
+export const addToCart = (id) => {
+  console.log('Adding', id)
+  return{ type: ADD_TO_CART, payload: id }};
 
 export const delFromCart = (id, all = false) =>
   all
