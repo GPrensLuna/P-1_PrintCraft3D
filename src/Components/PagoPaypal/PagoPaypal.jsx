@@ -31,8 +31,8 @@ export default function PagoPaypal () {
                       body: JSON.stringify({
                         cart: [
                           {
-                            id: 1,
-                            quantity: 2,
+                            id: "YOUR PRODUCT ID",
+                            quantity: "YOUR PRODUCT QUANTITY",
                           },
                         ],
                       }),
