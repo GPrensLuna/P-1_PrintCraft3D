@@ -58,7 +58,7 @@ function NavBar({ userData, logout }) {
           {userData ? (
             <Nav.Link onClick={logout}>Logout</Nav.Link>
           ) : (
-            <Nav.Link href="/LoginUp">Login up</Nav.Link>
+            <Nav.Link href="/LoginUp">Login</Nav.Link>
           )}
         </Nav>
       </Container>
