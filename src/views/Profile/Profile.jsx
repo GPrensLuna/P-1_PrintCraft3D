@@ -9,6 +9,7 @@ export default function Profile({ userData }) {
       {userData ? (
         <div>
           <h1>Hola {userData.email}, bienvenido a tu perfil</h1>
+          <br />
           <h1>Hola {userData.name}, bienvenido a tu perfil</h1>
         </div>
       ) : (
