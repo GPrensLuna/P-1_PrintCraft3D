@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import style from "./Inventario.module.css";
 import { URL } from "../../config.js";
+import axios from "axios";
 
 export default function Inventory() {
   const [errors, setErrors] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageSelected, setImageSelectd] = useState("");
   const [producto, setProducto] = useState({
     name: "",
     image: null,
@@ -46,6 +48,18 @@ export default function Inventory() {
       // Si no se seleccionó una imagen, puedes manejarlo aquí, como mostrar un mensaje de error
       console.error("No se ha seleccionado una imagen");
     }
+  };
+
+  // funcion para subir imagenes a cloudinary
+  const uploadImage = () => {
+    const formData = new FormData()
+    formData.append("file", imageSelected)
+    formData.append("upload_preset", "PrintCraft3DImagenes")
+
+    axios.post("https://api.cloudinary.com/v1_1/deeufsn3k/image/upload",
+    formData).then((response) =>{
+      console.log(response);
+    });
   };
 
   const handleSubmit = (e) => {
@@ -110,6 +124,15 @@ export default function Inventory() {
             )}
           </div>
         </div>
+        <div>
+      <input 
+        type="file"
+        onChange={(event) => {
+          setImageSelectd(event.target.files[0]);
+        }}
+      />
+      <button onClick={() => uploadImage()}>Subir Imagen</button>
+      </div>
         <div>
           <label htmlFor="description" className={style.InventarioLabel}>
             Descripción:
