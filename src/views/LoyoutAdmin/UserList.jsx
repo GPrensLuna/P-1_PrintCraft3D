@@ -13,7 +13,7 @@ export default function UserList() {
     email: "",
     deleted: "",
     password: "",
-    role: "",
+    roll: "",
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -56,7 +56,7 @@ export default function UserList() {
       email: "",
       password: "",
       deleted: "",
-      role: "",
+      roll: "",
     });
   };
 
@@ -105,7 +105,7 @@ export default function UserList() {
               <th>Teléfono</th>
               <th>Email</th>
               <th>Password</th>
-              <th>Rol</th>
+              <th>Roll</th>
               <th>deleted</th>
               <th>Acciones</th>
             </tr>
@@ -239,7 +239,7 @@ export default function UserList() {
                 <td>
                   {editingUserId === user.id ? (
                     <div className={styles.inputContainer}>
-                      <label className={styles.inputLabel}>Rol:</label>
+                      <label className={styles.inputLabel}>Roll:</label>
                       <input
                         className={styles.editInput}
                         type="text"
@@ -247,13 +247,13 @@ export default function UserList() {
                         onChange={(e) =>
                           setEditedValues({
                             ...editedValues,
-                            role: e.target.value,
+                            roll: e.target.value,
                           })
                         }
                       />
                     </div>
                   ) : (
-                    user.role
+                    user.roll
                   )}
                 </td>{" "}
                 <td>
