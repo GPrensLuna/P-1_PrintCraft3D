@@ -1,7 +1,9 @@
-// Card.js
 import React from "react";
 import style from "./Card.module.css";
 import { Link } from "react-router-dom";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 const Card = (props) => {
   const {
@@ -9,44 +11,50 @@ const Card = (props) => {
     name,
     image,
     description,
-    size,
     price,
-    Material,
-    Category,
-    onDeleteCard,
+    size,
+    material,
+    category,
+    onDelete,
+    addToCart,
   } = props;
+
+  const materialName = material ? material : "Material no disponible";
+  const categoryName = category ? category : "Categoría no disponible";
+  const SizeName = size ? size : "Categoría no disponible";
   const nameM = name ? name.toUpperCase() : "Nombre no disponible";
-  const sizeM = size ? size.toUpperCase() : "Tamaño no disponible";
 
-  const materialName = Material ? Material.name : "Material no disponible";
-  const categoryName = Category ? Category.name : "Categoría no disponible";
-
-  // Formatear el precio como moneda basado en la configuración regional del navegador
   const priceFormatted = parseFloat(price).toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   });
 
-  const handleDelete = () => {
-    // Lógica para eliminar la tarjeta
-    onDeleteCard(name);
+  const handleDeleteClick = () => {
+    const idProduct = id;
+    onDelete(idProduct);
   };
   return (
     <div className={style.Card}>
-      <button className={style.onClonse} onClick={handleDelete}>
+      <button className={style.onClonse} onClick={handleDeleteClick}>
         X
       </button>
-      <Link to={`Inventario/${id}`}>
-      <img className={style.Imagen} src={image} alt={name} />
-      <div className={style.Container}>
-        <h3 className={style.name}>{nameM}</h3>
-        <p className={style.description}>{description}</p>
-        <p className={style.size}>Tamaño: {sizeM}</p>
-        <p className={style.price}>Precio: {priceFormatted}</p>
-        <p className={style.Material}>Material: {materialName}</p>
-        <p className={style.Category}>Categoría: {categoryName}</p>
-      </div>
+
+      <button className={style.BtnCarrito} onClick={() => addToCart(id)}>
+        <FontAwesomeIcon icon={faShoppingCart} />
+      </button>
+      <Link className={style.Link} to={`Producto/${name}`}>
+        <img className={style.Imagen} src={image} alt={name} />
       </Link>
+      <div className={style.Container}>
+        <Link className={style.Link} to={`Producto/${name}`}>
+          <h3 className={style.name}>{nameM}</h3>
+        </Link>
+        <p className={style.description}>{description}</p>
+        <p className={style.size}>Tamaño: {SizeName}</p>
+        <p className={style.price}>Precio: {priceFormatted}</p>
+        <p className={style.material}>Material: {materialName}</p>
+        <p className={style.category}>Categoría: {categoryName}</p>
+      </div>
     </div>
   );
 };

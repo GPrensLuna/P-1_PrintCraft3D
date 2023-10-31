@@ -1,76 +1,140 @@
-// Aside.jsx
 import React from "react";
 import style from "./Aside.module.css";
 
-const Aside = () => {
+const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
   return (
     <div>
       <aside className={style.aside}>
-        <h1>Filtrar por:</h1>
-
-        <div>
+        <h1 className={style.asideh1}>Filtrar por:</h1>
+        <div className={style.ContentMaterial}>
           <h2>Materiales</h2>
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>Nailon</p>
-              <input className={style.AsideInput} type="checkbox" />
+              ABS
+              <input
+                className={style.AsideInput}
+                type="checkbox"
+                value="ABS"
+                onChange={() => onMaterialChange("ABS")}
+              />
               <span className={style.span}></span>
             </label>
           </div>
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>ABS</p>
-              <input className={style.AsideInput} type="checkbox" />
+              PLA
+              <input
+                className={style.AsideInput}
+                type="checkbox"
+                value="PLA"
+                onChange={() => onMaterialChange("PLA")}
+              />
               <span className={style.span}></span>
             </label>
           </div>
 
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>Resina</p>
-              <input className={style.AsideInput} type="checkbox" />
-              <span className={style.span}></span>
-            </label>
-          </div>
-
-          <div className={style.filtros}>
-            <label className={style.AsideLabel}>
-              <p>PLA</p>
-              <input className={style.AsideInput} type="checkbox" />
+              TPU
+              <input
+                className={style.AsideInput}
+                type="checkbox"
+                value="TPU"
+                onChange={() => onMaterialChange("TPU")}
+              />
               <span className={style.span}></span>
             </label>
           </div>
         </div>
 
-        <div>
-          <h2>Tecnicas de impresion</h2>
+        <div className={style.ContentCategori}>
+          <h2>Categori</h2>
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>Chorro de aglomerante</p>
-              <input className={style.AsideInput} type="checkbox" />
+              Accesorio
+              <input
+                className={style.AsideInput}
+                type="checkbox"
+                value="accesorio"
+                onChange={() => onCategoryChange("Accesorio")}
+              />
               <span className={style.span}></span>
             </label>
           </div>
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>Chorro de material</p>
-              <input className={style.AsideInput} type="checkbox" />
+              figura
+              <input
+                className={style.AsideInput}
+                type="checkbox"
+                value="figura"
+                onChange={() => onCategoryChange("figura")}
+              />
               <span className={style.span}></span>
             </label>
           </div>
 
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>Extrusión de materiales</p>
-              <input className={style.AsideInput} type="checkbox" />
+              Decoracion
+              <input
+                className={style.AsideInput}
+                type="checkbox"
+                value="decoracion"
+                onChange={() => onCategoryChange("Decoracion")}
+              />
               <span className={style.span}></span>
             </label>
           </div>
+        </div>
 
+        <div className={style.ContentSize}>
+          <h2>Tamaño</h2>
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
-              <p>Polimerización en tina</p>
-              <input className={style.AsideInput} type="checkbox" />
+              M
+              <input
+                className={style.AsideInput}
+                type="checkbox"
+                value="M"
+                onChange={() => onSizeChange("M")}
+              />
+              <span className={style.span}></span>
+            </label>
+          </div>
+          <div className={style.filtros}>
+            <label className={style.AsideLabel}>
+              S
+              <input
+                className={style.AsideInput}
+                type="checkbox"
+                value="S"
+                onChange={() => onSizeChange("S")}
+              />
+              <span className={style.span}></span>
+            </label>
+          </div>
+          <div className={style.filtros}>
+            <label className={style.AsideLabel}>
+              L
+              <input
+                className={style.AsideInput}
+                type="checkbox"
+                value="L"
+                onChange={() => onSizeChange("L")}
+              />
+              <span className={style.span}></span>
+            </label>
+          </div>{" "}
+          <div className={style.filtros}>
+            <label className={style.AsideLabel}>
+              X
+              <input
+                className={style.AsideInput}
+                type="checkbox"
+                value="X"
+                onChange={() => onSizeChange("X")}
+              />
               <span className={style.span}></span>
             </label>
           </div>

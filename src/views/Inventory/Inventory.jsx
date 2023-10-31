@@ -14,8 +14,8 @@ export default function Inventory() {
     size: "",
     price: "",
     stock: "",
-    materialName: "",
-    categoryName: "",
+    material: "",
+    category: "",
   });
 
   const handleInputChange = (e) => {
@@ -38,14 +38,12 @@ export default function Inventory() {
         imagen: image,
       });
 
-      // Mostrar vista previa de la imagen
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreview(reader.result);
       };
       reader.readAsDataURL(image);
     } else {
-      // Si no se seleccionó una imagen, puedes manejarlo aquí, como mostrar un mensaje de error
       console.error("No se ha seleccionado una imagen");
     }
   };
@@ -64,8 +62,6 @@ export default function Inventory() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí puedes enviar los datos al servidor usando una solicitud HTTP, por ejemplo, con fetch.
-    // Asegúrate de ajustar esta parte según tu API y método de envío.
     fetch(`${URL}Inventario`, {
       method: "POST",
       body: JSON.stringify(producto),
@@ -75,11 +71,9 @@ export default function Inventory() {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Manejar la respuesta del servidor, por ejemplo, mostrar un mensaje de éxito.
         console.log("Producto agregado exitosamente:", data);
       })
       .catch((error) => {
-        // Manejar errores de la solicitud al servidor.
         console.error("Error al agregar producto:", error);
       });
   };
@@ -166,13 +160,13 @@ export default function Inventory() {
           </select>
         </div>
         <div>
-          <label htmlFor="MaterialId" className={style.InventarioLabel}>
+          <label htmlFor="material" className={style.InventarioLabel}>
             Material:
           </label>
           <select
-            id="MaterialId"
-            name="MaterialId"
-            value={producto.MaterialId}
+            id="material"
+            name="material"
+            value={producto.material}
             onChange={handleInputChange}
             required
             className={style.InventarioInput}
@@ -184,12 +178,12 @@ export default function Inventory() {
           </select>
         </div>
         <div>
-          <label htmlFor="CategoryId" className={style.InventarioLabel}>
+          <label htmlFor="category" className={style.InventarioLabel}>
             Categoria:
           </label>
           <select
-            id="CategoryId"
-            name="CategoryId"
+            id="category"
+            name="category"
             value={producto.CategoryId}
             onChange={handleInputChange}
             required

@@ -1,41 +1,57 @@
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import styles from './DetailProduct.module.css'; 
-
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import styles from "./DetailProduct.module.css";
+import { URL } from "../../config.js";
 function DetailProduct() {
-  const { id } = useParams();
+  const { name } = useParams();
   const [Producto, setProducto] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/PrintCraft3D/Inventario/${id}`)
-      .then(response => {
-        setProducto(response.data);
+    axios
+      .get(`${URL}Producto/${name}`)
+      .then((response) => {
+        // Verificar que la respuesta tenga la estructura esperada
+        if (response && response.data) {
+          setProducto(response.data);
+        } else {
+          console.error("Error fetching product: Invalid response structure");
+        }
+      })
+      .catch((error) => {
+        // Manejar errores de manera más descriptiva
+        if (error.response) {
+          // El servidor respondió con un código de estado diferente de 2xx
+          console.error(
+            `Error fetching product: Server responded with ${error.response.status} - ${error.response.data}`
+          );
+        } else if (error.request) {
+          // La solicitud fue hecha pero no se recibió respuesta
+          console.error(
+            "Error fetching product: No response received from the server"
+          );
+        } else {
+          // Algo sucedió en la configuración de la solicitud que desencadenó un error
+          console.error(
+            "Error fetching product: Request configuration error",
+            error.message
+          );
+        }
       });
-  }, [id]);
+  }, [name]);
 
   return (
-    <div className={styles.productContainer}> 
-      <img src={Producto.image} className={styles.Imagen} alt="" /> 
-      <div className={styles.productDetails}> 
-        <h4> 
+    <div className={styles.productContainer}>
+      <img src={Producto.image} className={styles.Imagen} alt="" />
+      <div className={styles.productDetails}>
+        <h4>
           <b>{Producto.name}</b>
         </h4>
-        <p> 
-          {Producto.description}
-        </p>
-        <p> 
-          ${Producto.price}
-        </p>
+        <p>{Producto.description}</p>
+        <p>${Producto.price}</p>
       </div>
     </div>
   );
 }
 
 export default DetailProduct;
-
-
-
-
-
-

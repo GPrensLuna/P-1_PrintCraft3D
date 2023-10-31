@@ -1,18 +1,19 @@
+// Home.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { URL } from "../../config.js";
 import Footer from "../../Components/Footer/Footer";
 import Aside from "../../Components/Aside/Aside.jsx";
-
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
-import { addProductInfo } from "../../redux/actions/actions.js";
-import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx"
+import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
+import { addProductInfo, addToCart } from "../../redux/actions/actions.js";
 
 function Home() {
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.allProducts);
+  const searchValue = useSelector((state) => state.searchValue);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,33 +26,87 @@ function Home() {
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(pokemonPerPage);
 
+  const [selectedMaterials, setSelectedMaterials] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [selectedSize, setSelectedSize] = useState([]);
+
+  const handleMaterialChange = (material) => {
+    setSelectedMaterials((prevMaterials) => {
+      return prevMaterials.includes(material)
+        ? prevMaterials.filter((m) => m !== material)
+        : [...prevMaterials, material];
+    });
+  };
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory((prevCategory) => {
+      return prevCategory.includes(category)
+        ? prevCategory.filter((c) => c !== category)
+        : [...prevCategory, category];
+    });
+  };
+
+  const handleSizeChange = (size) => {
+    setSelectedSize((prevSize) => {
+      return prevSize.includes(size)
+        ? prevSize.filter((s) => s !== size)
+        : [...prevSize, size];
+    });
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`
-        );
+    const delayDebounceFn = setTimeout(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`,
+            {
+              params: {
+                material: selectedMaterials,
+                category: selectedCategory,
+                tamaño: selectedSize,
+                search: searchValue,
+              },
+            }
+          );
 
-        if (response.status === 200) {
-          const { data } = response;
-          dispatch(addProductInfo(data.results));
-          setCount(data.count);
-          setLimit(data.limit);
+          if (response.status === 200) {
+            const { data } = response;
+            console.log("data", data);
+            console.log("Data", data.results);
+            dispatch(addProductInfo(data.results));
+            setCount(data.count);
+            setLimit(data.limit);
+            setLoading(false);
+          } else {
+            setError("No se pudieron cargar los productos.");
+            setLoading(false);
+            console.error("Error en la solicitud:", response.status);
+            alert(
+              "Hubo un error al cargar los productos. Por favor, inténtelo de nuevo."
+            );
+          }
+        } catch (error) {
+          setError("Hubo un error al recuperar los productos.");
           setLoading(false);
-        } else {
-          setError("No se pudieron cargar los productos.");
-          setLoading(false);
+          console.error("Error en la solicitud:", error.message);
+          alert(
+            "Hubo un error al cargar los productos. Por favor, inténtelo de nuevo."
+          );
         }
-      } catch (error) {
-        setError("Hubo un error al recuperar los productos.");
-        setLoading(false);
-      }
-    };
+      };
 
-    fetchData();
-  }, [currentPage, dispatch]);
-
+      fetchData();
+    }, 300);
+    return () => clearTimeout(delayDebounceFn);
+  }, [
+    currentPage,
+    selectedMaterials,
+    selectedCategory,
+    selectedSize,
+    searchValue,
+    dispatch,
+  ]);
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
   }, [currentPage]);
@@ -65,18 +120,38 @@ function Home() {
     setCurrentPage(page);
   };
 
+  const handleProductDelete = async (idProduct) => {
+    try {
+      const response = await axios.delete(`${URL}DeleteProdut/${idProduct}`);
+
+      if (response.status === 200) {
+        const updatedProducts = response.data.products;
+        dispatch(addProductInfo(updatedProducts));
+        alert("Producto eliminado exitosamente");
+      } else {
+        alert("Error al eliminar el producto. Por favor, inténtelo de nuevo.");
+      }
+    } catch (error) {
+      console.error("Error al eliminar el producto:", error.message);
+      alert("Error al eliminar el producto. Por favor, inténtelo de nuevo.");
+    }
+  };
+
   return (
     <main className={style.main}>
-      <CarouselHome/>
+      <CarouselHome />
 
       <div className={style.Container}>
         <div className={style.ContainerAsaider}>
-          <Aside />
+          <Aside
+            onMaterialChange={handleMaterialChange}
+            onCategoryChange={handleCategoryChange}
+            onSizeChange={handleSizeChange}
+          />
         </div>
 
         <div className={style.ContainerHome}>
-         <dir className={style.ContainerFilter}>
-
+          <div className={style.ContainerFilter}>
             <button
               className={style.BTNPreviu}
               onClick={() => loadPage(currentPage - 1)}
@@ -94,29 +169,33 @@ function Home() {
             >
               Siguiente
             </button>
-         </dir>
-            
+          </div>
 
           <div className={style.ContainerCards}>
             {loading ? (
               <p>Cargando productos...</p>
             ) : error ? (
               <p>{error}</p>
+            ) : allProducts && allProducts.length > 0 ? (
+              <div className={style.ContainerCards}>
+                {allProducts.map((e) => (
+                  <Card
+                    key={e.id}
+                    id={e.id}
+                    name={e.name}
+                    image={e.image}
+                    description={e.description}
+                    size={e.size}
+                    price={e.price}
+                    material={e.material}
+                    category={e.category}
+                    onDelete={handleProductDelete}
+                    addToCart={() => dispatch(addToCart(e.id))}
+                  />
+                ))}
+              </div>
             ) : (
-              allProducts?.map((e) => (
-                <Card
-                  key={e.id}
-                  id={e.id}
-                  name={e.name}
-                  image={e.image}
-                  description={e.description}
-                  size={e.size}
-                  price={e.price}
-                  Material={e.Material}
-                  Category={e.Category}
-
-                />
-              ))
+              <p>No se encontraron productos.</p>
             )}
           </div>
         </div>

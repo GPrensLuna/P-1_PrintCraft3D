@@ -1,16 +1,30 @@
-import { Container } from "react-bootstrap";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-
+import React, { useState, useEffect } from "react";
+import { Container, Navbar, Nav, Form } from "react-bootstrap";
 import logo from "../../imagenes/logo.png";
+import { useDispatch } from "react-redux";
+import { updateSearchValue } from "../../redux/actions/actions.js";
 
-function NavBar() {
+function NavBar({ userData, logout }) {
+  const dispatch = useDispatch();
+  console.log("datos USer", userData);
+  const [localSearchValue, setLocalSearchValue] = useState("");
+
+  const handleSearchChangeLocal = (event) => {
+    const newValue = event.target.value;
+    setLocalSearchValue(newValue);
+  };
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      dispatch(updateSearchValue(localSearchValue));
+    }, 500);
+    return () => clearTimeout(timerId);
+  }, [localSearchValue, dispatch]);
+
   return (
     <Navbar expand="lg" bg="primary" data-bs-theme="dark" fixed="top">
       <Container fluid>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <img
             className="d-inline-block align-top"
             src={logo}
@@ -26,24 +40,43 @@ function NavBar() {
           style={{ maxHeight: "100px" }}
           navbarScroll
         >
-          <Nav.Link href="#action1">Home</Nav.Link>
-          <Nav.Link href="#action2">Link</Nav.Link>
+          <Nav.Link href="/">Home</Nav.Link>
+
+          {userData && userData.roll === "Client" ? (
+            <Nav.Link href="/Profile">{userData.name}</Nav.Link>
+          ) : null}
+
+          {userData && userData.roll === "Admin" ? (
+            <>
+              <Nav.Link href="/UserList">UserList</Nav.Link>
+              <Nav.Link href="/ProductList">ProductList</Nav.Link>
+              <Nav.Link href="/Inventario">Inventario</Nav.Link>
+              <Nav.Link href="/Profile">{userData.name}</Nav.Link>
+            </>
+          ) : null}
+          <Nav.Link href="/Carrito">Carrito</Nav.Link>
+
+          {userData ? (
+            <Nav.Link onClick={logout}>Logout</Nav.Link>
+          ) : (
+            <Nav.Link href="/LoginUp">Login up</Nav.Link>
+          )}
         </Nav>
       </Container>
 
       <Container>
-      <Form className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            <Button variant="outline-light">Search</Button>
-          </Form>
+        <Form className="d-flex">
+          <Form.Control
+            type="search"
+            placeholder="Search"
+            className="me-2"
+            aria-label="Search"
+            onChange={handleSearchChangeLocal}
+            value={localSearchValue}
+          />
+        </Form>
       </Container>
     </Navbar>
-   
   );
 }
 
