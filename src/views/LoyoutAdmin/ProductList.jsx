@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { URL } from "../../config.js";
 import styles from "./ProductList.module.css";
 
-export default function ProductList() {
+const ProductList = () => {
   const [products, setProducts] = useState([]);
-  const [editedFields, setEditedFields] = useState({});
+  const [editedProduct, setEditedProduct] = useState({});
   const [editStatus, setEditStatus] = useState({});
   const [sortConfig, setSortConfig] = useState({
     key: null,
@@ -33,24 +33,14 @@ export default function ProductList() {
   const handleEdit = (productId, product) => {
     setEditStatus((prevEditStatus) => ({
       ...prevEditStatus,
-      [productId]: { editing: true },
+      [productId]: true,
     }));
-    setEditedFields({
-      name: product.name,
-      image: product.image,
-      description: product.description,
-      price: product.price,
-      stock: product.stock,
-      material: product.material,
-      size: product.size,
-      category: product.category,
-      deleted: product.deleted,
-    });
+    setEditedProduct({ ...product });
   };
 
   const handleFieldChange = (fieldName, value) => {
-    setEditedFields((prevEditedFields) => ({
-      ...prevEditedFields,
+    setEditedProduct((prevEditedProduct) => ({
+      ...prevEditedProduct,
       [fieldName]: fieldName === "price" ? parseFloat(value) : value,
     }));
   };
@@ -59,21 +49,6 @@ export default function ProductList() {
     e.preventDefault();
 
     try {
-      const productToEdit = products.find((p) => p.id === productId);
-
-      if (!productToEdit) {
-        console.error("Product not found for editing.");
-        return;
-      }
-
-      const editedProduct = {
-        ...productToEdit,
-        ...editedFields,
-      };
-      // console.log(
-      //   "Enviando solicitud PUT con el siguiente contenido:",
-      //   editedProduct
-      // );
       const response = await fetch(`${URL}ProductsLista/${productId}`, {
         method: "PUT",
         headers: {
@@ -81,6 +56,7 @@ export default function ProductList() {
         },
         body: JSON.stringify(editedProduct),
       });
+
       if (response.ok) {
         const updatedProduct = await response.json();
         setProducts((prevProducts) =>
@@ -88,9 +64,9 @@ export default function ProductList() {
         );
         setEditStatus((prevEditStatus) => ({
           ...prevEditStatus,
-          [productId]: { editing: false },
+          [productId]: false,
         }));
-        setEditedFields({});
+        setEditedProduct({});
       } else {
         const errorData = await response.json();
         console.error("Error updating product. Server response:", errorData);
@@ -100,108 +76,34 @@ export default function ProductList() {
     }
   };
 
-  const renderInputField = (fieldName, value, placeholder) => {
-    if (
-      fieldName === "size" ||
-      fieldName === "category" ||
-      fieldName === "material"
-    ) {
-      const options =
-        fieldName === "size"
-          ? ["S", "M", "L", "XL"]
-          : fieldName === "category"
-          ? ["accesorio", "figura", "decoracion"]
-          : fieldName === "material"
-          ? ["ABS", "PLA", "TPU"]
-          : [];
-
-      return (
-        <div className={styles.inputContainer}>
-          <label className={styles.inputLabel}></label>
-          <select
-            className={styles.editInput}
-            value={value !== undefined ? value : placeholder}
-            onChange={(e) => handleFieldChange(fieldName, e.target.value)}
-          >
-            {options.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-      );
-    } else {
-      return (
-        <div className={styles.inputContainer}>
-          <label className={styles.inputLabel}></label>
-          <input
-            className={styles.editInput}
-            type="text"
-            value={value !== undefined ? value : placeholder}
-            onChange={(e) => handleFieldChange(fieldName, e.target.value)}
-          />
-        </div>
-      );
-    }
-  };
-
-  const handleSort = (key) => {
-    let direction = "asc";
-    if (sortConfig.key === key && sortConfig.direction === "asc") {
-      direction = "desc";
-    }
-    setSortConfig({ key, direction });
-  };
-
-  const renderHeaderCell = (key, title) => (
-    <th key={key} onClick={() => handleSort(key)}>
-      {title}
-      {sortConfig.key === key && (
-        <span>{sortConfig.direction === "asc" ? " ▲" : " ▼"}</span>
+  const renderInputField = (fieldName, value, options = []) => (
+    <div className={styles.inputContainer}>
+      <label className={styles.inputLabel}>{fieldName}:</label>
+      {options.length ? (
+        <select
+          className={styles.editInput}
+          value={value !== undefined ? value : ""}
+          onChange={(e) => handleFieldChange(fieldName, e.target.value)}
+        >
+          <option value="">Select...</option>
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          className={styles.editInput}
+          type={fieldName === "deleted" ? "checkbox" : "text"}
+          value={
+            fieldName === "deleted" ? value : value !== undefined ? value : ""
+          }
+          onChange={(e) => handleFieldChange(fieldName, e.target.value)}
+        />
       )}
-    </th>
+    </div>
   );
-
-  const renderTableCell = (product, fieldName) => {
-    const isEditing = editStatus[product.id]?.editing;
-    const value = isEditing ? editedFields[fieldName] : product[fieldName];
-
-    if (fieldName === "deleted") {
-      return (
-        <td key={fieldName}>
-          <div className={styles.inputContainer}>
-            <label className={styles.inputLabel}></label>
-            <select
-              className={styles.editInput}
-              value={
-                value !== undefined
-                  ? value.toString()
-                  : product[fieldName].toString()
-              }
-              onChange={(e) =>
-                handleFieldChange(fieldName, e.target.value === "true")
-              }
-            >
-              <option value={true}>true</option>
-              <option value={false}>false</option>
-            </select>
-          </div>
-        </td>
-      );
-    }
-
-    return (
-      <td key={fieldName}>
-        {isEditing &&
-        (fieldName === "size" ||
-          fieldName === "category" ||
-          fieldName === "material")
-          ? renderInputField(fieldName, value, product[fieldName])
-          : value}
-      </td>
-    );
-  };
 
   const renderTableHeader = () => {
     const headers = [
@@ -226,6 +128,51 @@ export default function ProductList() {
     );
   };
 
+  const renderHeaderCell = (key, title) => (
+    <th key={key} onClick={() => handleSort(key)}>
+      {title}
+      {sortConfig.key === key && (
+        <span>{sortConfig.direction === "asc" ? " ▲" : " ▼"}</span>
+      )}
+    </th>
+  );
+
+  const renderTableCell = (product, fieldName) => {
+    const isEditing = editStatus[product.id];
+    const value = isEditing ? editedProduct[fieldName] : product[fieldName];
+
+    return (
+      <td key={fieldName}>
+        {isEditing ? (
+          fieldName === "deleted" ? (
+            <div className={styles.inputContainer}>
+              <label className={styles.inputLabel}></label>
+              <select
+                className={styles.editInput}
+                value={value || false}
+                onChange={(e) =>
+                  handleFieldChange(fieldName, e.target.value === "true")
+                }
+              >
+                <option value={true}>Sí</option>
+                <option value={false}>No</option>
+              </select>
+            </div>
+          ) : (
+            renderInputField(fieldName, value, getOptionsForField(fieldName))
+          )
+        ) : fieldName === "deleted" ? (
+          value ? (
+            "Sí"
+          ) : (
+            "No"
+          )
+        ) : (
+          value
+        )}
+      </td>
+    );
+  };
   const renderTable = () => {
     const sortedProducts = [...products].sort((a, b) => {
       if (sortConfig.key) {
@@ -257,7 +204,7 @@ export default function ProductList() {
               {renderTableCell(product, "category")}
               {renderTableCell(product, "deleted")}
               <td className={styles.actions}>
-                {editStatus[product.id]?.editing ? (
+                {editStatus[product.id] ? (
                   <>
                     <button onClick={(e) => handleInlineUpdate(product.id, e)}>
                       Save
@@ -266,7 +213,7 @@ export default function ProductList() {
                       onClick={() =>
                         setEditStatus((prevEditStatus) => ({
                           ...prevEditStatus,
-                          [product.id]: { editing: false },
+                          [product.id]: false,
                         }))
                       }
                     >
@@ -286,10 +233,33 @@ export default function ProductList() {
     );
   };
 
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getOptionsForField = (fieldName) => {
+    switch (fieldName) {
+      case "size":
+        return ["S", "M", "L", "XL"];
+      case "category":
+        return ["accesorio", "figura", "decoracion"];
+      case "material":
+        return ["ABS", "PLA", "TPU"];
+      default:
+        return [];
+    }
+  };
+
   return (
     <div className={styles.tableContainer}>
       <h2>Product List</h2>
       {renderTable()}
     </div>
   );
-}
+};
+
+export default ProductList;
