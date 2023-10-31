@@ -2,18 +2,173 @@ import React, { useState, useEffect } from "react";
 import { URL } from "../../config.js";
 import styles from "./UserList.module.css";
 
-export default function UserList() {
+// Componente de Fila de Usuario
+const UserRow = ({
+  user,
+  editing,
+  editedValues,
+  onEdit,
+  onCancelEdit,
+  onSaveEdit,
+  onInputChange,
+}) => (
+  <tr key={user.id}>
+    <td>{user.id}</td>
+    <td>
+      {editing ? (
+        <div className={styles.inputContainer}>
+          <label className={styles.inputLabel}></label>
+          <input
+            className={styles.editInput}
+            type="text"
+            value={editedValues.firstName}
+            onChange={(e) => onInputChange("firstName", e.target.value)}
+          />
+        </div>
+      ) : (
+        user.firstName
+      )}
+    </td>
+    <td>
+      {editing ? (
+        <div className={styles.inputContainer}>
+          <label className={styles.inputLabel}></label>
+          <input
+            className={styles.editInput}
+            type="text"
+            value={editedValues.lastName}
+            onChange={(e) => onInputChange("lastName", e.target.value)}
+          />
+        </div>
+      ) : (
+        user.lastName
+      )}
+    </td>
+    <td>
+      {editing ? (
+        <div className={styles.inputContainer}>
+          <label className={styles.inputLabel}></label>
+          <input
+            className={styles.editInput}
+            type="date"
+            value={editedValues.birthDate}
+            onChange={(e) => onInputChange("birthDate", e.target.value)}
+          />
+        </div>
+      ) : (
+        user.birthDate
+      )}
+    </td>
+    <td>
+      {editing ? (
+        <div className={styles.inputContainer}>
+          <label className={styles.inputLabel}></label>
+          <input
+            className={styles.editInput}
+            type="tel"
+            value={editedValues.phoneNumber}
+            onChange={(e) => onInputChange("phoneNumber", e.target.value)}
+          />
+        </div>
+      ) : (
+        user.phoneNumber
+      )}
+    </td>
+    <td>
+      {editing ? (
+        <div className={styles.inputContainer}>
+          <label className={styles.inputLabel}></label>
+          <input
+            className={styles.editInput}
+            type="email"
+            value={editedValues.email}
+            onChange={(e) => onInputChange("email", e.target.value)}
+          />
+        </div>
+      ) : (
+        user.email
+      )}
+    </td>
+    <td>
+      {editing ? (
+        <div className={styles.inputContainer}>
+          <label className={styles.inputLabel}></label>
+          <input
+            className={styles.editInput}
+            type="password"
+            value={editedValues.password}
+            onChange={(e) => onInputChange("password", e.target.value)}
+          />
+        </div>
+      ) : (
+        user.password
+      )}
+    </td>
+    <td>
+      {editing ? (
+        <div className={styles.inputContainer}>
+          <label className={styles.inputLabel}></label>
+          <select
+            className={styles.editInput}
+            value={editedValues.roll || ""}
+            onChange={(e) => onInputChange("roll", e.target.value)}
+          >
+            <option value="">Seleccione...</option>
+            <option value="Client">Client</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+      ) : (
+        user.roll
+      )}
+    </td>
+    <td>
+      {editing ? (
+        <div className={styles.inputContainer}>
+          <label className={styles.inputLabel}></label>
+          <select
+            className={styles.editInput}
+            value={editedValues.deleted || false}
+            onChange={(e) =>
+              onInputChange("deleted", e.target.value === "true")
+            }
+          >
+            <option value={true}>Sí</option>
+            <option value={false}>No</option>
+          </select>
+        </div>
+      ) : (
+        String(user.deleted)
+      )}
+    </td>
+
+    <td className={styles.actions}>
+      {editing ? (
+        <>
+          <button onClick={onSaveEdit}>Guardar</button>
+          <button onClick={onCancelEdit}>Cancelar</button>
+        </>
+      ) : (
+        <button onClick={onEdit}>Editar</button>
+      )}
+    </td>
+  </tr>
+);
+const UserList = () => {
   const [users, setUsers] = useState(null);
-  const [editingUserId, setEditingUserId] = useState(null);
-  const [editedValues, setEditedValues] = useState({
-    firstName: "",
-    lastName: "",
-    birthDate: "",
-    phoneNumber: "",
-    email: "",
-    deleted: "",
-    password: "",
-    roll: "",
+  console.log(users);
+  const [editingState, setEditingState] = useState({
+    userId: null,
+    editedValues: {
+      firstName: "",
+      lastName: "",
+      birthDate: "",
+      phoneNumber: "",
+      email: "",
+      deleted: "",
+      password: "",
+      roll: "",
+    },
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,25 +195,31 @@ export default function UserList() {
   }, []);
 
   const handleEdit = (userId, user) => {
-    setEditingUserId(userId);
-    setEditedValues(user);
-  };
-
-  const handleCancelEdit = () => {
-    setEditingUserId(null);
-    setEditedValues({
-      firstName: "",
-      lastName: "",
-      birthDate: "",
-      phoneNumber: "",
-      email: "",
-      password: "",
-      deleted: "",
-      roll: "",
+    setEditingState({
+      userId,
+      editedValues: { ...user },
     });
   };
 
-  const handleSaveEdit = async (userId) => {
+  const handleCancelEdit = () => {
+    setEditingState({
+      userId: null,
+      editedValues: {
+        firstName: "",
+        lastName: "",
+        birthDate: "",
+        phoneNumber: "",
+        email: "",
+        deleted: "",
+        password: "",
+        roll: "",
+      },
+    });
+  };
+
+  const handleSaveEdit = async () => {
+    const { userId, editedValues } = editingState;
+
     try {
       const response = await fetch(`${URL}User/${userId}`, {
         method: "PUT",
@@ -75,12 +236,22 @@ export default function UserList() {
       const updatedUsers = users.map((user) =>
         user.id === userId ? { ...user, ...editedValues } : user
       );
-      setUsers(updatedUsers);
 
+      setUsers(updatedUsers);
       handleCancelEdit();
     } catch (error) {
       console.error(error.message);
     }
+  };
+
+  const handleInputChange = (field, value) => {
+    setEditingState((prevState) => ({
+      ...prevState,
+      editedValues: {
+        ...prevState.editedValues,
+        [field]: value,
+      },
+    }));
   };
 
   return (
@@ -103,200 +274,31 @@ export default function UserList() {
               <th>Teléfono</th>
               <th>Email</th>
               <th>Password</th>
-              <th>Roll</th>
+              <th>Role</th>
               <th>deleted</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>
-                  {editingUserId === user.id ? (
-                    <div className={styles.inputContainer}>
-                      <label className={styles.inputLabel}>Nombre:</label>
-                      <input
-                        className={styles.editInput}
-                        type="text"
-                        value={editedValues.firstName}
-                        onChange={(e) =>
-                          setEditedValues({
-                            ...editedValues,
-                            firstName: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  ) : (
-                    user.firstName
-                  )}
-                </td>
-                <td>
-                  {editingUserId === user.id ? (
-                    <div className={styles.inputContainer}>
-                      <label className={styles.inputLabel}>Apellido:</label>
-                      <input
-                        className={styles.editInput}
-                        type="text"
-                        value={editedValues.lastName}
-                        onChange={(e) =>
-                          setEditedValues({
-                            ...editedValues,
-                            lastName: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  ) : (
-                    user.lastName
-                  )}
-                </td>
-                <td>
-                  {editingUserId === user.id ? (
-                    <div className={styles.inputContainer}>
-                      <label className={styles.inputLabel}>
-                        Fecha de Nacimiento:
-                      </label>
-                      <input
-                        className={styles.editInput}
-                        type="date"
-                        value={editedValues.birthDate}
-                        onChange={(e) =>
-                          setEditedValues({
-                            ...editedValues,
-                            birthDate: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  ) : (
-                    user.birthDate
-                  )}
-                </td>
-                <td>
-                  {editingUserId === user.id ? (
-                    <div className={styles.inputContainer}>
-                      <label className={styles.inputLabel}>Teléfono:</label>
-                      <input
-                        className={styles.editInput}
-                        type="tel"
-                        value={editedValues.phoneNumber}
-                        onChange={(e) =>
-                          setEditedValues({
-                            ...editedValues,
-                            phoneNumber: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  ) : (
-                    user.phoneNumber
-                  )}
-                </td>
-                <td>
-                  {editingUserId === user.id ? (
-                    <div className={styles.inputContainer}>
-                      <label className={styles.inputLabel}>Email:</label>
-                      <input
-                        className={styles.editInput}
-                        type="email"
-                        value={editedValues.email}
-                        onChange={(e) =>
-                          setEditedValues({
-                            ...editedValues,
-                            email: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  ) : (
-                    user.email
-                  )}
-                </td>
-                <td>
-                  {editingUserId === user.id ? (
-                    <div className={styles.inputContainer}>
-                      <label className={styles.inputLabel}>Password:</label>
-                      <input
-                        className={styles.editInput}
-                        type="password"
-                        value={editedValues.password}
-                        onChange={(e) =>
-                          setEditedValues({
-                            ...editedValues,
-                            password: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  ) : (
-                    user.password
-                  )}
-                </td>
-                <td>
-                  {editingUserId === user.id ? (
-                    <div className={styles.inputContainer}>
-                      <label className={styles.inputLabel}>Roll:</label>
-                      <select
-                        className={styles.editInput}
-                        value={editedValues.roll || ""} // Si editedValues.roll es null, muestra una cadena vacía
-                        onChange={(e) =>
-                          setEditedValues({
-                            ...editedValues,
-                            roll: e.target.value,
-                          })
-                        }
-                      >
-                        <option value="">Seleccione...</option>
-                        <option value="Client">Client</option>
-                        <option value="Admin">Admin</option>
-                      </select>
-                    </div>
-                  ) : (
-                    user.roll
-                  )}
-                </td>
-
-                <td>
-                  {editingUserId === user.id ? (
-                    <div className={styles.inputContainer}>
-                      <label className={styles.inputLabel}>deleted:</label>
-                      <input
-                        className={styles.editInput}
-                        type="text"
-                        value={editedValues.deleted || ""} // Si editedValues.role es null, muestra una cadena vacía
-                        onChange={(e) =>
-                          setEditedValues({
-                            ...editedValues,
-                            deleted: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  ) : (
-                    String(user.deleted)
-                  )}
-                </td>
-                <td className={styles.actions}>
-                  {editingUserId === user.id ? (
-                    <>
-                      <button onClick={() => handleSaveEdit(user.id)}>
-                        Guardar
-                      </button>
-                      <button onClick={handleCancelEdit}>Cancelar</button>
-                    </>
-                  ) : (
-                    <button onClick={() => handleEdit(user.id, user)}>
-                      Editar
-                    </button>
-                  )}
-                </td>
-              </tr>
+              <UserRow
+                key={user.id}
+                user={user}
+                editing={editingState.userId === user.id}
+                editedValues={editingState.editedValues}
+                onEdit={() => handleEdit(user.id, user)}
+                onCancelEdit={handleCancelEdit}
+                onSaveEdit={() => handleSaveEdit(user.id)}
+                onInputChange={(field, value) =>
+                  handleInputChange(field, value)
+                }
+              />
             ))}
           </tbody>
         </table>
       )}
     </div>
   );
-}
+};
+
+export default UserList;

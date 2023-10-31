@@ -9,17 +9,13 @@ const CardCart = ({ data, delOneFromCart, delAllFromCart }) => {
     description,
     size,
     price,
-    Material,
+    material,
     cantidad,
-    Category,
+    category,
   } = data;
   const nameM = name ? name.toUpperCase() : "Nombre no disponible";
   const sizeM = size ? size.toUpperCase() : "Tamaño no disponible";
 
-  const materialName = Material ? Material.name : "Material no disponible";
-  const categoryName = Category ? Category.name : "Categoría no disponible";
-
-  // Formatear el precio como moneda basado en la configuración regional del navegador
   const priceFormatted = parseFloat(price).toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
@@ -41,8 +37,8 @@ const CardCart = ({ data, delOneFromCart, delAllFromCart }) => {
         <p className={style.description}>{description}</p>
         <p className={style.size}>Tamaño: {sizeM}</p>
         <p className={style.price}>Precio: {priceFormatted}</p>
-        <p className={style.Material}>Material: {materialName}</p>
-        <p className={style.Category}>Categoría: {categoryName}</p>
+        <p className={style.material}>Material: {material}</p>
+        <p className={style.category}>Categoría: {category}</p>
         <p>
           <b>
             {priceFormatted} x {cantidad} = {subTotalS}

@@ -20,7 +20,6 @@ export default function ProductList() {
             "Content-Type": "application/json",
           },
         });
-        console.log("Response from server:", response);
         const data = await response.json();
         setProducts(data);
       } catch (error) {
@@ -71,10 +70,10 @@ export default function ProductList() {
         ...productToEdit,
         ...editedFields,
       };
-      console.log(
-        "Enviando solicitud PUT con el siguiente contenido:",
-        editedProduct
-      );
+      // console.log(
+      //   "Enviando solicitud PUT con el siguiente contenido:",
+      //   editedProduct
+      // );
       const response = await fetch(`${URL}ProductsLista/${productId}`, {
         method: "PUT",
         headers: {

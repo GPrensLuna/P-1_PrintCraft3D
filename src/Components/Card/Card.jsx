@@ -16,7 +16,6 @@ const Card = (props) => {
     material,
     category,
     onDelete,
-    addToCart,
   } = props;
 
   const materialName = material ? material : "Material no disponible";
@@ -33,13 +32,14 @@ const Card = (props) => {
     const idProduct = id;
     onDelete(idProduct);
   };
+
   return (
     <div className={style.Card}>
       <button className={style.onClonse} onClick={handleDeleteClick}>
         X
       </button>
 
-      <button className={style.BtnCarrito} onClick={() => addToCart(id)}>
+      <button className={style.BtnCarrito} onClick={"handleAddToCart"}>
         <FontAwesomeIcon icon={faShoppingCart} />
       </button>
       <Link className={style.Link} to={`Producto/${name}`}>

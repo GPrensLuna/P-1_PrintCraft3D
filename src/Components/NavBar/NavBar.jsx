@@ -6,7 +6,6 @@ import { updateSearchValue } from "../../redux/actions/actions.js";
 
 function NavBar({ userData, logout }) {
   const dispatch = useDispatch();
-  console.log("datos USer", userData);
   const [localSearchValue, setLocalSearchValue] = useState("");
 
   const handleSearchChangeLocal = (event) => {
