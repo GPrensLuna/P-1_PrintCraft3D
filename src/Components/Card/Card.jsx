@@ -12,16 +12,16 @@ const Card = (props) => {
     name,
     image,
     description,
-    Size,
     price,
-    Material,
-    Category,
+    size,
+    material,
+    category,
     onDelete,
   } = props;
 
-  const materialName = Material ? Material.name : "Material no disponible";
-  const categoryName = Category ? Category.name : "Categoría no disponible";
-  const SizeName = Category ? Size.name : "Categoría no disponible";
+  const materialName = material ? material : "Material no disponible";
+  const categoryName = category ? category : "Categoría no disponible";
+  const SizeName = size ? size : "Categoría no disponible";
   const nameM = name ? name.toUpperCase() : "Nombre no disponible";
 
   const priceFormatted = parseFloat(price).toLocaleString("en-US", {
@@ -30,7 +30,7 @@ const Card = (props) => {
   });
 
   const handleDeleteClick = () => {
-    const idProduct = id; // Reemplaza con el ID real del producto que deseas eliminar
+    const idProduct = id;
     onDelete(idProduct);
   };
   return (
@@ -51,8 +51,8 @@ const Card = (props) => {
         <p className={style.description}>{description}</p>
         <p className={style.size}>Tamaño: {SizeName}</p>
         <p className={style.price}>Precio: {priceFormatted}</p>
-        <p className={style.Material}>Material: {materialName}</p>
-        <p className={style.Category}>Categoría: {categoryName}</p>
+        <p className={style.material}>Material: {materialName}</p>
+        <p className={style.category}>Categoría: {categoryName}</p>
       </div>
     </div>
   );

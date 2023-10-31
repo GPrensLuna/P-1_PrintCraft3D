@@ -63,7 +63,7 @@ function Home() {
             {
               params: {
                 material: selectedMaterials,
-                categoria: selectedCategory,
+                category: selectedCategory,
                 tamaño: selectedSize,
                 search: searchValue,
               },
@@ -72,6 +72,8 @@ function Home() {
 
           if (response.status === 200) {
             const { data } = response;
+            console.log("data", data);
+            console.log("Data", data.results);
             dispatch(addProductInfo(data.results));
             setCount(data.count);
             setLimit(data.limit);
@@ -183,10 +185,10 @@ function Home() {
                     name={e.name}
                     image={e.image}
                     description={e.description}
-                    Size={e.Size}
+                    size={e.size}
                     price={e.price}
-                    Material={e.Material}
-                    Category={e.Category}
+                    material={e.material}
+                    category={e.category}
                     onDelete={handleProductDelete}
                   />
                 ))}

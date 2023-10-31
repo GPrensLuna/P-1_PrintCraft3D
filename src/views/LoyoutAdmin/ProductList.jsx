@@ -6,6 +6,10 @@ export default function ProductList() {
   const [products, setProducts] = useState([]);
   const [editedFields, setEditedFields] = useState({});
   const [editStatus, setEditStatus] = useState({});
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "asc",
+  });
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -51,6 +55,7 @@ export default function ProductList() {
       [fieldName]: fieldName === "price" ? parseFloat(value) : value,
     }));
   };
+
   const handleInlineUpdate = async (productId, e) => {
     e.preventDefault();
 
@@ -96,52 +101,152 @@ export default function ProductList() {
     }
   };
 
-  const renderInputField = (fieldName, value, placeholder) => (
-    <div className={styles.inputContainer}>
-      <label className={styles.inputLabel}>{fieldName}:</label>
-      <input
-        className={styles.editInput}
-        type="text"
-        value={value !== undefined ? value : placeholder}
-        onChange={(e) => handleFieldChange(fieldName, e.target.value)}
-      />
-    </div>
+  const renderInputField = (fieldName, value, placeholder) => {
+    if (
+      fieldName === "size" ||
+      fieldName === "category" ||
+      fieldName === "material"
+    ) {
+      const options =
+        fieldName === "size"
+          ? ["S", "M", "L", "XL"]
+          : fieldName === "category"
+          ? ["accesorio", "figura", "decoracion"]
+          : fieldName === "material"
+          ? ["ABS", "PLA", "TPU"]
+          : [];
+
+      return (
+        <div className={styles.inputContainer}>
+          <label className={styles.inputLabel}></label>
+          <select
+            className={styles.editInput}
+            value={value !== undefined ? value : placeholder}
+            onChange={(e) => handleFieldChange(fieldName, e.target.value)}
+          >
+            {options.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.inputContainer}>
+          <label className={styles.inputLabel}></label>
+          <input
+            className={styles.editInput}
+            type="text"
+            value={value !== undefined ? value : placeholder}
+            onChange={(e) => handleFieldChange(fieldName, e.target.value)}
+          />
+        </div>
+      );
+    }
+  };
+
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const renderHeaderCell = (key, title) => (
+    <th key={key} onClick={() => handleSort(key)}>
+      {title}
+      {sortConfig.key === key && (
+        <span>{sortConfig.direction === "asc" ? " ▲" : " ▼"}</span>
+      )}
+    </th>
   );
 
   const renderTableCell = (product, fieldName) => {
     const isEditing = editStatus[product.id]?.editing;
     const value = isEditing ? editedFields[fieldName] : product[fieldName];
 
+    if (fieldName === "deleted") {
+      return (
+        <td key={fieldName}>
+          <div className={styles.inputContainer}>
+            <label className={styles.inputLabel}></label>
+            <select
+              className={styles.editInput}
+              value={
+                value !== undefined
+                  ? value.toString()
+                  : product[fieldName].toString()
+              }
+              onChange={(e) =>
+                handleFieldChange(fieldName, e.target.value === "true")
+              }
+            >
+              <option value={true}>true</option>
+              <option value={false}>false</option>
+            </select>
+          </div>
+        </td>
+      );
+    }
+
     return (
       <td key={fieldName}>
-        {isEditing
+        {isEditing &&
+        (fieldName === "size" ||
+          fieldName === "category" ||
+          fieldName === "material")
           ? renderInputField(fieldName, value, product[fieldName])
-          : fieldName === "deleted"
-          ? value.toString() // Convert boolean to string
           : value}
       </td>
     );
   };
-  return (
-    <div className={styles.tableContainer}>
-      <h2>Product List</h2>
+
+  const renderTableHeader = () => {
+    const headers = [
+      "Name",
+      "Image",
+      "Description",
+      "Price",
+      "Stock",
+      "Size",
+      "Material",
+      "Category",
+      "Deleted",
+      "Actions",
+    ];
+
+    return (
+      <tr>
+        {headers.map((header) =>
+          renderHeaderCell(header.toLowerCase(), header)
+        )}
+      </tr>
+    );
+  };
+
+  const renderTable = () => {
+    const sortedProducts = [...products].sort((a, b) => {
+      if (sortConfig.key) {
+        const keyA = a[sortConfig.key];
+        const keyB = b[sortConfig.key];
+        if (keyA < keyB) {
+          return sortConfig.direction === "asc" ? -1 : 1;
+        }
+        if (keyA > keyB) {
+          return sortConfig.direction === "asc" ? 1 : -1;
+        }
+      }
+      return 0;
+    });
+
+    return (
       <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Image</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Size</th>
-            <th>Material</th>
-            <th>Category</th>
-            <th>Deleted</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+        <thead>{renderTableHeader()}</thead>
         <tbody>
-          {products.map((product) => (
+          {sortedProducts.map((product) => (
             <tr key={product.id}>
               {renderTableCell(product, "name")}
               {renderTableCell(product, "image")}
@@ -179,6 +284,13 @@ export default function ProductList() {
           ))}
         </tbody>
       </table>
+    );
+  };
+
+  return (
+    <div className={styles.tableContainer}>
+      <h2>Product List</h2>
+      {renderTable()}
     </div>
   );
 }

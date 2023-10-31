@@ -27,10 +27,8 @@ export default function UserList() {
         }
 
         const data = await response.json();
-        console.log(data.users);
         setUsers(data.users);
         setLoading(false);
-        console.log(data.users);
       } catch (error) {
         console.error(error.message);
         setError("Error al obtener usuarios");
@@ -240,22 +238,26 @@ export default function UserList() {
                   {editingUserId === user.id ? (
                     <div className={styles.inputContainer}>
                       <label className={styles.inputLabel}>Roll:</label>
-                      <input
+                      <select
                         className={styles.editInput}
-                        type="text"
-                        value={editedValues.role || ""} // Si editedValues.role es null, muestra una cadena vacía
+                        value={editedValues.roll || ""} // Si editedValues.roll es null, muestra una cadena vacía
                         onChange={(e) =>
                           setEditedValues({
                             ...editedValues,
                             roll: e.target.value,
                           })
                         }
-                      />
+                      >
+                        <option value="">Seleccione...</option>
+                        <option value="Client">Client</option>
+                        <option value="Admin">Admin</option>
+                      </select>
                     </div>
                   ) : (
                     user.roll
                   )}
-                </td>{" "}
+                </td>
+
                 <td>
                   {editingUserId === user.id ? (
                     <div className={styles.inputContainer}>

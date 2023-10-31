@@ -9,11 +9,11 @@ export default function Inventory() {
     name: "",
     image: null,
     description: "",
-    sizeName: "",
+    size: "",
     price: "",
     stock: "",
-    materialName: "",
-    categoryName: "",
+    material: "",
+    category: "",
   });
 
   const handleInputChange = (e) => {
@@ -137,13 +137,13 @@ export default function Inventory() {
           </select>
         </div>
         <div>
-          <label htmlFor="MaterialId" className={style.InventarioLabel}>
+          <label htmlFor="material" className={style.InventarioLabel}>
             Material:
           </label>
           <select
-            id="MaterialId"
-            name="MaterialId"
-            value={producto.MaterialId}
+            id="material"
+            name="material"
+            value={producto.material}
             onChange={handleInputChange}
             required
             className={style.InventarioInput}
@@ -155,12 +155,12 @@ export default function Inventory() {
           </select>
         </div>
         <div>
-          <label htmlFor="CategoryId" className={style.InventarioLabel}>
+          <label htmlFor="category" className={style.InventarioLabel}>
             Categoria:
           </label>
           <select
-            id="CategoryId"
-            name="CategoryId"
+            id="category"
+            name="category"
             value={producto.CategoryId}
             onChange={handleInputChange}
             required
