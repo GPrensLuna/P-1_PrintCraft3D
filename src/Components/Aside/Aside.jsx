@@ -56,7 +56,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
                 className={style.AsideInput}
                 type="checkbox"
                 value="accesorio"
-                onChange={() => onCategoryChange("Accesorio")}
+                onChange={() => onCategoryChange("accesorio")}
               />
               <span className={style.span}></span>
             </label>
@@ -81,7 +81,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
                 className={style.AsideInput}
                 type="checkbox"
                 value="decoracion"
-                onChange={() => onCategoryChange("Decoracion")}
+                onChange={() => onCategoryChange("decoracion")}
               />
               <span className={style.span}></span>
             </label>
