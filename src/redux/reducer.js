@@ -18,6 +18,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
       return { ...state, allProducts: payload, filterProducts: payload };
 
     case ADD_TO_CART: {
+      console.log(state.cart);
       let newItem = state.allProducts.find((product) => product.id === payload);
       //console.log(newItem);
 

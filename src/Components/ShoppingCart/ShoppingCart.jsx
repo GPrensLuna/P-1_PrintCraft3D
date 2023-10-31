@@ -12,6 +12,11 @@ const ShoppingCart = () => {
   let total = 0;
   cart.map((item) => (total = total + item.price * item.cantidad));
 
+  const priceFormatted = parseFloat(total).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
   return (
     <div>
       <h1>Carrito de Compras</h1>
@@ -26,7 +31,7 @@ const ShoppingCart = () => {
           />
         ))}
       </article>
-      <h1>Total = ${total}</h1>
+      <h1>Total a pagar = {priceFormatted}</h1>
       <button>Comprar</button>
     </div>
   );
