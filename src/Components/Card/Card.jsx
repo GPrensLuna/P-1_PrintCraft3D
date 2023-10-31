@@ -1,4 +1,3 @@
-// Card.js
 import React from "react";
 import style from "./Card.module.css";
 import { Link } from "react-router-dom";
@@ -17,6 +16,7 @@ const Card = (props) => {
     material,
     category,
     onDelete,
+    addToCart,
   } = props;
 
   const materialName = material ? material : "Material no disponible";
@@ -38,7 +38,8 @@ const Card = (props) => {
       <button className={style.onClonse} onClick={handleDeleteClick}>
         X
       </button>
-      <button className={style.BtnCarrito}>
+
+      <button className={style.BtnCarrito} onClick={() => addToCart(id)}>
         <FontAwesomeIcon icon={faShoppingCart} />
       </button>
       <Link className={style.Link} to={`Producto/${name}`}>

@@ -7,8 +7,8 @@ import Footer from "../../Components/Footer/Footer";
 import Aside from "../../Components/Aside/Aside.jsx";
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
-import { addProductInfo } from "../../redux/actions/actions.js";
 import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
+import { addProductInfo, addToCart } from "../../redux/actions/actions.js";
 
 function Home() {
   const dispatch = useDispatch();
@@ -190,6 +190,7 @@ function Home() {
                     material={e.material}
                     category={e.category}
                     onDelete={handleProductDelete}
+                    addToCart={() => dispatch(addToCart(e.id))}
                   />
                 ))}
               </div>

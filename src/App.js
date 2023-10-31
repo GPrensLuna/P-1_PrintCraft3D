@@ -10,6 +10,8 @@ import PagoPaypal from "./Components/PagoPaypal/PagoPaypal";
 import { useSelector, useDispatch } from "react-redux";
 import { LoginUser } from "./redux/actions/actions.js";
 import { URL } from "./config.js"; 
+import "./App.css";
+import ShoppingCart from "./Components/ShoppingCart/ShoppingCart";
 
 function App() {
   const dispatch = useDispatch();
@@ -71,6 +73,7 @@ const logout = async () => {
         <Route path="/UserList" element={<UserList />} />
         <Route path="/ProductList" element={<ProductList />} />
         <Route path="/Producto/:name" element={<DetailProduct />} />
+        <Route path="/Carrito" element={<ShoppingCart />}></Route>
       </Routes>
     </div>
   );

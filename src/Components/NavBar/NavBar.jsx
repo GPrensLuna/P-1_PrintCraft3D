@@ -54,6 +54,7 @@ function NavBar({ userData, logout }) {
               <Nav.Link href="/Profile">{userData.name}</Nav.Link>
             </>
           ) : null}
+          <Nav.Link href="/Carrito">Carrito</Nav.Link>
 
           {userData ? (
             <Nav.Link onClick={logout}>Logout</Nav.Link>
