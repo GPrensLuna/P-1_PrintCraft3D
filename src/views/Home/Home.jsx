@@ -14,7 +14,7 @@ function Home() {
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.allProducts);
   const searchValue = useSelector((state) => state.searchValue);
-  console.log(allProducts);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(() => {
@@ -29,6 +29,8 @@ function Home() {
   const [selectedMaterials, setSelectedMaterials] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [selectedSize, setSelectedSize] = useState([]);
+
+  
 
   const handleMaterialChange = (material) => {
     setSelectedMaterials((prevMaterials) => {
@@ -121,16 +123,6 @@ function Home() {
   };
 
   const handleProductDelete = async (idProduct) => {
-    // Preguntar al usuario si realmente quiere eliminar el producto
-    const shouldDelete = window.confirm(
-      "¿Seguro que quieres eliminar este producto?"
-    );
-
-    if (!shouldDelete) {
-      // El usuario canceló la eliminación
-      return;
-    }
-
     try {
       const response = await axios.delete(`${URL}DeleteProdut/${idProduct}`);
 
@@ -195,10 +187,10 @@ function Home() {
                     name={e.name}
                     image={e.image}
                     description={e.description}
-                    sizes={e.sizes}
+                    size={e.size}
                     price={e.price}
-                    materials={e.materials}
-                    categorys={e.categorys}
+                    material={e.material}
+                    category={e.category}
                     onDelete={handleProductDelete}
                     addToCart={() => dispatch(addToCart(e.id))}
                   />
