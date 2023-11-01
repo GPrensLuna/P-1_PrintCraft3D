@@ -16,6 +16,7 @@ const Card = (props) => {
     material,
     category,
     onDelete,
+    addToCart
   } = props;
 
   const materialName = material ? material : "Material no disponible";
@@ -39,7 +40,7 @@ const Card = (props) => {
         X
       </button>
 
-      <button className={style.BtnCarrito} onClick={"handleAddToCart"}>
+      <button className={style.BtnCarrito} onClick={() => addToCart(id)}>
         <FontAwesomeIcon icon={faShoppingCart} />
       </button>
       <Link className={style.Link} to={`Producto/${name}`}>

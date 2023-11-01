@@ -1,44 +1,43 @@
 import React from "react";
-import Card from "../Card/Card.jsx";
-
-import {
-  useSelector,
-  //  useDispatch
-} from "react-redux";
-// import { clearCart, delFromCart } from "../../redux/actions/actions.js";
-// import CardCart from "../CardCart/CardCart.jsx";
-// import style from "./SoppingCart.module.css";
+import { useSelector, useDispatch } from "react-redux";
+import { clearCart, delFromCart } from "../../redux/actions/actions.js";
+import CardCart from "../CardCart/CardCart.jsx";
+import style from "./SoppingCart.module.css";
+import PagoPaypal from "../PagoPaypal/PagoPaypal.jsx";
 
 const ShoppingCart = () => {
   const cart = useSelector((state) => state.cart);
-  // const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+  console.log(state);
+  console.log(cart);
 
-  // // const [total, setTotal] = useState(0);
-  // let total = 0;
-  // cart.map((item) => (total = total + item.price * item.cantidad));
+  // const [total, setTotal] = useState(0);
+  let total = 0;
+  cart.map((item) => (total = total + item.price * item.cantidad));
 
-  // const priceFormatted = parseFloat(total).toLocaleString("en-US", {
-  //   style: "currency",
-  //   currency: "USD",
-  // });
+  const priceFormatted = parseFloat(total).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
 
   return (
     <div>
-      {cart.map((e) => (
-        <Card
-          key={e.id}
-          id={e.id}
-          name={e.name}
-          image={e.image}
-          description={e.description}
-          size={e.size}
-          price={e.price}
-          material={e.material}
-          category={e.category}
-          // onDelete={handleProductDelete}
-          // addToCart={() => dispatch(addToCart(e.id))}
-        />
-      ))}
+      <h1>Carrito de Compras</h1>
+      <button onClick={() => dispatch(clearCart())}>Limpiar Carrito</button>
+      <article className={style.ContainerCards}>
+        {cart.map((item, index) => (
+          <CardCart
+            key={index}
+            data={item}
+            delOneFromCart={() => dispatch(delFromCart(item.id))}
+            delAllFromCart={() => dispatch(delFromCart(item.id, true))}
+          />
+        ))}
+      </article>
+      <h1>Total a pagar = {priceFormatted}</h1>
+      {/*<button>Comprar</button>*/}
+      <PagoPaypal/>
     </div>
   );
 };
