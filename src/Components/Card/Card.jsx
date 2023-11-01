@@ -1,6 +1,7 @@
 import React from "react";
 import style from "./Card.module.css";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
@@ -18,6 +19,7 @@ const Card = (props) => {
     onDelete,
     addToCart,
   } = props;
+
   const sizesString = sizes
     ? sizes.map((size) => size.name).join(" - ")
     : "Tamaño no disponible";
@@ -38,16 +40,32 @@ const Card = (props) => {
   //   currency: "USD",
   // });
 
+  const userData = useSelector((state) => state.userData);
+
   const handleDeleteClick = () => {
     const idProduct = id;
     onDelete(idProduct);
   };
 
-  return (
-    <div className={style.Card}>
+  const DeleteButton = () => {
+    if (!userData || userData.roll === null) {
+      return null;
+    }
+
+    let user = userData.roll === null ? "user" : userData.roll;
+
+    return user === "Admin" ? (
       <button className={style.onClonse} onClick={handleDeleteClick}>
         X
       </button>
+    ) : (
+      "user"
+    );
+  };
+
+  return (
+    <div className={style.Card}>
+      <DeleteButton />
 
       <button className={style.BtnCarrito} onClick={() => addToCart(id)}>
         <FontAwesomeIcon icon={faShoppingCart} />

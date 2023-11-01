@@ -61,6 +61,17 @@ export default function Registering() {
 
         if (response.status === 201) {
           alert("Registro exitoso");
+
+          // Limpiar el formulario después de un registro exitoso
+          setFormData({
+            firstName: "",
+            lastName: "",
+            birthDate: "",
+            phoneNumber: "",
+            email: "",
+            password: "",
+            roll: "Client",
+          });
         } else {
           alert("Hubo un error en el registro");
         }
@@ -68,7 +79,7 @@ export default function Registering() {
         console.error("Error:", error);
       }
     } else {
-      alert("Hay campos invalidos.");
+      alert("Hay campos inválidos.");
     }
   };
 

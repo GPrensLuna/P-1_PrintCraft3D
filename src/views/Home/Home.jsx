@@ -121,6 +121,16 @@ function Home() {
   };
 
   const handleProductDelete = async (idProduct) => {
+    // Preguntar al usuario si realmente quiere eliminar el producto
+    const shouldDelete = window.confirm(
+      "¿Seguro que quieres eliminar este producto?"
+    );
+
+    if (!shouldDelete) {
+      // El usuario canceló la eliminación
+      return;
+    }
+
     try {
       const response = await axios.delete(`${URL}DeleteProdut/${idProduct}`);
 
