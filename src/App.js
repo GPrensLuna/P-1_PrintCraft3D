@@ -66,6 +66,7 @@ const logout = async () => {
       />
       <Routes>
         <Route path="/" element={<Home  />} />
+        <Route path="/Carrito" element={<ShoppingCart/>}></Route>
         <Route path="/LoginUp" element={<Login />} />
         <Route path="/Profile" element={<Profile userData={userData} />} />
         <Route path="/Inventario" element={<Inventory />} />
@@ -73,7 +74,7 @@ const logout = async () => {
         <Route path="/UserList" element={<UserList />} />
         <Route path="/ProductList" element={<ProductList />} />
         <Route path="/Producto/:name" element={<DetailProduct />} />
-        <Route path="/Carrito" element={<ShoppingCart />}></Route>
+        
       </Routes>
     </div>
   );
