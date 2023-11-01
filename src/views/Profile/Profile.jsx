@@ -1,11 +1,14 @@
 export default function Profile({ userData }) {
   return (
     <div>
-      <h1>Componente de Perfil</h1>
+      <br />
+      <br />
+      <br />
       {userData ? (
         <div>
-          <p>Hola {userData.email}, bienvenido a tu perfil</p>
-          <p>Hola {userData.name}, bienvenido a tu perfil</p>
+          <h1>Hola {userData.email}, bienvenido a tu perfil</h1>
+          <br />
+          <h1>Hola {userData.name}, bienvenido a tu perfil</h1>
         </div>
       ) : (
         <p>Cargando perfil...</p>
