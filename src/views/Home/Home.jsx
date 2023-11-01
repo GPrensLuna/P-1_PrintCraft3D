@@ -14,7 +14,7 @@ function Home() {
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.allProducts);
   const searchValue = useSelector((state) => state.searchValue);
-
+  console.log(allProducts);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(() => {
@@ -29,8 +29,6 @@ function Home() {
   const [selectedMaterials, setSelectedMaterials] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [selectedSize, setSelectedSize] = useState([]);
-
-  
 
   const handleMaterialChange = (material) => {
     setSelectedMaterials((prevMaterials) => {
@@ -187,10 +185,10 @@ function Home() {
                     name={e.name}
                     image={e.image}
                     description={e.description}
-                    size={e.size}
+                    sizes={e.sizes}
                     price={e.price}
-                    material={e.material}
-                    category={e.category}
+                    materials={e.materials}
+                    categorys={e.categorys}
                     onDelete={handleProductDelete}
                     addToCart={() => dispatch(addToCart(e.id))}
                   />
