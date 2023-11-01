@@ -48,7 +48,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
         </div>
 
         <div className={style.ContentCategori}>
-          <h2>Categori</h2>
+          <h2>Categoria</h2>
           <div className={style.filtros}>
             <label className={style.AsideLabel}>
               Accesorio
@@ -56,7 +56,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
                 className={style.AsideInput}
                 type="checkbox"
                 value="accesorio"
-                onChange={() => onCategoryChange("Accesorio")}
+                onChange={() => onCategoryChange("accesorio")}
               />
               <span className={style.span}></span>
             </label>
@@ -81,7 +81,7 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
                 className={style.AsideInput}
                 type="checkbox"
                 value="decoracion"
-                onChange={() => onCategoryChange("Decoracion")}
+                onChange={() => onCategoryChange("decoracion")}
               />
               <span className={style.span}></span>
             </label>
@@ -126,18 +126,6 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
               <span className={style.span}></span>
             </label>
           </div>{" "}
-          <div className={style.filtros}>
-            <label className={style.AsideLabel}>
-              X
-              <input
-                className={style.AsideInput}
-                type="checkbox"
-                value="X"
-                onChange={() => onSizeChange("X")}
-              />
-              <span className={style.span}></span>
-            </label>
-          </div>
         </div>
       </aside>
     </div>
@@ -145,3 +133,4 @@ const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange }) => {
 };
 
 export default Aside;
+//X

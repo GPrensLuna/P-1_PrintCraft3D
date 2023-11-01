@@ -30,6 +30,8 @@ function Home() {
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [selectedSize, setSelectedSize] = useState([]);
 
+  
+
   const handleMaterialChange = (material) => {
     setSelectedMaterials((prevMaterials) => {
       return prevMaterials.includes(material)

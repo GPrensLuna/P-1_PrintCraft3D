@@ -31,8 +31,8 @@ export default function PagoPaypal () {
                       body: JSON.stringify({
                         cart: [
                           {
-                            id: 1,
-                            quantity: 2,
+                            id: "YOUR PRODUCT ID",
+                            quantity: "YOUR PRODUCT QUANTITY",
                           },
                         ],
                       }),
@@ -120,7 +120,6 @@ export default function PagoPaypal () {
   
     return (
       <div>
-        <h1>.</h1>
         <h1>Elija su metodo de pago</h1>
         <div id="paypal-button-container" className={style.divPaypal}></div>
         {/* Resto del contenido de la página de Inventario */}

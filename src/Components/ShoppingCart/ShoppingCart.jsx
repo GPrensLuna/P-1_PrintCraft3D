@@ -3,11 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { clearCart, delFromCart } from "../../redux/actions/actions.js";
 import CardCart from "../CardCart/CardCart.jsx";
 import style from "./SoppingCart.module.css";
+import PagoPaypal from "../PagoPaypal/PagoPaypal.jsx";
 
 const ShoppingCart = () => {
   const cart = useSelector((state) => state.cart);
-  console.log(cart);
+  const state = useSelector((state) => state);
   const dispatch = useDispatch();
+  console.log(state);
+  console.log(cart);
 
   // const [total, setTotal] = useState(0);
   let total = 0;
@@ -33,7 +36,8 @@ const ShoppingCart = () => {
         ))}
       </article>
       <h1>Total a pagar = {priceFormatted}</h1>
-      <button>Comprar</button>
+      {/*<button>Comprar</button>*/}
+      <PagoPaypal/>
     </div>
   );
 };

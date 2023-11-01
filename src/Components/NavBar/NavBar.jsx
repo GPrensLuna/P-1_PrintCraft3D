@@ -6,7 +6,6 @@ import { updateSearchValue } from "../../redux/actions/actions.js";
 
 function NavBar({ userData, logout }) {
   const dispatch = useDispatch();
-  console.log("datos USer", userData);
   const [localSearchValue, setLocalSearchValue] = useState("");
 
   const handleSearchChangeLocal = (event) => {
@@ -59,7 +58,7 @@ function NavBar({ userData, logout }) {
           {userData ? (
             <Nav.Link onClick={logout}>Logout</Nav.Link>
           ) : (
-            <Nav.Link href="/LoginUp">Login up</Nav.Link>
+            <Nav.Link href="/LoginUp">Login</Nav.Link>
           )}
         </Nav>
       </Container>
