@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import style from "./Login.module.css";
-import Register from "./Register.jsx";
+import Register from "../Register/Register.jsx";
 import { URL } from "../../config.js";
 
 export default function Login() {

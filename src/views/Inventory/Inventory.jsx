@@ -105,7 +105,9 @@ export default function Inventory() {
             id="image"
             name="image"
             accept="image/*"
-            onChange={handleImageUpload}
+            onChange={(e) => {
+              setImageSelectd(e.target.files[0]); handleImageUpload(e); 
+            } }
             className={style.InventarioInput}
           />
           <div className={style.PreviuImg}>
@@ -118,15 +120,6 @@ export default function Inventory() {
             )}
           </div>
         </div>
-        <div>
-      <input 
-        type="file"
-        onChange={(event) => {
-          setImageSelectd(event.target.files[0]);
-        }}
-      />
-      <button onClick={() => uploadImage()}>Subir Imagen</button>
-      </div>
         <div>
           <label htmlFor="description" className={style.InventarioLabel}>
             Descripción:
@@ -223,7 +216,7 @@ export default function Inventory() {
           />
         </div>
         <div>
-          <button type="submit" className={style.InventarioSubmitButton}>
+          <button  onClick={() => uploadImage()} type="submit" className={style.InventarioSubmitButton}>
             Agregar Producto
           </button>
         </div>

@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import style from "./Login.module.css";
+import style from "../login/Login.module.css";
 import { URL } from "../../config.js";
-import Login from "./Login";
+import Login from "../login/Login";
 
-import validation from './validation';
+import validation from '../login/validation.js';
 
 let mostrarLoginState = false;
 
