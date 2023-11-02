@@ -1,5 +1,7 @@
 import logo from "../../imagenes/logo.png";
+import LoginRedSocial from "../../Components/LoginRedSocial/LoginRedSocial.jsx"
 import React, { useState } from "react";
+
 
 import Register from "./Register.jsx";
 import { URL } from "../../config.js";
@@ -14,7 +16,7 @@ export default function Login() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
+    
     try {
       const response = await fetch(`${URL}login`, {
         method: "POST",
@@ -67,14 +69,14 @@ export default function Login() {
       {mostrarRegistro ? (
         <Register />
       ) : (
-        <div className="row w-100">
-          <div className="col w-50 mt-4">
+        <div className="row w-100 d-flex justify-content-center" >
+          <div className="col w-50 h-50 mt-4 rounded-3" style={{background: '#075FD7'}}>
             <img src={logo} className="img-fluid w-100" alt="Logo" />
           </div>
 
-          <div className="col w-50">
-            <form className="text-start w-75 pl-4"  onSubmit={handleFormSubmit}>
-              <div className="">
+          <div className="d-flex justify-content-center align-items-center w-50 ps-3 py-4">
+            <form className="text-start w-75 ms-4 ps-4 needs-validation" noValidate  onSubmit={handleFormSubmit}>
+              <button className="btn btn-outline-primary">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="30"
@@ -88,8 +90,8 @@ export default function Login() {
                     d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"
                   />
                 </svg>
-              </div>
-              <h2 className="fw-bold text-center pt-5 mb-5">Bienvenido</h2>
+              </button>
+              <h2 className="fw-bold text-center pt-1 mb-2">Bienvenido</h2>
               {/* Label */}
               <div className="mb-4">
                 <label htmlFor="email" for="email" className="form-label">
@@ -157,7 +159,11 @@ export default function Login() {
                   Recuperar Password
                 </span>
               </div>
+              {/* Login con redes sociales */}
+              <LoginRedSocial/>
             </form>
+
+            
           </div>
         </div>
       )}
