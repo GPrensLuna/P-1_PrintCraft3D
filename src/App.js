@@ -59,11 +59,11 @@ const logout = async () => {
 };
 
   return (
-    <div className="App">
-      <NavBar
+    <div className="App ">
+      {/* <NavBar
         userData={userData}
         logout={logout}
-      />
+      /> */}
       <Routes>
         <Route path="/" element={<Home  />} />
         <Route path="/Carrito" element={<ShoppingCart/>}></Route>

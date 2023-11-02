@@ -67,10 +67,7 @@ export default function Registering() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    /*setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));*/
+    
     setFormData({
       ...formData,
       [name]: value

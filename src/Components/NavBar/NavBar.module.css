@@ -1,11 +1,11 @@
 @import "../../Style/StyleMaster.module.css";
 
-.NavBar { 
+/* .NavBar { 
     background-color: var(--Nabar-background);
     height: 70px;
     width: 100%;
     position: fixed;
-    display: grid; /* Cambiamos display a grid */
+    display: grid; 
     top: 0;
 
     left: 0;
@@ -56,4 +56,4 @@
 
 .AsideNavBarInput:focus {
   border: 2px solid grey;
-}
+} */

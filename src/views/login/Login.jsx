@@ -1,5 +1,6 @@
+import logo from "../../imagenes/logo.png";
 import React, { useState } from "react";
-import style from "./Login.module.css";
+
 import Register from "./Register.jsx";
 import { URL } from "../../config.js";
 
@@ -62,25 +63,43 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className="container-lg">
       {mostrarRegistro ? (
         <Register />
       ) : (
-        <div className={style.formBackground}>
-          <div className={style.formContainer}>
-            <form className={style.loginForm} onSubmit={handleFormSubmit}>
-              <h2 className={style.loginF}>LOGIN</h2>
+        <div className="row w-100">
+          <div className="col w-50 mt-4">
+            <img src={logo} className="img-fluid w-100" alt="Logo" />
+          </div>
 
-              {/* Email input */}
-              <div className={style.logiConten}>
-                <label htmlFor="email" className={style.formLabel}>
+          <div className="col w-50">
+            <form className="text-start w-75 pl-4"  onSubmit={handleFormSubmit}>
+              <div className="">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30"
+                  height="30"
+                  fill="currentColor"
+                  className="bi bi-arrow-left-short"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"
+                  />
+                </svg>
+              </div>
+              <h2 className="fw-bold text-center pt-5 mb-5">Bienvenido</h2>
+              {/* Label */}
+              <div className="mb-4">
+                <label htmlFor="email" for="email" className="form-label">
                   Email
                 </label>
                 <input
                   type="email"
                   id="email"
                   name="email"
-                  className={style.formInput}
+                  className="form-control"
                   required
                   value={formData.email}
                   onChange={(e) =>
@@ -89,16 +108,16 @@ export default function Login() {
                 />
               </div>
 
-              {/* Password input */}
-              <div className={style.logiConten}>
-                <label htmlFor="password" className={style.formLabel}>
+              {/* Password */}
+              <div className="mb-4">
+                <label htmlFor="password" for="password" className="form-label">
                   Password
                 </label>
                 <input
                   type="password"
                   id="password"
                   name="password"
-                  className={style.formInput}
+                  className="form-control"
                   required
                   value={formData.password}
                   onChange={(e) =>
@@ -107,24 +126,37 @@ export default function Login() {
                 />
               </div>
 
-              {/* Submit button */}
-              <div className={style.submitButtonConten}>
-                <button type="submit" className={style.submitButton}>
-                  INICIAR
+              <div className="mb-4 form-check">
+                <input
+                  type="checkbox"
+                  name="connected"
+                  className="form-check-input"
+                />
+                <label for="connected" className="form-check-label">
+                  Mantenerme conectado
+                </label>
+              </div>
+
+              {/* Boton */}
+              <div className="d-grid">
+                <button type="submit" className="btn btn-primary">
+                  Iniciar Sesion
                 </button>
               </div>
 
-              {/* Registration link */}
-              <h4 className={style.subButton}>
-                ¿Aún no te has registrado?
-                <span
-                  onClick={mostrarRegistroHandler}
-                  className={style.registerLink}
-                >
-                  {" "}
-                  Regístrate
+              <div className="my-3">
+                <span>
+                  ¿No tienes Cuenta?{" "}
+                  <span onClick={mostrarRegistroHandler} className="">
+                    {" "}
+                    Registrate
+                  </span>
                 </span>
-              </h4>
+                <br />
+                <span className="pe-auto" aria-disabled="true">
+                  Recuperar Password
+                </span>
+              </div>
             </form>
           </div>
         </div>
