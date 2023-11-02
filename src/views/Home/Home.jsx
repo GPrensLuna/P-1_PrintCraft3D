@@ -224,7 +224,7 @@ function Home() {
             >
               Siguiente
             </button>
-            <select onChange={handleLimitChange} id='limit' value={limit}>
+            <select onChange={handleLimitChange} id='limit' defaultValue={12}>
               <option value='4'>4</option>
               <option value='8'>8</option>
               <option value='12'>12</option>
