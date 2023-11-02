@@ -1,20 +1,55 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { clearCart, delFromCart } from "../../redux/actions/actions.js";
+import React, { useState, useEffect } from "react";
 import CardCart from "../CardCart/CardCart.jsx";
-import style from "./SoppingCart.module.css";
 import PagoPaypal from "../PagoPaypal/PagoPaypal.jsx";
+import style from "./ShoppingCart.module.css";
 
 const ShoppingCart = () => {
-  const cart = useSelector((state) => state.cart);
-  const state = useSelector((state) => state);
-  const dispatch = useDispatch();
-  console.log(state);
-  console.log(cart);
+  const [cart, setCart] = useState(
+    (typeof window !== "undefined" &&
+      JSON.parse(localStorage.getItem("cart"))) ||
+      []
+  );
 
-  // const [total, setTotal] = useState(0);
+  useEffect(() => {
+    // Save the cart to localStorage whenever it changes
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  const handleAddToCart = (id) => {
+    const updatedCart = cart.map((item) => {
+      if (item.id === id) {
+        return { ...item, cantidad: item.cantidad + 1 };
+      }
+      return item;
+    });
+    setCart(updatedCart);
+  };
+
+  const handleRemoveFromCart = (id) => {
+    const updatedCart = cart.map((item) => {
+      if (item.id === id) {
+        const updatedCantidad = item.cantidad - 1;
+        if (updatedCantidad <= 0) {
+          return null;
+        } else {
+          return { ...item, cantidad: updatedCantidad };
+        }
+      }
+      return item;
+    });
+
+    const filteredCart = updatedCart.filter((item) => item !== null);
+
+    setCart(filteredCart);
+  };
+
+  const handleRemoveAllFromCart = (id) => {
+    const updatedCart = cart.filter((item) => item.id !== id);
+    setCart(updatedCart);
+  };
+
   let total = 0;
-  cart.map((item) => (total = total + item.price * item.cantidad));
+  cart.forEach((item) => (total += item.price * item.cantidad));
 
   const priceFormatted = parseFloat(total).toLocaleString("en-US", {
     style: "currency",
@@ -24,20 +59,19 @@ const ShoppingCart = () => {
   return (
     <div>
       <h1>Carrito de Compras</h1>
-      <button onClick={() => dispatch(clearCart())}>Limpiar Carrito</button>
       <article className={style.ContainerCards}>
-        {cart.map((item, index) => (
+        {cart.map((p) => (
           <CardCart
-            key={index}
-            data={item}
-            delOneFromCart={() => dispatch(delFromCart(item.id))}
-            delAllFromCart={() => dispatch(delFromCart(item.id, true))}
+            key={p.id}
+            data={p}
+            addToCart={() => handleAddToCart(p.id)}
+            removeFromCart={() => handleRemoveFromCart(p.id)}
+            delAllFromCart={() => handleRemoveAllFromCart(p.id)}
           />
         ))}
       </article>
       <h1>Total a pagar = {priceFormatted}</h1>
-      {/*<button>Comprar</button>*/}
-      <PagoPaypal/>
+      <PagoPaypal />
     </div>
   );
 };

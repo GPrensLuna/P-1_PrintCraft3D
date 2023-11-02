@@ -50,11 +50,16 @@ const Card = (props) => {
     );
   };
 
+  const handleAddToCartClick = () => {
+    const productId = id;
+    addToCart(productId); // Llama a la función addToCart pasada como prop
+  };
+
   return (
     <div className={style.Card}>
       <DeleteButton />
 
-      <button className={style.BtnCarrito} onClick={() => addToCart(id)}>
+      <button className={style.BtnCarrito} onClick={handleAddToCartClick}>
         <FontAwesomeIcon icon={faShoppingCart} />
       </button>
       <Link className={style.Link} to={`Producto/${name}`}>
