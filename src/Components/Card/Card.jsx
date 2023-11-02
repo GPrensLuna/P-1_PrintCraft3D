@@ -16,7 +16,7 @@ const Card = (props) => {
     material,
     category,
     onDelete,
-    addToCart
+    addToCart,
   } = props;
 
   const materialName = material ? material : "Material no disponible";
@@ -34,11 +34,25 @@ const Card = (props) => {
     onDelete(idProduct);
   };
 
-  return (
-    <div className={style.Card}>
+  const DeleteButton = () => {
+    if (!userData || userData.roll === null) {
+      return null;
+    }
+
+    let user = userData.roll === null ? "user" : userData.roll;
+
+    return user === "Admin" ? (
       <button className={style.onClonse} onClick={handleDeleteClick}>
         X
       </button>
+    ) : (
+      "user"
+    );
+  };
+
+  return (
+    <div className={style.Card}>
+      <DeleteButton />
 
       <button className={style.BtnCarrito} onClick={() => addToCart(id)}>
         <FontAwesomeIcon icon={faShoppingCart} />
