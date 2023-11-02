@@ -22,9 +22,22 @@ function Home() {
     return savedPage ? parseInt(savedPage, 10) : 1;
   });
 
-  const pokemonPerPage = 12;
+  
   const [count, setCount] = useState(0);
-  const [limit, setLimit] = useState(pokemonPerPage);
+  const [limit, setLimit] = useState('');
+
+
+  const handleLimitChange = (event) => {
+    const newLimit = parseInt(event.target.value, 10);
+    setLimit(newLimit);
+    setCurrentPage(1); 
+  };
+
+  useEffect(() => {
+    setLimit(limit);
+    setCurrentPage(1);
+  }, [limit]);
+  
 
   const [selectedMaterials, setSelectedMaterials] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
@@ -59,7 +72,7 @@ function Home() {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`,
+            `${URL}Inventario?page=${currentPage}&limit=${limit}`,
             {
               params: {
                 material: selectedMaterials,
@@ -111,6 +124,7 @@ function Home() {
     selectedCategory,
     selectedSize,
     searchValue,
+    limit,
     dispatch,
   ]);
 
@@ -210,6 +224,13 @@ function Home() {
             >
               Siguiente
             </button>
+            <select onChange={handleLimitChange} id='limit' value={limit}>
+              <option value='4'>4</option>
+              <option value='8'>8</option>
+              <option value='12'>12</option>
+              <option value='24'>24</option>
+              <option value='48'>48</option>
+            </select>
           </div>
 
           <div className={style.ContainerCards}>
