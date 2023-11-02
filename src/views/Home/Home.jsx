@@ -22,22 +22,19 @@ function Home() {
     return savedPage ? parseInt(savedPage, 10) : 1;
   });
 
-  
   const [count, setCount] = useState(0);
-  const [limit, setLimit] = useState('');
-
+  const [limit, setLimit] = useState("");
 
   const handleLimitChange = (event) => {
     const newLimit = parseInt(event.target.value, 10);
     setLimit(newLimit);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   useEffect(() => {
     setLimit(limit);
     setCurrentPage(1);
   }, [limit]);
-  
 
   const [selectedMaterials, setSelectedMaterials] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
@@ -186,7 +183,7 @@ function Home() {
       const updatedCart = [...currentCart];
       updatedCart[existingProductIndex] = {
         ...updatedCart[existingProductIndex],
-        count: updatedCart[existingProductIndex].cantidad + 1,
+        cantidad: updatedCart[existingProductIndex].cantidad + 1,
       };
       localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
@@ -224,12 +221,12 @@ function Home() {
             >
               Siguiente
             </button>
-            <select onChange={handleLimitChange} id='limit' defaultValue={12}>
-              <option value='4'>4</option>
-              <option value='8'>8</option>
-              <option value='12'>12</option>
-              <option value='24'>24</option>
-              <option value='48'>48</option>
+            <select onChange={handleLimitChange} id="limit" defaultValue={12}>
+              <option value="4">4</option>
+              <option value="8">8</option>
+              <option value="12">12</option>
+              <option value="24">24</option>
+              <option value="48">48</option>
             </select>
           </div>
 
