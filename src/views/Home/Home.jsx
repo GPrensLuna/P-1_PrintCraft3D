@@ -14,7 +14,7 @@ function Home() {
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.allProducts);
   const searchValue = useSelector((state) => state.searchValue);
-  console.log(allProducts);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(() => {
@@ -195,10 +195,10 @@ function Home() {
                     name={e.name}
                     image={e.image}
                     description={e.description}
-                    sizes={e.sizes}
+                    size={e.size}
                     price={e.price}
-                    materials={e.materials}
-                    categorys={e.categorys}
+                    material={e.material}
+                    category={e.category}
                     onDelete={handleProductDelete}
                     addToCart={() => dispatch(addToCart(e.id))}
                   />
