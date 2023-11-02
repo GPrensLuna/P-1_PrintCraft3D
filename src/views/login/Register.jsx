@@ -17,13 +17,11 @@ export default function Registering() {
     phoneNumber: "",
     email: "",
     password: "",
-    roll: "Client", // Moved userRole here
+    roll: "Client",
   });
 
-  //estado donde se actualizan los errores del formulario
   const [errors, setErrors] = useState({});
 
-  //se renderizan los errores al cargar el componente
   useEffect(() => {
     setErrors(
       validation({
@@ -61,8 +59,6 @@ export default function Registering() {
 
         if (response.status === 201) {
           alert("Registro exitoso");
-
-          // Limpiar el formulario después de un registro exitoso
           setFormData({
             firstName: "",
             lastName: "",
@@ -85,10 +81,6 @@ export default function Registering() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    /*setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));*/
     setFormData({
       ...formData,
       [name]: value,

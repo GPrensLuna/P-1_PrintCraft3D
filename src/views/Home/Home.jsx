@@ -72,8 +72,6 @@ function Home() {
 
           if (response.status === 200) {
             const { data } = response;
-            console.log("data", data);
-            console.log("Data", data.results);
             dispatch(addProductInfo(data.results));
             setCount(data.count);
             setLimit(data.limit);
