@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./Card.module.css";
 import { Link } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
@@ -33,7 +33,7 @@ const Card = (props) => {
     const idProduct = id;
     onDelete(idProduct);
   };
-
+  const userData = useSelector((state) => state.userData);
   const DeleteButton = () => {
     if (!userData || userData.roll === null) {
       return null;
