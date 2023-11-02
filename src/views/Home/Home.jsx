@@ -8,7 +8,7 @@ import Aside from "../../Components/Aside/Aside.jsx";
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
-import { addProductInfo, addToCart } from "../../redux/actions/actions.js";
+import { addProductInfo } from "../../redux/actions/actions.js";
 
 function Home() {
   const dispatch = useDispatch();
@@ -72,8 +72,6 @@ function Home() {
 
           if (response.status === 200) {
             const { data } = response;
-            console.log("data", data);
-            console.log("Data", data.results);
             dispatch(addProductInfo(data.results));
             setCount(data.count);
             setLimit(data.limit);
@@ -87,17 +85,25 @@ function Home() {
             );
           }
         } catch (error) {
-          setError("Hubo un error al recuperar los productos.");
-          setLoading(false);
-          console.error("Error en la solicitud:", error.message);
-          alert(
-            "Hubo un error al cargar los productos. Por favor, inténtelo de nuevo."
-          );
+          if (axios.isCancel(error)) {
+            // Manejar cancelación de la solicitud (si es necesario)
+          } else if (error.response && error.response.status === 404) {
+            // Si es un error 404, cambiar currentPage a 1
+            setCurrentPage(1);
+          } else {
+            setError("Hubo un error al recuperar los productos.");
+            setLoading(false);
+            console.error("Error en la solicitud:", error.message);
+            alert(
+              "Hubo un error al cargar los productos. Por favor, inténtelo de nuevo."
+            );
+          }
         }
       };
 
       fetchData();
     }, 300);
+
     return () => clearTimeout(delayDebounceFn);
   }, [
     currentPage,
@@ -107,6 +113,7 @@ function Home() {
     searchValue,
     dispatch,
   ]);
+
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
   }, [currentPage]);
@@ -121,13 +128,11 @@ function Home() {
   };
 
   const handleProductDelete = async (idProduct) => {
-    // Preguntar al usuario si realmente quiere eliminar el producto
     const shouldDelete = window.confirm(
       "¿Seguro que quieres eliminar este producto?"
     );
 
     if (!shouldDelete) {
-      // El usuario canceló la eliminación
       return;
     }
 
@@ -144,6 +149,32 @@ function Home() {
     } catch (error) {
       console.error("Error al eliminar el producto:", error.message);
       alert("Error al eliminar el producto. Por favor, inténtelo de nuevo.");
+    }
+  };
+
+  const handleProductAddToCart = (productId) => {
+    const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const existingProductIndex = currentCart.findIndex(
+      (product) => product.id === productId
+    );
+
+    if (existingProductIndex === -1) {
+      const productToAdd = allProducts.find(
+        (product) => product.id === productId
+      );
+      if (productToAdd) {
+        const updatedCart = [...currentCart, { ...productToAdd, cantidad: 1 }];
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+      }
+    } else {
+      // Si ya está en el carrito, actualiza el contador
+      const updatedCart = [...currentCart];
+      updatedCart[existingProductIndex] = {
+        ...updatedCart[existingProductIndex],
+        count: updatedCart[existingProductIndex].cantidad + 1,
+      };
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
   };
 
@@ -200,7 +231,7 @@ function Home() {
                     material={e.material}
                     category={e.category}
                     onDelete={handleProductDelete}
-                    addToCart={() => dispatch(addToCart(e.id))}
+                    addToCart={() => handleProductAddToCart(e.id)}
                   />
                 ))}
               </div>
