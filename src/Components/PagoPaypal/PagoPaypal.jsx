@@ -34,7 +34,6 @@ export default function PagoPaypal ({cart, total}) {
                       // like product ids and quantities
                       body: JSON.stringify({
                         cart,
-                        total
                       }),
                     });
                     
