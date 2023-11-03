@@ -5,7 +5,11 @@ const { URL } = require('../../config.js')
 
 //import { useHistory } from 'react-router-dom';
 
-export default function PagoPaypal () {
+export default function PagoPaypal ({cart, total}) {
+
+  console.log(cart);
+  console.log(total);
+
     useEffect( () => {
 
       const script = document.createElement('script');
@@ -29,12 +33,8 @@ export default function PagoPaypal () {
                       // use the "body" param to optionally pass additional order information
                       // like product ids and quantities
                       body: JSON.stringify({
-                        cart: [
-                          {
-                            id: 1,
-                            quantity: 1,
-                          },
-                        ],
+                        cart,
+                        total
                       }),
                     });
                     
