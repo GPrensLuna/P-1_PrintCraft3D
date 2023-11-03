@@ -71,7 +71,7 @@ const ShoppingCart = () => {
         ))}
       </article>
       <h1>Total a pagar = {priceFormatted}</h1>
-      <PagoPaypal />
+      <PagoPaypal cart={cart} total={total}/>
     </div>
   );
 };
