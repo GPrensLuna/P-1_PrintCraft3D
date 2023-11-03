@@ -183,7 +183,7 @@ function Home() {
       const updatedCart = [...currentCart];
       updatedCart[existingProductIndex] = {
         ...updatedCart[existingProductIndex],
-        cantidad: updatedCart[existingProductIndex].cantidad + 1,
+        count: updatedCart[existingProductIndex].cantidad + 1,
       };
       localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
@@ -191,72 +191,71 @@ function Home() {
 
   return (
     <main className={style.main}>
-      <CarouselHome />
+      <div className={style.ContainerCarusel}>
+        <CarouselHome />
+      </div>
+      <div className={style.ContainerAsaider}>
+        <Aside
+          onMaterialChange={handleMaterialChange}
+          onCategoryChange={handleCategoryChange}
+          onSizeChange={handleSizeChange}
+        />
+      </div>
 
-      <div className={style.Container}>
-        <div className={style.ContainerAsaider}>
-          <Aside
-            onMaterialChange={handleMaterialChange}
-            onCategoryChange={handleCategoryChange}
-            onSizeChange={handleSizeChange}
-          />
+      <div className={style.ContainerHome}>
+        <div className={style.ContainerFilter}>
+          <button
+            className={style.BTNPreviu}
+            onClick={() => loadPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Anterior
+          </button>
+          <span className={style.SpanCurrentPage}>
+            {currentPage} de {totalPages}
+          </span>
+          <button
+            className={style.BTNNext}
+            onClick={() => loadPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Siguiente
+          </button>
+          <select onChange={handleLimitChange} id="limit" defaultValue={12}>
+            <option value="4">4</option>
+            <option value="8">8</option>
+            <option value="12">12</option>
+            <option value="24">24</option>
+            <option value="48">48</option>
+          </select>
         </div>
 
-        <div className={style.ContainerHome}>
-          <div className={style.ContainerFilter}>
-            <button
-              className={style.BTNPreviu}
-              onClick={() => loadPage(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Anterior
-            </button>
-            <span className={style.SpanCurrentPage}>
-              {currentPage} de {totalPages}
-            </span>
-            <button
-              className={style.BTNNext}
-              onClick={() => loadPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Siguiente
-            </button>
-            <select onChange={handleLimitChange} id="limit" defaultValue={12}>
-              <option value="4">4</option>
-              <option value="8">8</option>
-              <option value="12">12</option>
-              <option value="24">24</option>
-              <option value="48">48</option>
-            </select>
-          </div>
-
-          <div className={style.ContainerCards}>
-            {loading ? (
-              <p>Cargando productos...</p>
-            ) : error ? (
-              <p>{error}</p>
-            ) : allProducts && allProducts.length > 0 ? (
-              <div className={style.ContainerCards}>
-                {allProducts.map((e) => (
-                  <Card
-                    key={e.id}
-                    id={e.id}
-                    name={e.name}
-                    image={e.image}
-                    description={e.description}
-                    size={e.size}
-                    price={e.price}
-                    material={e.material}
-                    category={e.category}
-                    onDelete={handleProductDelete}
-                    addToCart={() => handleProductAddToCart(e.id)}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p>No se encontraron productos.</p>
-            )}
-          </div>
+        <div className={style.ContainerCards}>
+          {loading ? (
+            <p>Cargando productos...</p>
+          ) : error ? (
+            <p>{error}</p>
+          ) : allProducts && allProducts.length > 0 ? (
+            <div className={style.ContainerCards}>
+              {allProducts.map((e) => (
+                <Card
+                  key={e.id}
+                  id={e.id}
+                  name={e.name}
+                  image={e.image}
+                  description={e.description}
+                  size={e.size}
+                  price={e.price}
+                  material={e.material}
+                  category={e.category}
+                  onDelete={handleProductDelete}
+                  addToCart={() => handleProductAddToCart(e.id)}
+                />
+              ))}
+            </div>
+          ) : (
+            <p>No se encontraron productos.</p>
+          )}
         </div>
       </div>
 
