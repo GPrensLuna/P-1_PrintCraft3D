@@ -34,13 +34,9 @@ export default function Inventory() {
         formData
       );
 
-      console.log("Imagen subida exitosamente:", response.data.url);
-
-      // Actualiza la vista previa de la imagen
       setImagePreview(response.data.url);
     } catch (error) {
       console.error("Error al subir la imagen:", error.message);
-      // Puedes mostrar un mensaje de error al usuario si lo deseas
     }
   };
 
@@ -50,16 +46,14 @@ export default function Inventory() {
     try {
       await uploadImage();
 
-      // Ahora puedes enviar el formulario
       await axios.post(`${URL}Inventario`, {
         ...producto,
-        image: imagePreview, // Actualiza esto según tu lógica
+        image: imagePreview,
       });
 
-      console.log("Producto agregado exitosamente");
+      alert("Producto agregado exitosamente");
     } catch (error) {
       console.error("Error al agregar producto:", error.message);
-      // Puedes mostrar un mensaje de error al usuario si lo deseas
     }
   };
   return (
@@ -94,6 +88,8 @@ export default function Inventory() {
             }}
             className={style.InventarioInput}
           />
+          <button onClick={() => uploadImage()}>Guardar foto</button>
+
           <div className={style.PreviuImg}>
             {imagePreview && (
               <img
@@ -113,7 +109,6 @@ export default function Inventory() {
             name="description"
             value={producto.description}
             onChange={handleInputChange}
-            onClick={() => uploadImage()}
             required
             className={style.InventarioInput}
           />
