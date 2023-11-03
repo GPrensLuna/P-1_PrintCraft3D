@@ -9,7 +9,7 @@ export default function PagoPaypal () {
     useEffect( () => {
 
       const script = document.createElement('script');
-      script.src = 'https://www.paypal.com/sdk/js?client-id=AX9x2jfxzV8uGUYopXvUCznoG20uKrzb_eLQIyo2qmKN8N4L7JMuhNle5iwqa4pxY5L5oTbEPapXAE0v&currency=USD';
+      script.src = 'https://www.paypal.com/sdk/js?client-id=AUKGarEo-ucav0oQjyKzva7dAqIsw34z68G4K8L0gzEph-vJCrdhbbE9QYMHhBIrPSA6A4cKmu8XXvya&currency=USD';
       script.async = true;
 
       script.onload = () => {
