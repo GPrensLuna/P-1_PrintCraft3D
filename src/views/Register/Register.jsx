@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import style from "./Login.module.css";
+// import style from "./Login.module.css";
 import { URL } from "../../config.js";
-import Login from "./Login";
+import Login from "../login/Login";
 
-import validation from './validation';
+import validation from '../login/validation';
 
 let mostrarLoginState = false;
 
@@ -89,112 +89,112 @@ export default function Registering() {
       {mostrarLogin ? (
         <Login />
       ) : (
-        <div className={style.formBackground}>
-          <div className={style.formContainerRegister}>
-            <form className={style.loginForm} onSubmit={handleFormSubmit}>
-              <h2 className={style.loginF}>REGISTRO</h2>
+        <div className="">
+          <div className="">
+            <form className="" onSubmit={handleFormSubmit}>
+              <h2 className="">REGISTRO</h2>
 
-              <div className={style.logiConten}>
-                <label htmlFor="firstName" className={style.formLabel}>
+              <div className="">
+                <label htmlFor="firstName" className="">
                   Nombre
                 </label>
                 <input
                   type="text"
                   id="firstName"
                   name="firstName"
-                  className={style.formInput}
+                  className=""
                   required
                   value={formData.firstName}
                   onChange={handleInputChange}
                 />
-                {errors.firstName ? <p className={style.text} style={{color: 'red'}}>{errors.firstName}</p> : <p className={style.text} style={{color: 'rgb(28, 126, 9)'}}>Nombre válido</p>}
+                {errors.firstName ? <p className="" style={{color: 'red'}}>{errors.firstName}</p> : <p className="" style={{color: 'rgb(28, 126, 9)'}}>Nombre válido</p>}
               </div>
 
-              <div className={style.logiConten}>
-                <label htmlFor="lastName" className={style.formLabel}>
+              <div className="">
+                <label htmlFor="lastName" className="">
                   Apellido
                 </label>
                 <input
                   type="text"
                   id="lastName"
                   name="lastName"
-                  className={style.formInput}
+                  className=""
                   required
                   value={formData.lastName}
                   onChange={handleInputChange}
                 />
-                {errors.lastName ? <p className={style.text} style={{color: 'red'}}>{errors.lastName}</p> : <p className={style.text} style={{color: 'rgb(28, 126, 9)'}}>Apellido válido</p>}
+                {errors.lastName ? <p className="" style={{color: 'red'}}>{errors.lastName}</p> : <p className="" style={{color: 'rgb(28, 126, 9)'}}>Apellido válido</p>}
               </div>
 
-              <div className={style.logiConten}>
-                <label htmlFor="birthDate" className={style.formLabel}>
+              <div className="">
+                <label htmlFor="birthDate" className="">
                   Fecha de Nacimiento
                 </label>
                 <input
                   type="date"
                   id="birthDate"
                   name="birthDate"
-                  className={style.formInput}
+                  className=""
                   required
                   value={formData.birthDate}
                   onChange={handleInputChange}
                 />
-                {errors.birthDate ? <p className={style.text} style={{color: 'red'}}>{errors.birthDate}</p> : <p className={style.text} style={{color: 'rgb(28, 126, 9)'}}>Fecha válida</p>}
+                {errors.birthDate ? <p className="" style={{color: 'red'}}>{errors.birthDate}</p> : <p className="" style={{color: 'rgb(28, 126, 9)'}}>Fecha válida</p>}
               </div>
 
-              <div className={style.logiConten}>
-                <label htmlFor="phoneNumber" className={style.formLabel}>
+              <div className="">
+                <label htmlFor="phoneNumber" className="">
                   Número de Teléfono
                 </label>
                 <input
                   type="tel"
                   id="phoneNumber"
                   name="phoneNumber"
-                  className={style.formInput}
+                  className=""
                   required
                   value={formData.phoneNumber}
                   onChange={handleInputChange}
                 />
-                {errors.phoneNumber ? <p className={style.text} style={{color: 'red'}}>{errors.phoneNumber}</p> : <p className={style.text} style={{color: 'rgb(28, 126, 9)'}}>Número válido</p>}
+                {errors.phoneNumber ? <p className="" style={{color: 'red'}}>{errors.phoneNumber}</p> : <p className="" style={{color: 'rgb(28, 126, 9)'}}>Número válido</p>}
               </div>
 
-              <div className={style.logiConten}>
-                <label htmlFor="email" className={style.formLabel}>
+              <div className="">
+                <label htmlFor="email" className="">
                   Email
                 </label>
                 <input
                   type="email"
                   id="email"
                   name="email"
-                  className={style.formInput}
+                  className=""
                   required
                   value={formData.email}
                   onChange={handleInputChange}
                 />
-                {errors.email ? <p className={style.text} style={{color: 'red'}}>{errors.email}</p> : <p className={style.text} style={{color: 'rgb(28, 126, 9)'}}>Email válido</p>}
+                {errors.email ? <p className="" style={{color: 'red'}}>{errors.email}</p> : <p className="" style={{color: 'rgb(28, 126, 9)'}}>Email válido</p>}
               </div>
 
-              <div className={style.logiConten}>
-                <label htmlFor="password" className={style.formLabel}>
+              <div className="">
+                <label htmlFor="password" className="">
                   Password
                 </label>
                 <input
                   type="password"
                   id="password"
                   name="password"
-                  className={style.formInput}
+                  className=""
                   required
                   value={formData.password}
                   onChange={handleInputChange}
                 />
-                {errors.password ? <p className={style.text} style={{color: 'red'}}>{errors.password}</p> : <p className={style.text} style={{color: 'rgb(28, 126, 9)'}}>Contraseña válida</p>}
+                {errors.password ? <p className="" style={{color: 'red'}}>{errors.password}</p> : <p className="" style={{color: 'rgb(28, 126, 9)'}}>Contraseña válida</p>}
               </div>
 
-              <div className={style.submitButtonConten}>
-                <button className={style.submitButton}>REGISTRAR</button>
+              <div className="">
+                <button className="">REGISTRAR</button>
               </div>
 
-              <h4 className={style.subButton}>
+              <h4 className="">
                 ¿Ya tienes una cuenta?
                 <span onClick={mostrarLoginHandler}>Iniciar sesión</span>
               </h4>

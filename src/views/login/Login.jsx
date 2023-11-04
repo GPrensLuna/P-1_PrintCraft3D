@@ -1,81 +1,60 @@
 import logo from "../../imagenes/logo.png";
-import LoginRedSocial from "../../Components/LoginRedSocial/LoginRedSocial.jsx"
-import React, { useState } from "react";
+import LoginRedSocial from "../../Components/LoginRedSocial/LoginRedSocial.jsx";
+import { useFormik } from "formik";
+import { Link } from "react-router-dom";
 
+// import Register from "./Register.jsx";
+// import { URL } from "../../config.js";
 
-import Register from "./Register.jsx";
-import { URL } from "../../config.js";
+const validate = (values) => {
+  const errors = {};
+
+  // const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
+
+  // if(values.password.match(regex)){
+  //   errors.password = "Password valido"
+  // } else {
+  //   errors.password = "La contraseña es valida"
+  // }
+
+  if (!values.email) {
+    errors.email = "Email requerido";
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = "Email invalido";
+  }
+
+  if (!values.password) {
+    errors.password = "Contraseña requerida";
+  } 
+
+  return errors;
+};
 
 export default function Login() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validate,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
   });
-
-  const [mostrarRegistro, setMostrarRegistro] = useState(false);
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    
-    try {
-      const response = await fetch(`${URL}login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-
-        const token = responseData.token;
-
-        if (!token) {
-          console.error(
-            "El token no está presente en la respuesta del servidor"
-          );
-          alert("Inicio de sesión fallido");
-        } else {
-          localStorage.setItem("token", token);
-
-          // Accede al token almacenado y decódificalo
-
-          window.location.href = "/Profile";
-        }
-      } else {
-        const errorData = await response.json();
-
-        if (response.status === 403 && errorData.blocked) {
-          console.error("Cuenta bloqueada");
-          alert("La cuenta está bloqueada. Por favor, contacta al soporte.");
-        } else {
-          console.error("Error en la respuesta:", errorData);
-          alert("Inicio de sesión fallido");
-        }
-      }
-    } catch (error) {
-      console.error("Error durante el inicio de sesión:", error);
-      alert("Se produjo un error durante el inicio de sesión");
-    }
-  };
-
-  const mostrarRegistroHandler = () => {
-    setMostrarRegistro(!mostrarRegistro);
-  };
-
   return (
     <div className="container-lg">
-      {mostrarRegistro ? (
-        <Register />
-      ) : (
-        <div className="row w-100 d-flex justify-content-center" >
-          <div className="col w-50 h-50 mt-4 rounded-3" style={{background: '#075FD7'}}>
-            <img src={logo} className="img-fluid w-100" alt="Logo" />
-          </div>
+      <div className="row w-100 d-flex justify-content-center">
+        <div className="col w-50 h-50 mt-4 rounded-3">
+          <img src={logo} className="img-fluid w-100" alt="Logo" />
+        </div>
 
-          <div className="d-flex justify-content-center align-items-center w-50 ps-3 py-4">
-            <form className="text-start w-75 ms-4 ps-4 needs-validation" noValidate  onSubmit={handleFormSubmit}>
+        <div className="d-flex justify-content-center align-items-center w-50 ps-3 py-4">
+          <form
+            className="text-start w-75 ms-4 ps-4 needs-validation"
+            noValidate
+            onSubmit={formik.handleSubmit}
+          >
+            <Link to="/">
               <button className="btn btn-outline-primary">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -91,82 +70,88 @@ export default function Login() {
                   />
                 </svg>
               </button>
-              <h2 className="fw-bold text-center pt-1 mb-2">Bienvenido</h2>
-              {/* Label */}
-              <div className="mb-4">
-                <label htmlFor="email" for="email" className="form-label">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="form-control"
-                  required
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                />
-              </div>
+            </Link>
 
-              {/* Password */}
-              <div className="mb-4">
-                <label htmlFor="password" for="password" className="form-label">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  className="form-control"
-                  required
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                />
-              </div>
-
-              <div className="mb-4 form-check">
-                <input
-                  type="checkbox"
-                  name="connected"
-                  className="form-check-input"
-                />
-                <label for="connected" className="form-check-label">
-                  Mantenerme conectado
-                </label>
-              </div>
-
-              {/* Boton */}
-              <div className="d-grid">
-                <button type="submit" className="btn btn-primary">
-                  Iniciar Sesion
-                </button>
-              </div>
-
-              <div className="my-3">
-                <span>
-                  ¿No tienes Cuenta?{" "}
-                  <span onClick={mostrarRegistroHandler} className="">
-                    {" "}
-                    Registrate
-                  </span>
+            <h2 className="fw -bold text-center pt-1 mb-2">Bienvenido</h2>
+            {/* Label Email*/}
+            <div className="mb-4">
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Example@example.com"
+                className="form-control"
+                onChange={formik.handleChange}
+                value={formik.values.email}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.email && formik.errors.email ? (
+                <div className="text-danger m-1">{formik.errors.email}</div>
+              ) : null}
+            </div>
+            {/*Label Password */}
+            <div className="mb-4">
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Password..."
+                className="form-control"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.password && formik.errors.password ? (
+                <div className="text-danger m-1">{formik.errors.password}</div>
+              ) : null}
+            </div>
+            <div className="mb-4 form-check">
+              <input
+                type="checkbox"
+                name="connected"
+                className="form-check-input"
+              />
+              <label for="connected" className="form-check-label">
+                Mantenerme conectado
+              </label>
+            </div>
+            {/* Boton Iniciar Sesion*/}
+            <div className="d-grid">
+              <button type="submit" className="btn btn-primary">
+                Iniciar Sesion
+              </button>
+            </div>
+            <div className="my-3">
+              <span>
+                ¿No tienes Cuenta?{" "}
+                <span className="">
+                  {" "}
+                  {/*onClick={mostrarRegistroHandler} */}{" "}
+                  <Link to="/Register">Registrate </Link>
                 </span>
-                <br />
+              </span>
+
+              <br />
+              <Link>
                 <span className="pe-auto" aria-disabled="true">
                   Recuperar Password
                 </span>
-              </div>
-              {/* Login con redes sociales */}
-              <LoginRedSocial/>
-            </form>
-
-            
-          </div>
+              </Link>
+            </div>
+            {/* Login con redes sociales */}
+            <LoginRedSocial />
+          </form>
         </div>
-      )}
+      </div>
+
+      {/* )
+      } */}
     </div>
   );
 }
