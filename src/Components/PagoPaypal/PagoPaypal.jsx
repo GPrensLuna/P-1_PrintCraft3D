@@ -5,10 +5,7 @@ const { URL } = require('../../config.js')
 
 //import { useHistory } from 'react-router-dom';
 
-export default function PagoPaypal ({cart, total}) {
-
-  console.log(cart);
-  console.log(total);
+export default function PagoPaypal ({cart}) {
 
     useEffect( () => {
 
