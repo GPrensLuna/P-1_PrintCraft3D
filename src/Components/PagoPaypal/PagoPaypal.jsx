@@ -58,6 +58,9 @@ export default function PagoPaypal ({cart}) {
                       headers: {
                         "Content-Type": "application/json",
                       },
+                      body: JSON.stringify({
+                        cart,
+                      }),
                     });
                     
                     const orderData = await response.json();
