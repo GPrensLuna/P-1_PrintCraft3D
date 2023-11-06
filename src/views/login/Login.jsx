@@ -2,33 +2,34 @@ import logo from "../../imagenes/logo.png";
 import LoginRedSocial from "../../Components/LoginRedSocial/LoginRedSocial.jsx";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
+import * as Yup from 'yup';
 
 // import Register from "./Register.jsx";
 // import { URL } from "../../config.js";
 
-const validate = (values) => {
-  const errors = {};
+// const validate = (values) => {
+//   const errors = {};
 
-  // const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
+//    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
 
-  // if(values.password.match(regex)){
-  //   errors.password = "Password valido"
-  // } else {
-  //   errors.password = "La contraseña es valida"
-  // }
+//    if(values.password.match(regex)){
+//      errors.password = "Password valido"
+//    } else {
+//      errors.password = "La contraseña es valida"
+//    }
 
-  if (!values.email) {
-    errors.email = "Email requerido";
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = "Email invalido";
-  }
+//   if (!values.email) {
+//     errors.email = "Email requerido";
+//   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+//     errors.email = "Email invalido";
+//   }
 
-  if (!values.password) {
-    errors.password = "Contraseña requerida";
-  } 
+//   if (!values.password) {
+//     errors.password = "Contraseña requerida";
+//   } 
 
-  return errors;
-};
+//   return errors;
+// };
 
 export default function Login() {
   const formik = useFormik({
@@ -36,8 +37,15 @@ export default function Login() {
       email: "",
       password: "",
     },
-    validate,
-    onSubmit: (values) => {
+
+    validationSchema: Yup.object({
+      email: Yup.string().email('Correo invalido').required('Espacio obligatorio'),
+      password: Yup.string()
+        .min(6, 'Debe tener minimo 6 Caracteres')
+        .required('Espacio obligatorio'),
+    }),
+   
+    onSubmit: values => {
       alert(JSON.stringify(values, null, 2));
     },
   });
@@ -73,6 +81,7 @@ export default function Login() {
             </Link>
 
             <h2 className="fw -bold text-center pt-1 mb-2">Bienvenido</h2>
+
             {/* Label Email*/}
             <div className="mb-4">
               <label htmlFor="email" className="form-label">
