@@ -183,7 +183,7 @@ function Home() {
       const updatedCart = [...currentCart];
       updatedCart[existingProductIndex] = {
         ...updatedCart[existingProductIndex],
-        count: updatedCart[existingProductIndex].cantidad + 1,
+        cantidad: updatedCart[existingProductIndex].cantidad + 1,
       };
       localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
