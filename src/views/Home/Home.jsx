@@ -9,6 +9,11 @@ import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
+///// test data
+import Data from "../../Assets/Data/Data.js";
+//// bootstrap
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 
 function Home() {
   const dispatch = useDispatch();
@@ -24,12 +29,6 @@ function Home() {
 
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState("");
-
-  const handleLimitChange = (event) => {
-    const newLimit = parseInt(event.target.value, 10);
-    setLimit(newLimit);
-    setCurrentPage(1);
-  };
 
   useEffect(() => {
     setLimit(limit);
