@@ -30,15 +30,6 @@ function Home() {
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState("");
 
-<<<<<<< Updated upstream
-  const handleLimitChange = (event) => {
-    const newLimit = parseInt(event.target.value, 10);
-    setLimit(newLimit);
-    setCurrentPage(1);
-  };
-
-=======
->>>>>>> Stashed changes
   useEffect(() => {
     setLimit(limit);
     setCurrentPage(1);
@@ -238,7 +229,6 @@ function Home() {
           </select>
         </div>
 
-<<<<<<< Updated upstream
         <div className={style.ContainerCards}>
           {loading ? (
             <p>Cargando productos...</p>
@@ -265,53 +255,6 @@ function Home() {
           ) : (
             <p>No se encontraron productos.</p>
           )}
-=======
-        <div className={style.ContainerHome}>
-          <dir className={style.ContainerFilter}>
-            <button
-              className={style.BTNPreviu}
-              onClick={() => loadPage(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Anterior
-            </button>
-            <span className={style.SpanCurrentPage}>
-              {currentPage} de {totalPages}
-            </span>
-            <button
-              className={style.BTNNext}
-              onClick={() => loadPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Siguiente
-            </button>
-          </dir>
-
-          <div className={style.ContainerCards}>
-            {loading ? (
-              <p>Cargando productos...</p>
-            ) : error ? (
-              <p>{error}</p>
-            ) : (
-              allProducts?.map((e) => (
-                <Row xs={2} md={4} className="g-4">
-                  <Col>
-                    <Card
-                      key={e.id}
-                      name={e.name}
-                      image={e.image}
-                      description={e.description}
-                      size={e.size}
-                      price={e.price}
-                      Material={e.Material}
-                      Category={e.Category}
-                    />
-                  </Col>
-                </Row>
-              ))
-            )}
-          </div>
->>>>>>> Stashed changes
         </div>
       </div>
 
