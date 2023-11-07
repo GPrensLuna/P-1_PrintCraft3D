@@ -1,13 +1,6 @@
 import React from "react";
 import style from "./Card.module.css";
-<<<<<<< Updated upstream
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-=======
 import "./Card.css";
->>>>>>> Stashed changes
 
 const Card = (props) => {
   const {
@@ -37,49 +30,6 @@ const Card = (props) => {
     const idProduct = id;
     onDelete(idProduct);
   };
-<<<<<<< Updated upstream
-  const userData = useSelector((state) => state.userData);
-  const DeleteButton = () => {
-    if (!userData || userData.roll === null) {
-      return null;
-    }
-
-    let user = userData.roll === null ? "user" : userData.roll;
-
-    return user === "Admin" ? (
-      <button className={style.onClonse} onClick={handleDeleteClick}>
-        X
-      </button>
-    ) : (
-      "user"
-    );
-  };
-
-  const handleAddToCartClick = () => {
-    const productId = id;
-    addToCart(productId); // Llama a la función addToCart pasada como prop
-  };
-
-  return (
-    <div className={style.Card}>
-      <DeleteButton />
-
-      <button className={style.BtnCarrito} onClick={handleAddToCartClick}>
-        <FontAwesomeIcon icon={faShoppingCart} />
-      </button>
-      <Link className={style.Link} to={`Producto/${name}`}>
-        <img className={style.Imagen} src={image} alt={name} />
-      </Link>
-      <div className={style.Container}>
-        <Link className={style.Link} to={`Producto/${name}`}>
-          <h3 className={style.name}>{nameM}</h3>
-        </Link>
-        <p className={style.description}>{description}</p>
-        <p className={style.size}>Tamaño: {SizeName}</p>
-        <p className={style.price}>Precio: {priceFormatted}</p>
-        <p className={style.material}>Material: {materialName}</p>
-        <p className={style.category}>Categoría: {categoryName}</p>
-=======
   return (
     // <div className={style.Card}>
     //   <button className={style.onClonse} onClick={handleDelete}>
@@ -121,7 +71,6 @@ const Card = (props) => {
             <strong>Add to Cart</strong>
           </button>
         </div>
->>>>>>> Stashed changes
       </div>
     </div>
   );
