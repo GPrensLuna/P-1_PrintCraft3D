@@ -23,6 +23,7 @@ const ShoppingCart = () => {
       return item;
     });
     setCart(updatedCart);
+    //Agregar al localStorage
   };
 
   const handleRemoveFromCart = (id) => {
@@ -41,11 +42,13 @@ const ShoppingCart = () => {
     const filteredCart = updatedCart.filter((item) => item !== null);
 
     setCart(filteredCart);
+    //Quitar del localStorage
   };
 
   const handleRemoveAllFromCart = (id) => {
     const updatedCart = cart.filter((item) => item.id !== id);
     setCart(updatedCart);
+    //Quitar del localStorage
   };
 
   let total = 0;
