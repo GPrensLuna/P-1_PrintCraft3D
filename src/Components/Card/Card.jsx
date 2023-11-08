@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./Card.module.css";
+// import style from "./Card.module.css";
 import "./Card.css";
 
 const Card = (props) => {
@@ -11,42 +11,33 @@ const Card = (props) => {
     price,
     size,
     material,
-    category,
-    onDelete,
+    // category,
+    // onDelete,
     addToCart,
   } = props;
 
-  const materialName = material ? material : "Material no disponible";
-  const categoryName = category ? category : "Categoría no disponible";
-  const SizeName = size ? size : "Categoría no disponible";
-  const nameM = name ? name.toUpperCase() : "Nombre no disponible";
+  // const materialName = material ? material : "Material no disponible";
+  // const categoryName = category ? category : "Categoría no disponible";
+  // const SizeName = size ? size : "Categoría no disponible";
+  // const nameM = name ? name.toUpperCase() : "Nombre no disponible";
 
-  const priceFormatted = parseFloat(price).toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
+  // const priceFormatted = parseFloat(price).toLocaleString("en-US", {
+  //   style: "currency",
+  //   currency: "USD",
+  // });
 
-  const handleDeleteClick = () => {
-    const idProduct = id;
-    onDelete(idProduct);
+  // const handleDeleteClick = () => {
+  //   const idProduct = id;
+  //   onDelete(idProduct);
+  // };
+  const handleAddToCartClick = () => {
+    const productId = id;
+    addToCart(productId); // Llama a la función addToCart pasada como prop
   };
+
   return (
-    // <div className={style.Card}>
-    //   <button className={style.onClonse} onClick={handleDelete}>
-    //     X
-    //   </button>
-    //   <img className={style.Imagen} src={image} alt={name} />
-    //   <div className={style.Container}>
-    //     <h3 className={style.name}>{nameM}</h3>
-    //     <p className={style.description}>{description}</p>
-    //     <p className={style.size}>Tamaño: {sizeM}</p>
-    //     <p className={style.price}>Precio: {priceFormatted}</p>
-    //     <p className={style.Material}>Material: {materialName}</p>
-    //     <p className={style.Category}>Categoría: {categoryName}</p>
-    //   </div>
-    // </div>
     <div className="product-card">
-      <img className="product-image" src={image} />{" "}
+      <img className="product-image" alt={name} src={image} />{" "}
       <div className="size-info">
         {" "}
         <strong>size: {size}</strong>
@@ -64,9 +55,9 @@ const Card = (props) => {
         <div className="cart-parent">
           <div className="ml-auto"></div>
           <div className="material-info">
-            <strong>▓ {Material}</strong>
+            <strong>▓ {material}</strong>
           </div>
-          <button className="cart-btn">
+          <button className="cart-btn" onClick={handleAddToCartClick}>
             <i className="fa fa-plus"></i>
             <strong>Add to Cart</strong>
           </button>

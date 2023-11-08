@@ -1,22 +1,5 @@
 @import "../../Style/StyleMaster.module.css";
 
-<<<<<<< Updated upstream
-.main{
-  display:grid;
-   gap: 20px ;
-
-  grid-template-columns: repeat(3, 1fr);
-}
-.ContainerCarusel{
-   grid-column: 1/4;
-}
-
-.ContainerAsaider{
-   grid-column: 1/2;
-}
-
-.ContainerHome{
-=======
 .main {
   display: grid;
   gap: 20px;
@@ -32,7 +15,6 @@
 }
 
 .ContainerHome {
->>>>>>> Stashed changes
   grid-column: 2/4;
   min-width: 350px;
   background: transparent;
@@ -41,50 +23,6 @@
   backdrop-filter: blur(20px);
   width: calc(100% - 24px);
   margin: 0 auto;
-<<<<<<< Updated upstream
-
-}
-.ContainerCards{
-  gap: 15px ;
-  display:grid;
-  grid-template-columns:repeat(
-    auto-fit, 
-    minmax(300px, 1fr)
-    );
-}
-
-.ContainerFooter{
-   grid-column: 1/4;
-}
-
-
-@media (width < 768px){
-  .main{
-  display:grid;
-   gap: 20px ;
-
-  grid-template-columns: repeat(1, 1fr);
-}
-.ContainerCarusel{
-   grid-column: 1/4;
-}
-
-.ContainerAsaider{
-   grid-column: 1/4;
-}
-
-.ContainerHome{
-  grid-column: 1/4;
-  min-width: 350px;
-  background: transparent;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
-  width: calc(100% - 24px);
-  margin: 0 auto;
-
-}
-=======
 }
 .ContainerCards {
   gap: 15px;
@@ -121,7 +59,6 @@
     width: calc(100% - 24px);
     margin: 0 auto;
   }
->>>>>>> Stashed changes
 }
 
 .ContainerAsaider,
@@ -149,20 +86,12 @@
 }
 
 .ContainerFooter {
-<<<<<<< Updated upstream
-=======
   width: 100%;
->>>>>>> Stashed changes
   height: 300px;
   background: transparent;
   overflow: auto;
 }
 
-<<<<<<< Updated upstream
-
-
-=======
->>>>>>> Stashed changes
 .BTNPreviu,
 .BTNNext,
 .BTNResetCards {
