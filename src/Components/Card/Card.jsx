@@ -31,20 +31,6 @@ const Card = (props) => {
     onDelete(idProduct);
   };
   return (
-    // <div className={style.Card}>
-    //   <button className={style.onClonse} onClick={handleDelete}>
-    //     X
-    //   </button>
-    //   <img className={style.Imagen} src={image} alt={name} />
-    //   <div className={style.Container}>
-    //     <h3 className={style.name}>{nameM}</h3>
-    //     <p className={style.description}>{description}</p>
-    //     <p className={style.size}>Tamaño: {sizeM}</p>
-    //     <p className={style.price}>Precio: {priceFormatted}</p>
-    //     <p className={style.Material}>Material: {materialName}</p>
-    //     <p className={style.Category}>Categoría: {categoryName}</p>
-    //   </div>
-    // </div>
     <div className="product-card">
       <img className="product-image" src={image} />{" "}
       <div className="size-info">
