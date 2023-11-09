@@ -10,10 +10,12 @@ export default function PagoPaypal ({cart}) {
 
     const user = useSelector((state) => state.userData) || localStorage.getItem("token");
 
-    console.log('user: ')
-    console.log(user)
-
     useEffect( () => {
+
+      let userData;
+      if (user?.userId){
+        userData = user
+      }
 
       const script = document.createElement('script');
       script.src = 'https://www.paypal.com/sdk/js?client-id=AUKGarEo-ucav0oQjyKzva7dAqIsw34z68G4K8L0gzEph-vJCrdhbbE9QYMHhBIrPSA6A4cKmu8XXvya&currency=USD';
@@ -66,7 +68,7 @@ export default function PagoPaypal ({cart}) {
                       },
                       body: JSON.stringify({
                         cart,
-                        user
+                        userData
                       }),
                     });
                     
@@ -121,7 +123,7 @@ export default function PagoPaypal ({cart}) {
       const container = document.querySelector("#result-message");
       container.innerHTML = message;
     }
-  }, []);
+  }, [cart, user]);
 
   return (
     <div>

@@ -55,7 +55,7 @@ const Card = (props) => {
         <div className="cart-parent">
           <div className="ml-auto"></div>
           <div className="material-info">
-            <strong>▓ {materialName}</strong>
+            <strong>▓ {material}</strong>
           </div>
           <button className="cart-btn" onClick={handleAddToCartClick}>
             <i className="fa fa-plus"></i>
