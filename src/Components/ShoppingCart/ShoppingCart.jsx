@@ -10,7 +10,7 @@ const ShoppingCart = () => {
       []
   );
 
-  console.log(JSON.parse(localStorage.getItem("token")));
+  // console.log(JSON.parse(localStorage.getItem("token")));
 
 
   useEffect(() => {
