@@ -10,6 +10,8 @@ const ShoppingCart = () => {
       []
   );
 
+  // console.log(JSON.parse(localStorage.getItem("token")));
+
   useEffect(() => {
     // Save the cart to localStorage whenever it changes
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -23,6 +25,9 @@ const ShoppingCart = () => {
       return item;
     });
     setCart(updatedCart);
+    console.log(cart);
+    console.log(JSON.parse(localStorage.getItem("cart")));
+    //Agregar al localStorage
   };
 
   const handleRemoveFromCart = (id) => {
@@ -41,11 +46,15 @@ const ShoppingCart = () => {
     const filteredCart = updatedCart.filter((item) => item !== null);
 
     setCart(filteredCart);
+    console.log(cart);
+    console.log(JSON.parse(localStorage.getItem("cart")));
+    //Quitar del localStorage
   };
 
   const handleRemoveAllFromCart = (id) => {
     const updatedCart = cart.filter((item) => item.id !== id);
     setCart(updatedCart);
+    //Quitar del localStorage
   };
 
   let total = 0;
@@ -71,7 +80,7 @@ const ShoppingCart = () => {
         ))}
       </article>
       <h1>Total a pagar = {priceFormatted}</h1>
-      <PagoPaypal cart={cart} total={total}/>
+      <PagoPaypal cart={cart} total={total} />
     </div>
   );
 };

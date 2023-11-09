@@ -164,16 +164,16 @@ function Home() {
 
   const handleProductAddToCart = (productId) => {
     const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
-
+    //Busca si existe el id del producto en el carrito
     const existingProductIndex = currentCart.findIndex(
       (product) => product.id === productId
     );
-
+      //Si no existe en el carrito lo busca en el Estado global
     if (existingProductIndex === -1) {
       const productToAdd = allProducts.find(
         (product) => product.id === productId
       );
-      if (productToAdd) {
+      if (productToAdd) { //Una vez que lo encuentra en el Estado lo agrega al carrito
         const updatedCart = [...currentCart, { ...productToAdd, cantidad: 1 }];
         localStorage.setItem("cart", JSON.stringify(updatedCart));
       }
@@ -182,7 +182,7 @@ function Home() {
       const updatedCart = [...currentCart];
       updatedCart[existingProductIndex] = {
         ...updatedCart[existingProductIndex],
-        count: updatedCart[existingProductIndex].cantidad + 1,
+        cantidad: updatedCart[existingProductIndex].cantidad + 1,
       };
       localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
