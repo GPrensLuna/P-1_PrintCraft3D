@@ -23,6 +23,8 @@ const ShoppingCart = () => {
       return item;
     });
     setCart(updatedCart);
+    console.log(cart);
+    console.log(JSON.parse(localStorage.getItem("cart")));
     //Agregar al localStorage
   };
 
@@ -42,6 +44,8 @@ const ShoppingCart = () => {
     const filteredCart = updatedCart.filter((item) => item !== null);
 
     setCart(filteredCart);
+    console.log(cart);
+    console.log(JSON.parse(localStorage.getItem("cart")));
     //Quitar del localStorage
   };
 
@@ -74,7 +78,7 @@ const ShoppingCart = () => {
         ))}
       </article>
       <h1>Total a pagar = {priceFormatted}</h1>
-      <PagoPaypal cart={cart} total={total}/>
+      <PagoPaypal cart={cart} total={total} />
     </div>
   );
 };
