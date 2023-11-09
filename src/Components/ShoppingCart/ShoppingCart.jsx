@@ -10,6 +10,9 @@ const ShoppingCart = () => {
       []
   );
 
+  console.log(JSON.parse(localStorage.getItem("token")));
+
+
   useEffect(() => {
     // Save the cart to localStorage whenever it changes
     localStorage.setItem("cart", JSON.stringify(cart));
