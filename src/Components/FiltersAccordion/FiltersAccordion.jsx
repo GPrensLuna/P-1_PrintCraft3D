@@ -12,7 +12,6 @@ const FiltersAccordion = ({
   const [fMateriales, setFmateriales] = useState(null);
   const [fCategoria, setFcategoria] = useState(null);
   const [fTamano, setFtamano] = useState(null);
-  const [reset, setReset] = useState(false);
 
   // contadores de elementos para los filtros
   let ABSCount = allProducts.filter((e) => {
@@ -42,6 +41,21 @@ const FiltersAccordion = ({
   let SizeSCount = allProducts.filter((e) => {
     return e.size === "S";
   });
+
+  // funciones para activar los filtros
+  const materialClickHandler = (value) => {
+    setFmateriales(value);
+    onMaterialChange(value);
+  };
+  const categoriaClickHandler = (value) => {
+    setFcategoria(value);
+    onCategoryChange(value);
+  };
+  const tamanoClickHandler = (value) => {
+    setFtamano(value);
+    onSizeChange(value);
+  };
+
   return (
     <Accordion defaultActiveKey={["0"]} alwaysOpen>
       <Accordion.Item eventKey="0">
@@ -52,17 +66,68 @@ const FiltersAccordion = ({
         </Accordion.Header>
         <Accordion.Body>
           <div className="popup">
-            <div className="list-item false">
-              <div className="value">ABS</div>
-              <div className="count">{ABSCount.length}</div>
+            <div
+              className="list-item false"
+              onClick={() => materialClickHandler("ABS")}
+            >
+              <div className="value">
+                {fMateriales === "ABS" ? (
+                  <strong style={{ color: "#3767a2" }}>ABS</strong>
+                ) : (
+                  "ABS"
+                )}
+              </div>
+              <div className="count">
+                {fMateriales === "ABS" ? (
+                  <strong style={{ color: "#3767a2" }}>
+                    {ABSCount.length}
+                  </strong>
+                ) : (
+                  ABSCount.length
+                )}
+              </div>
             </div>
-            <div className="list-item false">
-              <div className="value">PLA</div>
-              <div className="count">{PLACount.length}</div>
+            <div
+              className="list-item false"
+              onClick={() => materialClickHandler("PLA")}
+            >
+              <div className="value">
+                {fMateriales === "PLA" ? (
+                  <strong style={{ color: "#3767a2" }}>PLA</strong>
+                ) : (
+                  "PLA"
+                )}
+              </div>
+              <div className="count">
+                {fMateriales === "PLA" ? (
+                  <strong style={{ color: "#3767a2" }}>
+                    {PLACount.length}
+                  </strong>
+                ) : (
+                  PLACount.length
+                )}
+              </div>
             </div>
-            <div className="list-item false">
-              <div className="value">TPU</div>
-              <div className="count">{TPUCount.length}</div>
+            <div
+              className="list-item false"
+              onClick={() => materialClickHandler("TPU")}
+            >
+              <div className="value">
+                {fMateriales === "TPU" ? (
+                  <strong style={{ color: "#3767a2" }}>TPU</strong>
+                ) : (
+                  "TPU"
+                )}
+              </div>
+              <div className="count">
+                {fMateriales === "TPU" ? (
+                  <strong style={{ color: "#3767a2" }}>
+                    {TPUCount.length}
+                  </strong>
+                ) : (
+                  TPUCount.length
+                )}
+              </div>
             </div>
           </div>
         </Accordion.Body>
@@ -75,17 +140,68 @@ const FiltersAccordion = ({
         </Accordion.Header>
         <Accordion.Body>
           <div className="popup">
-            <div className="list-item active">
-              <div className="value">Accesorio</div>
-              <div className="count">{AccesorioCount.length}</div>
+            <div
+              className="list-item active"
+              onClick={() => categoriaClickHandler("accesorio")}
+            >
+              <div className="value">
+                {fCategoria === "accesorio" ? (
+                  <strong style={{ color: "#3767a2" }}>Accesorio</strong>
+                ) : (
+                  "Accesorio"
+                )}
+              </div>
+              <div className="count">
+                {fCategoria === "accesorio" ? (
+                  <strong style={{ color: "#3767a2" }}>
+                    {AccesorioCount.length}
+                  </strong>
+                ) : (
+                  AccesorioCount.length
+                )}
+              </div>
             </div>
-            <div className="list-item false">
-              <div className="value">Figura</div>
-              <div className="count">{FiguraCount.length}</div>
+            <div
+              className="list-item false"
+              onClick={() => categoriaClickHandler("figura")}
+            >
+              <div className="value">
+                {fCategoria === "figura" ? (
+                  <strong style={{ color: "#3767a2" }}>Figura</strong>
+                ) : (
+                  "Figura"
+                )}
+              </div>
+              <div className="count">
+                {fCategoria === "figura" ? (
+                  <strong style={{ color: "#3767a2" }}>
+                    {FiguraCount.length}
+                  </strong>
+                ) : (
+                  FiguraCount.length
+                )}
+              </div>
             </div>
-            <div className="list-item false">
-              <div className="value">Decoracion</div>
-              <div className="count">{DecoracionCount.length}</div>
+            <div
+              className="list-item false"
+              onClick={() => categoriaClickHandler("decoracion")}
+            >
+              <div className="value">
+                {fCategoria === "decoracion" ? (
+                  <strong style={{ color: "#3767a2" }}>Decoracion</strong>
+                ) : (
+                  "Decoracion"
+                )}
+              </div>
+              <div className="count">
+                {fCategoria === "decoracion" ? (
+                  <strong style={{ color: "#3767a2" }}>
+                    {DecoracionCount.length}
+                  </strong>
+                ) : (
+                  DecoracionCount.length
+                )}
+              </div>
             </div>
           </div>
         </Accordion.Body>
@@ -98,17 +214,68 @@ const FiltersAccordion = ({
         </Accordion.Header>
         <Accordion.Body>
           <div className="popup">
-            <div className="list-item active">
-              <div className="value">Size M</div>
-              <div className="count">{SizeMCount.length}</div>
+            <div
+              className="list-item active"
+              onClick={() => tamanoClickHandler("M")}
+            >
+              <div className="value">
+                {fTamano === "M" ? (
+                  <strong style={{ color: "#3767a2" }}>Size M</strong>
+                ) : (
+                  "Size M"
+                )}
+              </div>
+              <div className="count">
+                {fTamano === "M" ? (
+                  <strong style={{ color: "#3767a2" }}>
+                    {SizeMCount.length}
+                  </strong>
+                ) : (
+                  SizeMCount.length
+                )}
+              </div>
             </div>
-            <div className="list-item false">
-              <div className="value">Size S</div>
-              <div className="count">{SizeSCount.length}</div>
+            <div
+              className="list-item false"
+              onClick={() => tamanoClickHandler("S")}
+            >
+              <div className="value">
+                {fTamano === "S" ? (
+                  <strong style={{ color: "#3767a2" }}>Size S</strong>
+                ) : (
+                  "Size S"
+                )}
+              </div>
+              <div className="count">
+                {fTamano === "S" ? (
+                  <strong style={{ color: "#3767a2" }}>
+                    {SizeSCount.length}
+                  </strong>
+                ) : (
+                  SizeSCount.length
+                )}
+              </div>
             </div>
-            <div className="list-item false">
-              <div className="value">Size L</div>
-              <div className="count">{SizeLCount.length}</div>
+            <div
+              className="list-item false"
+              onClick={() => tamanoClickHandler("L")}
+            >
+              <div className="value">
+                {fTamano === "L" ? (
+                  <strong style={{ color: "#3767a2" }}>Size L</strong>
+                ) : (
+                  "Size L"
+                )}
+              </div>
+              <div className="count">
+                {fTamano === "L" ? (
+                  <strong style={{ color: "#3767a2" }}>
+                    {SizeLCount.length}
+                  </strong>
+                ) : (
+                  SizeLCount.length
+                )}
+              </div>
             </div>
           </div>
         </Accordion.Body>

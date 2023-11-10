@@ -8,6 +8,7 @@ const Aside = ({
   onCategoryChange,
   onSizeChange,
   allProducts,
+  resetAllFilters,
 }) => {
   return (
     <div>
@@ -18,7 +19,9 @@ const Aside = ({
               Filter results
               <span className="result-desc"> ({allProducts.length})</span>
             </div>
-            <button className="reset-button">Reset All </button>
+            <button className="reset-button" onClick={resetAllFilters}>
+              Reset All
+            </button>
           </div>
           <FiltersAccordion
             onMaterialChange={onMaterialChange}

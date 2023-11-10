@@ -36,32 +36,26 @@ function Home() {
     setCurrentPage(1);
   }, [limit]);
 
-  const [selectedMaterials, setSelectedMaterials] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState([]);
-  const [selectedSize, setSelectedSize] = useState([]);
+  const [selectedMaterials, setSelectedMaterials] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
 
   const handleMaterialChange = (material) => {
-    setSelectedMaterials((prevMaterials) => {
-      return prevMaterials.includes(material)
-        ? prevMaterials.filter((m) => m !== material)
-        : [...prevMaterials, material];
-    });
+    setSelectedMaterials(material);
   };
 
   const handleCategoryChange = (category) => {
-    setSelectedCategory((prevCategory) => {
-      return prevCategory.includes(category)
-        ? prevCategory.filter((c) => c !== category)
-        : [...prevCategory, category];
-    });
+    setSelectedCategory(category);
   };
 
   const handleSizeChange = (size) => {
-    setSelectedSize((prevSize) => {
-      return prevSize.includes(size)
-        ? prevSize.filter((s) => s !== size)
-        : [...prevSize, size];
-    });
+    setSelectedSize(size);
+  };
+
+  const resetAllFilters = () => {
+    setSelectedMaterials(null);
+    setSelectedCategory(null);
+    setSelectedSize(null);
   };
 
   useEffect(() => {
@@ -201,6 +195,7 @@ function Home() {
           onCategoryChange={handleCategoryChange}
           onSizeChange={handleSizeChange}
           allProducts={allProducts}
+          resetAllFilters={resetAllFilters}
         />
       </div>
 
