@@ -84,10 +84,10 @@ function Home() {
               },
             }
           );
-          
+
           if (response.status === 200) {
             const { data } = response;
-            console.log(data)
+            console.log(data);
             dispatch(addProductInfo(data.results));
             setCount(data.count);
             setLimit(data.limit);
@@ -206,11 +206,7 @@ function Home() {
           onMaterialChange={handleMaterialChange}
           onCategoryChange={handleCategoryChange}
           onSizeChange={handleSizeChange}
-<<<<<<< Updated upstream
           count={count}
-=======
-          allProducts={allProducts}
->>>>>>> Stashed changes
         />
       </div>
 

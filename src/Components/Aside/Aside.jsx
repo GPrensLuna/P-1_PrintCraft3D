@@ -3,31 +3,17 @@ import style from "./Aside.module.css";
 import "./Aside.css";
 import FiltersAccordion from "../FiltersAccordion/FiltersAccordion";
 
-<<<<<<< Updated upstream
 const Aside = ({ onMaterialChange, onCategoryChange, onSizeChange, count }) => {
-=======
-const Aside = ({
-  onMaterialChange,
-  onCategoryChange,
-  onSizeChange,
-  allProducts,
-}) => {
->>>>>>> Stashed changes
   return (
     <div>
       <aside className={style.aside}>
         <div>
           <div className="d-flex justify-content-between align-items-center mb-4">
             <div className="filter-results">
-<<<<<<< Updated upstream
-              Filter results  
-              <span className="result-desc">  {count}</span>
-=======
               Filter results
-              <span className="result-desc"> ({allProducts.length})</span>
->>>>>>> Stashed changes
+              <span className="result-desc"> {count}</span>
             </div>
-            <button className="reset-button">Reset All  </button>
+            <button className="reset-button">Reset All </button>
           </div>
           <FiltersAccordion
             onMaterialChange={onMaterialChange}
