@@ -206,7 +206,11 @@ function Home() {
           onMaterialChange={handleMaterialChange}
           onCategoryChange={handleCategoryChange}
           onSizeChange={handleSizeChange}
+<<<<<<< Updated upstream
           count={count}
+=======
+          allProducts={allProducts}
+>>>>>>> Stashed changes
         />
       </div>
 
