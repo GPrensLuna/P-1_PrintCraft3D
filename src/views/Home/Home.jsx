@@ -174,12 +174,13 @@ function Home() {
     const existingProductIndex = currentCart.findIndex(
       (product) => product.id === productId
     );
-      //Si no existe en el carrito lo busca en el Estado global
+    //Si no existe en el carrito lo busca en el Estado global
     if (existingProductIndex === -1) {
       const productToAdd = allProducts.find(
         (product) => product.id === productId
       );
-      if (productToAdd) { //Una vez que lo encuentra en el Estado lo agrega al carrito
+      if (productToAdd) {
+        //Una vez que lo encuentra en el Estado lo agrega al carrito
         const updatedCart = [...currentCart, { ...productToAdd, cantidad: 1 }];
         localStorage.setItem("cart", JSON.stringify(updatedCart));
       }
@@ -208,33 +209,6 @@ function Home() {
       </div>
 
       <div className={style.ContainerHome}>
-        <div className={style.ContainerFilter}>
-          <button
-            className={style.BTNPreviu}
-            onClick={() => loadPage(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Anterior
-          </button>
-          <span className={style.SpanCurrentPage}>
-            {currentPage} de {totalPages}
-          </span>
-          <button
-            className={style.BTNNext}
-            onClick={() => loadPage(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Siguiente
-          </button>
-          <select onChange={handleLimitChange} id="limit" defaultValue={12}>
-            <option value="4">4</option>
-            <option value="8">8</option>
-            <option value="12">12</option>
-            <option value="24">24</option>
-            <option value="48">48</option>
-          </select>
-        </div>
-
         <div className={style.ContainerCards}>
           {loading ? (
             <p>Cargando productos...</p>
@@ -263,7 +237,32 @@ function Home() {
           )}
         </div>
       </div>
-
+      <div className={style.ContainerFilter}>
+        <button
+          className={style.BTNPreviu}
+          onClick={() => loadPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Anterior
+        </button>
+        <span className={style.SpanCurrentPage}>
+          {currentPage} de {totalPages}
+        </span>
+        <button
+          className={style.BTNNext}
+          onClick={() => loadPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Siguiente
+        </button>
+        <select id="limit" defaultValue={12}>
+          <option value="4">4</option>
+          <option value="8">8</option>
+          <option value="12">12</option>
+          <option value="24">24</option>
+          <option value="48">48</option>
+        </select>
+      </div>
       <div className={style.ContainerFooter}>
         <Footer />
       </div>
