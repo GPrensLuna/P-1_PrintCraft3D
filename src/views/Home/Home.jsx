@@ -84,9 +84,10 @@ function Home() {
               },
             }
           );
-
+          
           if (response.status === 200) {
             const { data } = response;
+            console.log(data)
             dispatch(addProductInfo(data.results));
             setCount(data.count);
             setLimit(data.limit);
@@ -205,6 +206,7 @@ function Home() {
           onMaterialChange={handleMaterialChange}
           onCategoryChange={handleCategoryChange}
           onSizeChange={handleSizeChange}
+          count={count}
         />
       </div>
 
@@ -255,7 +257,7 @@ function Home() {
         >
           Siguiente
         </button>
-        <select id="limit" defaultValue={12}>
+        <select onChange={handleLimitChange} id="limit" defaultValue={12}>
           <option value="4">4</option>
           <option value="8">8</option>
           <option value="12">12</option>
