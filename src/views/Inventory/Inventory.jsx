@@ -84,8 +84,8 @@ export default function Inventory() {
             name="image"
             accept="image/*"
             onChange={(e) => {
-              setImageSelected(e.target.files[0]);
-            }}
+              setImageSelected(e.target.files[0]); 
+            } }
             className={style.InventarioInput}
           />
           <button onClick={() => uploadImage()}>Guardar foto</button>
@@ -196,7 +196,7 @@ export default function Inventory() {
           />
         </div>
         <div>
-          <button type="submit" className={style.InventarioSubmitButton}>
+          <button  onClick={() => uploadImage()} type="submit" className={style.InventarioSubmitButton}>
             Agregar Producto
           </button>
         </div>
@@ -204,3 +204,4 @@ export default function Inventory() {
     </div>
   );
 }
+
