@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./CardCart.module.css";
 
-const CardCart = ({ data, delOneFromCart, delAllFromCart }) => {
+const CardCart = ({ data, delAllFromCart, addToCart, removeFromCart }) => {
   const {
     id,
     name,
@@ -22,8 +22,6 @@ const CardCart = ({ data, delOneFromCart, delAllFromCart }) => {
   });
 
   const subTotal = price * cantidad;
-  // setTotal(total + subTotal);
-
   const subTotalS = parseFloat(subTotal).toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
@@ -39,12 +37,14 @@ const CardCart = ({ data, delOneFromCart, delAllFromCart }) => {
         <p className={style.price}>Precio: {priceFormatted}</p>
         <p className={style.material}>Material: {material}</p>
         <p className={style.category}>Categoría: {category}</p>
+        <p className={style.category}>CANTIDAD: {cantidad}</p>
         <p>
           <b>
             {priceFormatted} x {cantidad} = {subTotalS}
           </b>
         </p>
-        <button onClick={() => delOneFromCart(id)}>Eliminar Un Item</button>
+        <button onClick={() => addToCart(id)}>Agregar 1</button>
+        <button onClick={() => removeFromCart(id)}>Quitar 1</button>
         <br />
         <button onClick={() => delAllFromCart(id, true)}>
           Eliminar Todos los Items

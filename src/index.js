@@ -1,20 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
-import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
-
-import './App.css';
-import App from './App';
+import { createBrowserHistory } from "history"; // Import createBrowserHistory
+import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";
+import "./App.css";
+import App from "./App";
 
+// Create a history object
+const history = createBrowserHistory();
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+// Use the history object in the Router
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <React.StrictMode>
-      <BrowserRouter>
+      <BrowserRouter history={history}>
         <App />
       </BrowserRouter>
     </React.StrictMode>

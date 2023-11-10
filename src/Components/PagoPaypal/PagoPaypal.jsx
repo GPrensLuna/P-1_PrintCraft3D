@@ -1,15 +1,24 @@
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import style from './PagoPaypal.module.css'
 
-const { URL } = require('../../config.js')
+const { URL } = require("../../config.js");
 
 //import { useHistory } from 'react-router-dom';
 
-export default function PagoPaypal () {
+export default function PagoPaypal ({cart}) {
+
+    const user = useSelector((state) => state.userData) || localStorage.getItem("token");
+
     useEffect( () => {
 
+      let userData;
+      if (user?.userId){
+        userData = user
+      }
+
       const script = document.createElement('script');
-      script.src = 'https://www.paypal.com/sdk/js?client-id=AX9x2jfxzV8uGUYopXvUCznoG20uKrzb_eLQIyo2qmKN8N4L7JMuhNle5iwqa4pxY5L5oTbEPapXAE0v&currency=USD';
+      script.src = 'https://www.paypal.com/sdk/js?client-id=AUKGarEo-ucav0oQjyKzva7dAqIsw34z68G4K8L0gzEph-vJCrdhbbE9QYMHhBIrPSA6A4cKmu8XXvya&currency=USD';
       script.async = true;
 
       script.onload = () => {
@@ -29,12 +38,7 @@ export default function PagoPaypal () {
                       // use the "body" param to optionally pass additional order information
                       // like product ids and quantities
                       body: JSON.stringify({
-                        cart: [
-                          {
-                            id: "YOUR PRODUCT ID",
-                            quantity: "YOUR PRODUCT QUANTITY",
-                          },
-                        ],
+                        cart,
                       }),
                     });
                     
@@ -62,6 +66,10 @@ export default function PagoPaypal () {
                       headers: {
                         "Content-Type": "application/json",
                       },
+                      body: JSON.stringify({
+                        cart,
+                        userData
+                      }),
                     });
                     
                     const orderData = await response.json();
@@ -108,21 +116,20 @@ export default function PagoPaypal () {
              .render("#paypal-button-container");
             }
 
-            document.body.appendChild(script);
-         
-      // Example function to show a result to the user. Your site's UI library can be used instead.
-      function resultMessage(message) {
-        const container = document.querySelector("#result-message");
-        container.innerHTML = message;
-      }
-      
-    }, [])
-  
-    return (
-      <div>
-        <h1>Elija su metodo de pago</h1>
-        <div id="paypal-button-container" className={style.divPaypal}></div>
-        {/* Resto del contenido de la página de Inventario */}
-      </div>
-    )
+    document.body.appendChild(script);
+
+    // Example function to show a result to the user. Your site's UI library can be used instead.
+    function resultMessage(message) {
+      const container = document.querySelector("#result-message");
+      container.innerHTML = message;
+    }
+  }, [cart, user]);
+
+  return (
+    <div>
+      <h1>Elija su metodo de pago</h1>
+      <div id="paypal-button-container" className={style.divPaypal}></div>
+      {/* Resto del contenido de la página de Inventario */}
+    </div>
+  );
 }

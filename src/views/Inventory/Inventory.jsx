@@ -4,12 +4,12 @@ import { URL } from "../../config.js";
 import axios from "axios";
 
 export default function Inventory() {
-  const [errors, setErrors] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
-  const [imageSelected, setImageSelectd] = useState("");
+  const [imageSelected, setImageSelected] = useState("");
+  console.log(imagePreview);
   const [producto, setProducto] = useState({
     name: "",
-    image: null,
+    image: "",
     description: "",
     size: "",
     price: "",
@@ -20,64 +20,42 @@ export default function Inventory() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setProducto({ ...producto, [name]: value });
-
-    setErrors({
-      ...errors,
-      [name]: undefined,
-    });
+    setProducto((prevProducto) => ({ ...prevProducto, [name]: value }));
   };
 
-  const handleImageUpload = (e) => {
-    const image = e.target.files[0];
-    setProducto({ ...producto, image });
+  const uploadImage = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", imageSelected);
+      formData.append("upload_preset", "PrintCraft3DImagenes");
 
-    if (image) {
-      setProducto({
-        ...producto,
-        imagen: image,
-      });
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/deeufsn3k/image/upload",
+        formData
+      );
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(image);
-    } else {
-      console.error("No se ha seleccionado una imagen");
+      setImagePreview(response.data.url);
+    } catch (error) {
+      console.error("Error al subir la imagen:", error.message);
     }
   };
 
-  // funcion para subir imagenes a cloudinary
-  const uploadImage = () => {
-    const formData = new FormData()
-    formData.append("file", imageSelected)
-    formData.append("upload_preset", "PrintCraft3DImagenes")
-
-    axios.post("https://api.cloudinary.com/v1_1/deeufsn3k/image/upload",
-    formData).then((response) =>{
-      console.log(response);
-    });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    fetch(`${URL}Inventario`, {
-      method: "POST",
-      body: JSON.stringify(producto),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Producto agregado exitosamente:", data);
-      })
-      .catch((error) => {
-        console.error("Error al agregar producto:", error);
-      });
-  };
 
+    try {
+      await uploadImage();
+
+      await axios.post(`${URL}Inventario`, {
+        ...producto,
+        image: imagePreview,
+      });
+
+      alert("Producto agregado exitosamente");
+    } catch (error) {
+      console.error("Error al agregar producto:", error.message);
+    }
+  };
   return (
     <div className={style.InventarioContainer}>
       <h2 className={style.InventarioTitle}>Registrar Producto</h2>
@@ -106,10 +84,12 @@ export default function Inventory() {
             name="image"
             accept="image/*"
             onChange={(e) => {
-              setImageSelectd(e.target.files[0]); handleImageUpload(e); 
+              setImageSelected(e.target.files[0]); 
             } }
             className={style.InventarioInput}
           />
+          <button onClick={() => uploadImage()}>Guardar foto</button>
+
           <div className={style.PreviuImg}>
             {imagePreview && (
               <img

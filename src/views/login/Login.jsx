@@ -10,6 +10,7 @@ export default function Login() {
   });
 
   const [mostrarRegistro, setMostrarRegistro] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -25,33 +26,26 @@ export default function Login() {
 
       if (response.ok) {
         const responseData = await response.json();
-
         const token = responseData.token;
 
         if (!token) {
-          console.error(
-            "El token no está presente en la respuesta del servidor"
-          );
+          setError("El token no está presente en la respuesta del servidor");
           alert("Inicio de sesión fallido");
         } else {
           localStorage.setItem("token", token);
-
-          // Accede al token almacenado y decódificalo
-
           window.location.href = "/Profile";
         }
       } else {
         const errorData = await response.json();
 
         if (response.status === 403 && errorData.blocked) {
-          console.error("Cuenta bloqueada");
-          alert("La cuenta está bloqueada. Por favor, contacta al soporte.");
+          setError("La cuenta está bloqueada. Por favor, contacta al soporte.");
         } else {
-          console.error("Error en la respuesta:", errorData);
-          alert("Inicio de sesión fallido");
+          setError(errorData.error || errorData.message);
         }
       }
     } catch (error) {
+      setError("Se produjo un error durante el inicio de sesión");
       console.error("Error durante el inicio de sesión:", error);
       alert("Se produjo un error durante el inicio de sesión");
     }
@@ -106,6 +100,13 @@ export default function Login() {
                   }
                 />
               </div>
+
+              {/* Display error message */}
+              {error && (
+                <div id="errorContainer" style={{ color: "red" }}>
+                  {error}
+                </div>
+              )}
 
               {/* Submit button */}
               <div className={style.submitButtonConten}>
