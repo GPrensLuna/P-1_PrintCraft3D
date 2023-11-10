@@ -17,55 +17,61 @@ function App() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userData);
 
-useEffect(() => {
-  const fetchProfileData = async () => {
-    try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        // No token available, handle it gracefully (e.g., redirect to login page)
-        console.log("No user token available. Redirect to login page.");
-        return;
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+  
+        if (!token) {
+          // No token available, handle it gracefully (e.g., redirect to login page)
+          //console.log("No user token available. Redirect to login page.");
+          return;
+        }
+  
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        };
+  
+        const response = await fetch(`${URL}Profile`, {
+          method: "GET",
+          headers: headers,
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          dispatch(LoginUser(data));
+        } else if (response.status === 401) {
+          // Handle unauthorized access, e.g., by redirecting to login page
+          //console.log("Unauthorized access. Redirect to login page.");
+        } else {
+          // Only log errors to the console when the user is attempting to log in
+          if (response.url.endsWith("login-endpoint")) {
+            //console.error(
+            //  "Error al obtener los datos del perfil:",
+             // response.statusText
+            //);
+          }
+        }
+      } catch (error) {
+        // Only log errors to the console when the user is attempting to log in
+        //console.error("Error en la solicitud fetch:", error);
       }
+    };
+  
+    fetchProfileData();
+  }, [dispatch]);
+  
 
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      };
 
-      const response = await fetch(`${URL}Profile`, {
-        method: "GET",
-        headers: headers,
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        dispatch(LoginUser(data));
-      } else if (response.status === 401) {
-        // Handle unauthorized access, e.g., by redirecting to login page
-        console.log("Unauthorized access. Redirect to login page.");
-      } else {
-        console.error(
-          "Error al obtener los datos del perfil:",
-          response.statusText
-        );
-      }
-    } catch (error) {
-      console.error("Error en la solicitud fetch:", error);
-    }
+  const logout = async () => {
+    localStorage.removeItem("token");
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  
+    // Redirect to the login page or show a confirmation message
+    window.location.href = "/LoginUp";
   };
-
-  fetchProfileData();
-}, [dispatch]);
-
-
-
-const logout = async () => {
-  localStorage.removeItem("token");
-  document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
-  window.location.href = "/LoginUp";
-};
+  
 
   return (
     <div className="App">
