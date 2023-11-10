@@ -1,6 +1,6 @@
 import Accordion from "react-bootstrap/Accordion";
+import { useState } from "react";
 import "./FiltersAccordion.css";
-import { all } from "axios";
 
 const FiltersAccordion = ({
   onMaterialChange,
@@ -8,33 +8,39 @@ const FiltersAccordion = ({
   onSizeChange,
   allProducts,
 }) => {
+  // seleccion de los filtros
+  const [fMateriales, setFmateriales] = useState(null);
+  const [fCategoria, setFcategoria] = useState(null);
+  const [fTamano, setFtamano] = useState(null);
+  const [reset, setReset] = useState(false);
+
   // contadores de elementos para los filtros
   let ABSCount = allProducts.filter((e) => {
-    return e.material == "ABS";
+    return e.material === "ABS";
   });
   let PLACount = allProducts.filter((e) => {
-    return e.material == "PLA";
+    return e.material === "PLA";
   });
   let TPUCount = allProducts.filter((e) => {
-    return e.material == "TPU";
+    return e.material === "TPU";
   });
   let AccesorioCount = allProducts.filter((e) => {
-    return e.category == "accesorio";
+    return e.category === "accesorio";
   });
   let FiguraCount = allProducts.filter((e) => {
-    return e.category == "figura";
+    return e.category === "figura";
   });
   let DecoracionCount = allProducts.filter((e) => {
-    return e.category == "decoracion";
+    return e.category === "decoracion";
   });
   let SizeMCount = allProducts.filter((e) => {
-    return e.size == "M";
+    return e.size === "M";
   });
   let SizeLCount = allProducts.filter((e) => {
-    return e.size == "L";
+    return e.size === "L";
   });
   let SizeSCount = allProducts.filter((e) => {
-    return e.size == "S";
+    return e.size === "S";
   });
   return (
     <Accordion defaultActiveKey={["0"]} alwaysOpen>
