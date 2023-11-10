@@ -9,11 +9,6 @@ import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
-///// test data
-// import Data from "../../Assets/Data/Data.js";
-//// bootstrap
-// import Col from "react-bootstrap/Col";
-// import Row from "react-bootstrap/Row";
 
 function Home() {
   const dispatch = useDispatch();
@@ -41,32 +36,26 @@ function Home() {
     setCurrentPage(1);
   }, [limit]);
 
-  const [selectedMaterials, setSelectedMaterials] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState([]);
-  const [selectedSize, setSelectedSize] = useState([]);
+  const [selectedMaterials, setSelectedMaterials] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
 
   const handleMaterialChange = (material) => {
-    setSelectedMaterials((prevMaterials) => {
-      return prevMaterials.includes(material)
-        ? prevMaterials.filter((m) => m !== material)
-        : [...prevMaterials, material];
-    });
+    setSelectedMaterials(material);
   };
 
   const handleCategoryChange = (category) => {
-    setSelectedCategory((prevCategory) => {
-      return prevCategory.includes(category)
-        ? prevCategory.filter((c) => c !== category)
-        : [...prevCategory, category];
-    });
+    setSelectedCategory(category);
   };
 
   const handleSizeChange = (size) => {
-    setSelectedSize((prevSize) => {
-      return prevSize.includes(size)
-        ? prevSize.filter((s) => s !== size)
-        : [...prevSize, size];
-    });
+    setSelectedSize(size);
+  };
+
+  const resetAllFilters = () => {
+    setSelectedMaterials(null);
+    setSelectedCategory(null);
+    setSelectedSize(null);
   };
 
   useEffect(() => {
@@ -84,10 +73,9 @@ function Home() {
               },
             }
           );
-          
+
           if (response.status === 200) {
             const { data } = response;
-            console.log(data)
             dispatch(addProductInfo(data.results));
             setCount(data.count);
             setLimit(data.limit);
@@ -206,7 +194,8 @@ function Home() {
           onMaterialChange={handleMaterialChange}
           onCategoryChange={handleCategoryChange}
           onSizeChange={handleSizeChange}
-          count={count}
+          allProducts={allProducts}
+          resetAllFilters={resetAllFilters}
         />
       </div>
 

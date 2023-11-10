@@ -19,7 +19,6 @@
   padding: 0.5rem 0;
 }
 
-.popup .list-item.active .value {
-  color: #3767a2;
-  text-decoration: solid;
+.list-item:hover {
+  background-color: rgb(243, 249, 255);
 }
