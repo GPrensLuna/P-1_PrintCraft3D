@@ -2,12 +2,11 @@
 
 .main {
   display: grid;
-  gap: 20px;
-
-  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  grid-template-columns: 1fr 2fr 1fr;
 }
 .ContainerCarusel {
-  grid-column: 1/4;
+  grid-column: 1 /4;
 }
 
 .ContainerAsaider {
@@ -17,17 +16,13 @@
 .ContainerHome {
   grid-column: 2/4;
   min-width: 350px;
-  background: transparent;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
-  width: calc(100% - 24px);
-  margin: 0 auto;
+  width: 100%;
+  background-color: #dfe3eb;
 }
 .ContainerCards {
-  gap: 15px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin-right: 2rem;
 }
 
 .ContainerFooter {
@@ -37,8 +32,7 @@
 @media (width < 768px) {
   .main {
     display: grid;
-    gap: 20px;
-
+    gap: 1rem;
     grid-template-columns: repeat(1, 1fr);
   }
   .ContainerCarusel {
@@ -50,23 +44,16 @@
   }
 
   .ContainerHome {
-    grid-column: 1/4;
+    grid-column: 2/4;
     min-width: 350px;
-    background: transparent;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-    border-radius: 20px;
-    backdrop-filter: blur(20px);
-    width: calc(100% - 24px);
-    margin: 0 auto;
+    width: 100%;
+    margin: 0;
   }
 }
 
 .ContainerAsaider,
 .ContainerFilter {
-  margin: 12px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
+  margin: 0;
 }
 
 .ContainerAsaider {
