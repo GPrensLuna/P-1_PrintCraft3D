@@ -2,7 +2,7 @@
 
 .main {
   display: grid;
-  gap: 0.5rem;
+  gap: 1rem;
   grid-template-columns: 1fr 2fr 1fr;
 }
 .ContainerCarusel {
@@ -11,6 +11,7 @@
 
 .ContainerAsaider {
   grid-column: 1/2;
+  gap: 1rem;
 }
 
 .ContainerHome {
@@ -62,6 +63,10 @@
   min-width: 300px;
   background-color: #fff;
   overflow: hidden;
+}
+
+.ContainerAsaider aside {
+  margin-left: 1rem;
 }
 
 .ContainerCarusel {
