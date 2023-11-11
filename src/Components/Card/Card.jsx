@@ -1,6 +1,7 @@
 import React from "react";
 // import style from "./Card.module.css";
 import "./Card.css";
+import Swal from "sweetalert2";
 
 const Card = (props) => {
   const {
@@ -30,6 +31,29 @@ const Card = (props) => {
   //   const idProduct = id;
   //   onDelete(idProduct);
   // };
+
+  //funcion para para ver el detail del producto con sweetalert
+  const handleDetailProductClick = () => {
+    Swal.fire({
+      title: `<strong>${name}</strong>`,
+      html:
+        `<img class="img-card" src="${image}" alt="${name}" />` +
+        `<p><strong>Descripción:</strong> ${description}</p>` +
+        `<p><strong>Tamaño:</strong> ${size}</p>` +
+        `<p><strong>Precio:</strong> ${price}</p>` +
+        `<p><strong>Material:</strong> ${material}</p>`,
+      showCloseButton: true,
+      showCancelButton: true,
+      focusConfirm: false,
+      confirmButtonText: "Agregar al carrito",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleAddToCartClick();
+      }
+    });
+ };
+
   const handleAddToCartClick = () => {
     const productId = id;
     addToCart(productId); // Llama a la función addToCart pasada como prop
@@ -37,7 +61,7 @@ const Card = (props) => {
 
   return (
     <div className="product-card">
-      <img className="product-image" alt={name} src={image} />{" "}
+      <img className="product-image" alt={name} src={image}  onClick={handleDetailProductClick}/>{" "}
       <div className="size-info">
         {" "}
         <strong>size: {size}</strong>
