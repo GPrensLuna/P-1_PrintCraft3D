@@ -1,73 +1,93 @@
 @import "../../Style/StyleMaster.module.css";
-.Container {
-  display: flex;
-  margin: 15px;
-  flex-direction: row;
-  justify-content: space-around;
-}
 
-.ContainerHome {
-  margin: 12px 12px 0px 12px;
-  background: transparent;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
+.main {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+.ContainerCarusel {
+  grid-column: 1 /4;
 }
 
 .ContainerAsaider {
-  margin: 12px 12px 0px 12px;
-  width: 500px;
+  grid-column: 1/2;
+  gap: 1rem;
+}
+
+.ContainerHome {
+  grid-column: 2/4;
+  min-width: 350px;
+  width: 100%;
+  background-color: #dfe3eb;
+}
+.ContainerCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin-right: 2rem;
+}
+
+.ContainerFooter {
+  grid-column: 1/4;
+}
+
+@media (width < 768px) {
+  .main {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .ContainerCarusel {
+    grid-column: 1/4;
+  }
+
+  .ContainerAsaider {
+    grid-column: 1/4;
+  }
+
+  .ContainerHome {
+    grid-column: 2/4;
+    min-width: 350px;
+    width: 100%;
+    margin: 0;
+  }
+}
+
+.ContainerAsaider,
+.ContainerFilter {
+  margin: 0;
+}
+
+.ContainerAsaider {
+  width: 100%;
+  max-width: 500px;
   min-width: 300px;
-  background-color: var(--btn-paginado-background);
+  background-color: #fff;
   overflow: hidden;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
+}
+
+.ContainerAsaider aside {
+  margin-left: 1rem;
 }
 
 .ContainerCarusel {
-  min-width: 800px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 100%;
-  background: transparent;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
+  min-width: 100%;
 }
 
 .ContainerCards {
-  margin: 10px;
-  display: flex;
-  padding: 10px;
-  flex-wrap: wrap;
-  min-width: 500px;
-  overflow: hidden;
-  justify-items: center;
+  min-width: 300px;
 }
 
-.ContainerFooter{
+.ContainerFooter {
   width: 100%;
-  height: 300PX;
+  height: 300px;
   background: transparent;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
   overflow: auto;
-}
-
-.ContainerFilter {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
 }
 
 .BTNPreviu,
 .BTNNext,
 .BTNResetCards {
-  background-color:var(--btn-paginado-background);
+  background-color: var(--btn-paginado-background);
   color: var(--color-white);
   border: none;
   padding: 10px 20px;

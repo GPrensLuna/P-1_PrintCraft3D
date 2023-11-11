@@ -12,7 +12,11 @@ import { LoginUser } from "./redux/actions/actions.js";
 import { URL } from "./config.js";
 import "./App.css";
 import ShoppingCart from "./Components/ShoppingCart/ShoppingCart";
+
 import Register from "../src/views/Register/Register.jsx";
+
+
+//hola
 
 function App() {
   const dispatch = useDispatch();
@@ -23,35 +27,47 @@ function App() {
     const fetchProfileData = async () => {
       try {
         const token = localStorage.getItem("token");
-
-        if (token) {
-          const headers = {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          };
-
-          const response = await fetch(`${URL}Profile`, {
-            method: "GET",
-            headers: headers,
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            dispatch(LoginUser(data));
-          } else {
-            console.error(
-              "Error al obtener los datos del perfil:",
-              response.statusText
-            );
+  
+        if (!token) {
+          // No token available, handle it gracefully (e.g., redirect to login page)
+          //console.log("No user token available. Redirect to login page.");
+          return;
+        }
+  
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        };
+  
+        const response = await fetch(`${URL}Profile`, {
+          method: "GET",
+          headers: headers,
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          dispatch(LoginUser(data));
+        } else if (response.status === 401) {
+          // Handle unauthorized access, e.g., by redirecting to login page
+          //console.log("Unauthorized access. Redirect to login page.");
+        } else {
+          // Only log errors to the console when the user is attempting to log in
+          if (response.url.endsWith("login-endpoint")) {
+            //console.error(
+            //  "Error al obtener los datos del perfil:",
+             // response.statusText
+            //);
           }
         }
       } catch (error) {
-        console.error("Error en la solicitud fetch:", error);
+        // Only log errors to the console when the user is attempting to log in
+        //console.error("Error en la solicitud fetch:", error);
       }
     };
-
+  
     fetchProfileData();
   }, [dispatch]);
+
 
   const logout = async () => {
     localStorage.removeItem("token");
@@ -59,6 +75,19 @@ function App() {
 
     window.location.href = "/LoginUp";
   };
+
+  
+
+
+  const logout = async () => {
+    localStorage.removeItem("token");
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  
+    // Redirect to the login page or show a confirmation message
+    window.location.href = "/LoginUp";
+  };
+  
+
 
   return (
     <div className="App row justify-content-center">

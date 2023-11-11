@@ -8,7 +8,7 @@ import Aside from "../../Components/Aside/Aside.jsx";
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
-import { addProductInfo, addToCart } from "../../redux/actions/actions.js";
+import { addProductInfo } from "../../redux/actions/actions.js";
 
 function Home() {
   const dispatch = useDispatch();
@@ -22,38 +22,40 @@ function Home() {
     return savedPage ? parseInt(savedPage, 10) : 1;
   });
 
-  const pokemonPerPage = 12;
   const [count, setCount] = useState(0);
-  const [limit, setLimit] = useState(pokemonPerPage);
+  const [limit, setLimit] = useState("");
 
-  const [selectedMaterials, setSelectedMaterials] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState([]);
-  const [selectedSize, setSelectedSize] = useState([]);
+  const handleLimitChange = (event) => {
+    const newLimit = parseInt(event.target.value, 10);
+    setLimit(newLimit);
+    setCurrentPage(1);
+  };
 
-  
+  useEffect(() => {
+    setLimit(limit);
+    setCurrentPage(1);
+  }, [limit]);
+
+  const [selectedMaterials, setSelectedMaterials] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
 
   const handleMaterialChange = (material) => {
-    setSelectedMaterials((prevMaterials) => {
-      return prevMaterials.includes(material)
-        ? prevMaterials.filter((m) => m !== material)
-        : [...prevMaterials, material];
-    });
+    setSelectedMaterials(material);
   };
 
   const handleCategoryChange = (category) => {
-    setSelectedCategory((prevCategory) => {
-      return prevCategory.includes(category)
-        ? prevCategory.filter((c) => c !== category)
-        : [...prevCategory, category];
-    });
+    setSelectedCategory(category);
   };
 
   const handleSizeChange = (size) => {
-    setSelectedSize((prevSize) => {
-      return prevSize.includes(size)
-        ? prevSize.filter((s) => s !== size)
-        : [...prevSize, size];
-    });
+    setSelectedSize(size);
+  };
+
+  const resetAllFilters = () => {
+    setSelectedMaterials(null);
+    setSelectedCategory(null);
+    setSelectedSize(null);
   };
 
   useEffect(() => {
@@ -61,7 +63,7 @@ function Home() {
       const fetchData = async () => {
         try {
           const response = await axios.get(
-            `${URL}Inventario?page=${currentPage}&limit=${pokemonPerPage}`,
+            `${URL}Inventario?page=${currentPage}&limit=${limit}`,
             {
               params: {
                 material: selectedMaterials,
@@ -74,8 +76,6 @@ function Home() {
 
           if (response.status === 200) {
             const { data } = response;
-            console.log("data", data);
-            console.log("Data", data.results);
             dispatch(addProductInfo(data.results));
             setCount(data.count);
             setLimit(data.limit);
@@ -89,17 +89,25 @@ function Home() {
             );
           }
         } catch (error) {
-          setError("Hubo un error al recuperar los productos.");
-          setLoading(false);
-          console.error("Error en la solicitud:", error.message);
-          alert(
-            "Hubo un error al cargar los productos. Por favor, inténtelo de nuevo."
-          );
+          if (axios.isCancel(error)) {
+            // Manejar cancelación de la solicitud (si es necesario)
+          } else if (error.response && error.response.status === 404) {
+            // Si es un error 404, cambiar currentPage a 1
+            setCurrentPage(1);
+          } else {
+            setError("Hubo un error al recuperar los productos.");
+            setLoading(false);
+            console.error("Error en la solicitud:", error.message);
+            alert(
+              "Hubo un error al cargar los productos. Por favor, inténtelo de nuevo."
+            );
+          }
         }
       };
 
       fetchData();
     }, 300);
+
     return () => clearTimeout(delayDebounceFn);
   }, [
     currentPage,
@@ -107,8 +115,10 @@ function Home() {
     selectedCategory,
     selectedSize,
     searchValue,
+    limit,
     dispatch,
   ]);
+
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
   }, [currentPage]);
@@ -123,6 +133,14 @@ function Home() {
   };
 
   const handleProductDelete = async (idProduct) => {
+    const shouldDelete = window.confirm(
+      "¿Seguro que quieres eliminar este producto?"
+    );
+
+    if (!shouldDelete) {
+      return;
+    }
+
     try {
       const response = await axios.delete(`${URL}DeleteProdut/${idProduct}`);
 
@@ -139,70 +157,103 @@ function Home() {
     }
   };
 
+  const handleProductAddToCart = (productId) => {
+    const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+    //Busca si existe el id del producto en el carrito
+    const existingProductIndex = currentCart.findIndex(
+      (product) => product.id === productId
+    );
+    //Si no existe en el carrito lo busca en el Estado global
+    if (existingProductIndex === -1) {
+      const productToAdd = allProducts.find(
+        (product) => product.id === productId
+      );
+      if (productToAdd) {
+        //Una vez que lo encuentra en el Estado lo agrega al carrito
+        const updatedCart = [...currentCart, { ...productToAdd, cantidad: 1 }];
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+      }
+    } else {
+      // Si ya está en el carrito, actualiza el contador
+      const updatedCart = [...currentCart];
+      updatedCart[existingProductIndex] = {
+        ...updatedCart[existingProductIndex],
+        cantidad: updatedCart[existingProductIndex].cantidad + 1,
+      };
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    }
+  };
+
   return (
     <main className={style.main}>
-      <CarouselHome />
-
-      <div className={style.Container}>
-        <div className={style.ContainerAsaider}>
-          <Aside
-            onMaterialChange={handleMaterialChange}
-            onCategoryChange={handleCategoryChange}
-            onSizeChange={handleSizeChange}
-          />
-        </div>
-
-        <div className={style.ContainerHome}>
-          <div className={style.ContainerFilter}>
-            <button
-              className={style.BTNPreviu}
-              onClick={() => loadPage(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Anterior
-            </button>
-            <span className={style.SpanCurrentPage}>
-              {currentPage} de {totalPages}
-            </span>
-            <button
-              className={style.BTNNext}
-              onClick={() => loadPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Siguiente
-            </button>
-          </div>
-
-          <div className={style.ContainerCards}>
-            {loading ? (
-              <p>Cargando productos...</p>
-            ) : error ? (
-              <p>{error}</p>
-            ) : allProducts && allProducts.length > 0 ? (
-              <div className={style.ContainerCards}>
-                {allProducts.map((e) => (
-                  <Card
-                    key={e.id}
-                    id={e.id}
-                    name={e.name}
-                    image={e.image}
-                    description={e.description}
-                    size={e.size}
-                    price={e.price}
-                    material={e.material}
-                    category={e.category}
-                    onDelete={handleProductDelete}
-                    addToCart={() => dispatch(addToCart(e.id))}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p>No se encontraron productos.</p>
-            )}
-          </div>
-        </div>
+      <div className={style.ContainerCarusel}>
+        <CarouselHome />
+      </div>
+      <div className={style.ContainerAsaider}>
+        <Aside
+          onMaterialChange={handleMaterialChange}
+          onCategoryChange={handleCategoryChange}
+          onSizeChange={handleSizeChange}
+          allProducts={allProducts}
+          resetAllFilters={resetAllFilters}
+        />
       </div>
 
+      <div className={style.ContainerHome}>
+        <div className={style.ContainerCards}>
+          {loading ? (
+            <p>Cargando productos...</p>
+          ) : error ? (
+            <p>{error}</p>
+          ) : allProducts && allProducts.length > 0 ? (
+            <div className={style.ContainerCards}>
+              {allProducts.map((e) => (
+                <Card
+                  key={e.id}
+                  id={e.id}
+                  name={e.name}
+                  image={e.image}
+                  description={e.description}
+                  size={e.size}
+                  price={e.price}
+                  material={e.material}
+                  category={e.category}
+                  onDelete={handleProductDelete}
+                  addToCart={() => handleProductAddToCart(e.id)}
+                />
+              ))}
+            </div>
+          ) : (
+            <p>No se encontraron productos.</p>
+          )}
+        </div>
+      </div>
+      <div className={style.ContainerFilter}>
+        <button
+          className={style.BTNPreviu}
+          onClick={() => loadPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Anterior
+        </button>
+        <span className={style.SpanCurrentPage}>
+          {currentPage} de {totalPages}
+        </span>
+        <button
+          className={style.BTNNext}
+          onClick={() => loadPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Siguiente
+        </button>
+        <select onChange={handleLimitChange} id="limit" defaultValue={12}>
+          <option value="4">4</option>
+          <option value="8">8</option>
+          <option value="12">12</option>
+          <option value="24">24</option>
+          <option value="48">48</option>
+        </select>
+      </div>
       <div className={style.ContainerFooter}>
         <Footer />
       </div>

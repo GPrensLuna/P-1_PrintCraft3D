@@ -1,5 +1,6 @@
 @import "../../Style/StyleMaster.module.css";
 
+
 /* .NavBar { 
     background-color: var(--Nabar-background);
     height: 70px;
@@ -57,3 +58,8 @@
 .AsideNavBarInput:focus {
   border: 2px solid grey;
 } */
+
+.NavBarContent{
+  display: grid
+}
+
