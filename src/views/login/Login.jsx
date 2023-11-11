@@ -1,37 +1,17 @@
 import logo from "../../imagenes/logo.png";
 import LoginRedSocial from "../../Components/LoginRedSocial/LoginRedSocial.jsx";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
-import * as Yup from 'yup';
+import { Link, useNavigate } from "react-router-dom";
+import * as Yup from "yup";
+import axios from "axios";
+import { URL } from "../../config.js";
+import Swal from "sweetalert2";
+import BotonAtras from "../../Components/BotonAtras/BotonAtras.jsx";
 
-// import Register from "./Register.jsx";
-// import { URL } from "../../config.js";
-
-// const validate = (values) => {
-//   const errors = {};
-
-//    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
-
-//    if(values.password.match(regex)){
-//      errors.password = "Password valido"
-//    } else {
-//      errors.password = "La contraseña es valida"
-//    }
-
-//   if (!values.email) {
-//     errors.email = "Email requerido";
-//   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-//     errors.email = "Email invalido";
-//   }
-
-//   if (!values.password) {
-//     errors.password = "Contraseña requerida";
-//   } 
-
-//   return errors;
-// };
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -39,16 +19,48 @@ export default function Login() {
     },
 
     validationSchema: Yup.object({
-      email: Yup.string().email('Correo invalido').required('Espacio obligatorio'),
+      email: Yup.string()
+        .email("Correo inválido")
+        .required("Espacio obligatorio"),
       password: Yup.string()
-        .min(6, 'Debe tener minimo 6 Caracteres')
-        .required('Espacio obligatorio'),
+        .min(6, "Debe tener mínimo 6 caracteres")
+        .required("Espacio obligatorio"),
     }),
-   
-    onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
+
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post(`${URL}login`, values);
+
+        if (response.status === 200) {
+          navigate("/");
+          Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Iniciando sesion",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        } else {
+          Swal.fire({
+            title: "Inicio de sesión Fallido",
+            text: "That thing is still around?",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      } catch (error) {
+        console.error("Error durante el inicio de sesión:", error);
+
+        Swal.fire({
+          title: "Inicio de sesión Fallido",
+          text: "Email o Password incorrecta",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
     },
   });
+
   return (
     <div className="container-lg">
       <div className="row w-100 d-flex justify-content-center">
@@ -63,26 +75,11 @@ export default function Login() {
             onSubmit={formik.handleSubmit}
           >
             <Link to="/">
-              <button className="btn btn-outline-primary">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="30"
-                  fill="currentColor"
-                  className="bi bi-arrow-left-short"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"
-                  />
-                </svg>
-              </button>
+              <BotonAtras/>
             </Link>
 
-            <h2 className="fw -bold text-center pt-1 mb-2">Bienvenido</h2>
+            <h2 className="fw-bold text-center pt-1 mb-2">Bienvenido</h2>
 
-            {/* Label Email*/}
             <div className="mb-4">
               <label htmlFor="email" className="form-label">
                 Email
@@ -101,7 +98,7 @@ export default function Login() {
                 <div className="text-danger m-1">{formik.errors.email}</div>
               ) : null}
             </div>
-            {/*Label Password */}
+
             <div className="mb-4">
               <label htmlFor="password" className="form-label">
                 Password
@@ -120,47 +117,39 @@ export default function Login() {
                 <div className="text-danger m-1">{formik.errors.password}</div>
               ) : null}
             </div>
+
             <div className="mb-4 form-check">
               <input
                 type="checkbox"
                 name="connected"
                 className="form-check-input"
               />
-              <label for="connected" className="form-check-label">
+              <label htmlFor="connected" className="form-check-label">
                 Mantenerme conectado
               </label>
             </div>
-            {/* Boton Iniciar Sesion*/}
+
             <div className="d-grid">
               <button type="submit" className="btn btn-primary">
-                Iniciar Sesion
+                Iniciar Sesión
               </button>
             </div>
+
             <div className="my-3">
               <span>
-                ¿No tienes Cuenta?{" "}
-                <span className="">
-                  {" "}
-                  {/*onClick={mostrarRegistroHandler} */}{" "}
-                  <Link to="/Register">Registrate </Link>
-                </span>
+                ¿No tienes Cuenta? <Link to="/Register">Regístrate</Link>
               </span>
 
               <br />
-              <Link>
-                <span className="pe-auto" aria-disabled="true">
-                  Recuperar Password
-                </span>
-              </Link>
+              <span className="pe-auto" aria-disabled="true">
+                <Link>Recuperar Contraseña</Link>
+              </span>
             </div>
-            {/* Login con redes sociales */}
+
             <LoginRedSocial />
           </form>
         </div>
       </div>
-
-      {/* )
-      } */}
     </div>
   );
 }
