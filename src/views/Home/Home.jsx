@@ -19,6 +19,7 @@ function Home() {
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.allProducts);
   const searchValue = useSelector((state) => state.searchValue);
+  const userData = useSelector((state) => state.userData);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -174,12 +175,13 @@ function Home() {
     const existingProductIndex = currentCart.findIndex(
       (product) => product.id === productId
     );
-      //Si no existe en el carrito lo busca en el Estado global
+    //Si no existe en el carrito lo busca en el Estado global
     if (existingProductIndex === -1) {
       const productToAdd = allProducts.find(
         (product) => product.id === productId
       );
-      if (productToAdd) { //Una vez que lo encuentra en el Estado lo agrega al carrito
+      if (productToAdd) {
+        //Una vez que lo encuentra en el Estado lo agrega al carrito
         const updatedCart = [...currentCart, { ...productToAdd, cantidad: 1 }];
         localStorage.setItem("cart", JSON.stringify(updatedCart));
       }

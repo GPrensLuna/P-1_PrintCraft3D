@@ -2,18 +2,21 @@ import React, { useState, useEffect } from "react";
 import CardCart from "../CardCart/CardCart.jsx";
 import PagoPaypal from "../PagoPaypal/PagoPaypal.jsx";
 import style from "./ShoppingCart.module.css";
+import { useSelector } from "react-redux";
 
 const ShoppingCart = () => {
+  const userData = useSelector((state) => state.userData);
+
   const [cart, setCart] = useState(
     (typeof window !== "undefined" &&
       JSON.parse(localStorage.getItem("cart"))) ||
       []
   );
 
-  // console.log(JSON.parse(localStorage.getItem("token")));
+  // console.log(userData);
+  // console.log(JSON.parse(localStorage.getItem("cart")));
 
   useEffect(() => {
-    // Save the cart to localStorage whenever it changes
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
@@ -27,7 +30,6 @@ const ShoppingCart = () => {
     setCart(updatedCart);
     console.log(cart);
     console.log(JSON.parse(localStorage.getItem("cart")));
-    //Agregar al localStorage
   };
 
   const handleRemoveFromCart = (id) => {
@@ -48,13 +50,11 @@ const ShoppingCart = () => {
     setCart(filteredCart);
     console.log(cart);
     console.log(JSON.parse(localStorage.getItem("cart")));
-    //Quitar del localStorage
   };
 
   const handleRemoveAllFromCart = (id) => {
     const updatedCart = cart.filter((item) => item.id !== id);
     setCart(updatedCart);
-    //Quitar del localStorage
   };
 
   let total = 0;
