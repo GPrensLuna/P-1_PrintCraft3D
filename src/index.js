@@ -1,5 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -13,7 +14,7 @@ import App from "./App";
 const history = createBrowserHistory();
 
 // Use the history object in the Router
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <React.StrictMode>
