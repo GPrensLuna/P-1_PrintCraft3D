@@ -68,17 +68,6 @@ function App() {
     fetchProfileData();
   }, [dispatch]);
 
-
-  const logout = async () => {
-    localStorage.removeItem("token");
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
-    window.location.href = "/LoginUp";
-  };
-
-  
-
-
   const logout = async () => {
     localStorage.removeItem("token");
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
