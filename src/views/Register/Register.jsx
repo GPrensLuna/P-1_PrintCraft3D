@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import style from "./Login.module.css";
+import style from "../login/Login.module.css";
 import { URL } from "../../config.js";
-import Login from "./Login";
-import validation from "./validation";
+import Login from "../login/Login.jsx";
+import validation from "../login/validation";
 
 export default function Registering() {
   const initialState = {
