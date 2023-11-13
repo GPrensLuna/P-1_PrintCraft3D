@@ -30,7 +30,7 @@ export default function Login() {
     onSubmit: async (values) => {
         try {
           const response = await axios.post(`${URL}login`, values);
-      
+
           if (response.status === 200) {
             const responseData = response.data;
             const token = responseData.token;
@@ -44,7 +44,6 @@ export default function Login() {
               });
             } else {
               localStorage.setItem("token", token);
-              navigate("/Profile");
               Swal.fire({
                 position: "top-center",
                 icon: "success",
@@ -61,6 +60,8 @@ export default function Login() {
               confirmButtonText: "OK",
             });
           }
+          navigate("/Profile");
+
         } catch (error) {
           console.error("Error durante el inicio de sesión:", error);
       
@@ -74,8 +75,6 @@ export default function Login() {
       },
       
   });
-
-  
 
   return (
     <div className="container-lg">
