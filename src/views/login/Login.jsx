@@ -1,7 +1,7 @@
 import logo from "../../imagenes/logo.png";
 import LoginRedSocial from "../../Components/LoginRedSocial/LoginRedSocial.jsx";
 import { useFormik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
 import { URL } from "../../config.js";
@@ -10,7 +10,6 @@ import BotonAtras from "../../Components/BotonAtras/BotonAtras.jsx";
 
 
 export default function Login() {
-  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -60,7 +59,7 @@ export default function Login() {
               confirmButtonText: "OK",
             });
           }
-          navigate("/Profile");
+          window.location.href = "/Profile";
 
         } catch (error) {
           console.error("Error durante el inicio de sesión:", error);
