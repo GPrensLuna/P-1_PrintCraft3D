@@ -8,14 +8,17 @@ const { URL } = require("../../config.js");
 
 export default function PagoPaypal ({cart}) {
 
-    const user = useSelector((state) => state.userData) || localStorage.getItem("token");
+    const user =  useSelector((state) => state.userData);
 
     useEffect( () => {
+
 
       let userData;
       if (user?.userId){
         userData = user
       }
+
+      
 
       const script = document.createElement('script');
       script.src = 'https://www.paypal.com/sdk/js?client-id=AUKGarEo-ucav0oQjyKzva7dAqIsw34z68G4K8L0gzEph-vJCrdhbbE9QYMHhBIrPSA6A4cKmu8XXvya&currency=USD';
