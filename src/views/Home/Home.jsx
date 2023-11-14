@@ -42,6 +42,15 @@ function Home() {
     setCurrentPage(1);
   }, [limit]);
 
+  // let userData2;
+  // useEffect(() => {
+  //   // let userData2;
+  //   console.log(userData);
+  //   if (userData?.userId) {
+  //     userData2 = userData;
+  //   }
+  // }, [userData]);
+
   const [selectedMaterials, setSelectedMaterials] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [selectedSize, setSelectedSize] = useState([]);
@@ -169,6 +178,21 @@ function Home() {
     }
   };
 
+  const addToCart = async (userId, productId) => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3001/PrintCraft3D/addOneToCart",
+        {
+          userId,
+          productId,
+        }
+      );
+      console.log(data);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   const handleProductAddToCart = (productId) => {
     const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
     //Busca si existe el id del producto en el carrito
@@ -194,6 +218,9 @@ function Home() {
       };
       localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
+    console.log(`User ID: ${userData.userId}`);
+    console.log(`Product ID: ${productId}`);
+    addToCart(userData.userId, productId);
   };
 
   return (

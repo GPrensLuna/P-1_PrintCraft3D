@@ -2,26 +2,21 @@ import React, { useState, useEffect } from "react";
 import CardCart from "../CardCart/CardCart.jsx";
 import PagoPaypal from "../PagoPaypal/PagoPaypal.jsx";
 import style from "./ShoppingCart.module.css";
-import { useSelector } from "react-redux";
-import axios from "axios";
+// import { useSelector } from "react-redux";
+// import axios from "axios";
 
 const ShoppingCart = () => {
-  const userData =
-    useSelector((state) => state.userData) || localStorage.getItem("token");
+  // const userData = useSelector((state) => state.userData);
 
   const [cart, setCart] = useState(
     (typeof window !== "undefined" &&
       JSON.parse(localStorage.getItem("cart"))) ||
       []
   );
-  var userData2;
-  useEffect(() => {
-    if (userData?.userId) {
-      userData2 = userData;
-    }
 
+  useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart, userData]);
+  }, [cart]);
 
   const handleAddToCart = (id) => {
     const updatedCart = cart.map((item) => {
@@ -69,22 +64,21 @@ const ShoppingCart = () => {
   });
 
   // console.log(userData.userId);
-  console.log(userData2.userId);
   // console.log(userData.userId);
   // console.log(JSON.parse(localStorage.getItem("cart")));
-  const carrito = JSON.parse(localStorage.getItem("cart"));
+  // const carrito = JSON.parse(localStorage.getItem("cart"));
 
-  const addToCart = async (dataCart) => {
-    try {
-      const { data } = await axios.post(
-        "http://localhost:3001/PrintCraft3D/addToCart",
-        dataCart
-      );
-      console.log(data);
-    } catch (error) {
-      alert(error.message);
-    }
-  };
+  // const addToCart = async (dataCart) => {
+  //   try {
+  //     const { data } = await axios.post(
+  //       "http://localhost:3001/PrintCraft3D/addToCart",
+  //       dataCart
+  //     );
+  //     console.log(data);
+  //   } catch (error) {
+  //     alert(error.message);
+  //   }
+  // };
 
   // addToCart(userData.userId, carrito, total);
 

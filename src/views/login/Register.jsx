@@ -39,6 +39,20 @@ export default function Registering() {
     );
   };
 
+  const createCart = async (userId) => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3001/PrintCraft3D/shoppingCart",
+        {
+          userId,
+        }
+      );
+      // console.log(data);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -49,6 +63,8 @@ export default function Registering() {
         if (response.status === 201) {
           alert("Registro exitoso");
           setFormData(initialState);
+          // console.log(response.data);
+          createCart(response.data.ID);
         } else {
           alert("Hubo un error en el registro");
         }
