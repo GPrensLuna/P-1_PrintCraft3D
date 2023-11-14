@@ -24,33 +24,20 @@ function App() {
     const fetchProfileData = async () => {
       try {
         const token = localStorage.getItem("token");
-
-        if (!token) {
-          console.log("No token found");
-          return;
-        }
-
+  
         const headers = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         };
-
-        console.log("Sending request to:", `${URL}Profile`);
-        console.log("Request headers:", headers);
-
+  
         const response = await fetch(`${URL}Profile`, {
           method: "GET",
           headers: headers,
         });
-
-        console.log("Response status:", response.status);
-
+  
         if (response.ok) {
           const data = await response.json();
-          console.log("Received data:", data);
           dispatch(LoginUser(data));
-        } else if (response.status === 401) {
-          console.log("Unauthorized access");
         } else {
           if (response.url.endsWith("login-endpoint")) {
             console.log("Request to login-endpoint failed");

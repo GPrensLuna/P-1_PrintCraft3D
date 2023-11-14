@@ -161,7 +161,7 @@ function Home() {
   const addToCart = async (userId, productId) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:3001/PrintCraft3D/addOneToCart",
+        `${URL}addOneToCart`,
         {
           userId,
           productId,

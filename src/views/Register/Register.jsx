@@ -67,7 +67,7 @@ const Register = () => {
   const createCart = async (userId) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:3001/PrintCraft3D/shoppingCart",
+        `${URL}shoppingCart`,
         {
           userId,
         }
