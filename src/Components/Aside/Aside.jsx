@@ -10,6 +10,37 @@ const Aside = ({
   allProducts,
   resetAllFilters,
 }) => {
+  const getAllProductsCounts = () => {
+    let counts = {};
+    counts["ABSCount"] = allProducts.filter((e) => {
+      return e.material === "ABS";
+    }).length;
+    counts["PLACount"] = allProducts.filter((e) => {
+      return e.material === "PLA";
+    }).length;
+    counts["TPUCount"] = allProducts.filter((e) => {
+      return e.material === "TPU";
+    }).length;
+    counts["accesorioCount"] = allProducts.filter((e) => {
+      return e.category === "accesorio";
+    }).length;
+    counts["figuraCount"] = allProducts.filter((e) => {
+      return e.category === "figura";
+    }).length;
+    counts["decoracionCount"] = allProducts.filter((e) => {
+      return e.category === "decoracion";
+    }).length;
+    counts["sizeMCount"] = allProducts.filter((e) => {
+      return e.size === "M";
+    }).length;
+    counts["sizeLCount"] = allProducts.filter((e) => {
+      return e.size === "L";
+    }).length;
+    counts["sizeSCount"] = allProducts.filter((e) => {
+      return e.size === "S";
+    }).length;
+    return counts;
+  };
   return (
     <div>
       <aside className={style.aside}>
@@ -27,7 +58,7 @@ const Aside = ({
             onMaterialChange={onMaterialChange}
             onCategoryChange={onCategoryChange}
             onSizeChange={onSizeChange}
-            allProducts={allProducts}
+            getAllProductsCounts={getAllProductsCounts}
           />
         </div>
       </aside>
