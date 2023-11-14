@@ -1,9 +1,0 @@
-.ContainerCards {
-  margin: 10px;
-  display: flex;
-  padding: 10px;
-  flex-wrap: wrap;
-  min-width: 500px;
-  overflow: hidden;
-  justify-items: center;
-}

@@ -7,8 +7,7 @@ const { URL } = require("../../config.js");
 //import { useHistory } from 'react-router-dom';
 
 export default function PagoPaypal({ cart }) {
-  const user =
-    useSelector((state) => state.userData) || localStorage.getItem("token");
+  const user = useSelector((state) => state.userData);
 
   useEffect(() => {
     let userData;
@@ -135,7 +134,7 @@ export default function PagoPaypal({ cart }) {
   }, [cart, user]);
 
   return (
-    <div>
+    <div className={style.container}>
       <h1>Elija su metodo de pago</h1>
       <div id="paypal-button-container" className={style.divPaypal}></div>
       {/* Resto del contenido de la página de Inventario */}

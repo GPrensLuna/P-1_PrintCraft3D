@@ -9,11 +9,6 @@ import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
-///// test data
-// import Data from "../../Assets/Data/Data.js";
-//// bootstrap
-// import Col from "react-bootstrap/Col";
-// import Row from "react-bootstrap/Row";
 
 function Home() {
   const dispatch = useDispatch();
@@ -42,41 +37,26 @@ function Home() {
     setCurrentPage(1);
   }, [limit]);
 
-  // let userData2;
-  // useEffect(() => {
-  //   // let userData2;
-  //   console.log(userData);
-  //   if (userData?.userId) {
-  //     userData2 = userData;
-  //   }
-  // }, [userData]);
-
-  const [selectedMaterials, setSelectedMaterials] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState([]);
-  const [selectedSize, setSelectedSize] = useState([]);
+  const [selectedMaterials, setSelectedMaterials] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
 
   const handleMaterialChange = (material) => {
-    setSelectedMaterials((prevMaterials) => {
-      return prevMaterials.includes(material)
-        ? prevMaterials.filter((m) => m !== material)
-        : [...prevMaterials, material];
-    });
+    setSelectedMaterials(material);
   };
 
   const handleCategoryChange = (category) => {
-    setSelectedCategory((prevCategory) => {
-      return prevCategory.includes(category)
-        ? prevCategory.filter((c) => c !== category)
-        : [...prevCategory, category];
-    });
+    setSelectedCategory(category);
   };
 
   const handleSizeChange = (size) => {
-    setSelectedSize((prevSize) => {
-      return prevSize.includes(size)
-        ? prevSize.filter((s) => s !== size)
-        : [...prevSize, size];
-    });
+    setSelectedSize(size);
+  };
+
+  const resetAllFilters = () => {
+    setSelectedMaterials(null);
+    setSelectedCategory(null);
+    setSelectedSize(null);
   };
 
   useEffect(() => {
@@ -233,37 +213,12 @@ function Home() {
           onMaterialChange={handleMaterialChange}
           onCategoryChange={handleCategoryChange}
           onSizeChange={handleSizeChange}
+          allProducts={allProducts}
+          resetAllFilters={resetAllFilters}
         />
       </div>
 
       <div className={style.ContainerHome}>
-        <div className={style.ContainerFilter}>
-          <button
-            className={style.BTNPreviu}
-            onClick={() => loadPage(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Anterior
-          </button>
-          <span className={style.SpanCurrentPage}>
-            {currentPage} de {totalPages}
-          </span>
-          <button
-            className={style.BTNNext}
-            onClick={() => loadPage(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Siguiente
-          </button>
-          <select onChange={handleLimitChange} id="limit" defaultValue={12}>
-            <option value="4">4</option>
-            <option value="8">8</option>
-            <option value="12">12</option>
-            <option value="24">24</option>
-            <option value="48">48</option>
-          </select>
-        </div>
-
         <div className={style.ContainerCards}>
           {loading ? (
             <p>Cargando productos...</p>
@@ -292,7 +247,32 @@ function Home() {
           )}
         </div>
       </div>
-
+      <div className={style.ContainerFilter}>
+        <button
+          className={style.BTNPreviu}
+          onClick={() => loadPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Anterior
+        </button>
+        <span className={style.SpanCurrentPage}>
+          {currentPage} de {totalPages}
+        </span>
+        <button
+          className={style.BTNNext}
+          onClick={() => loadPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Siguiente
+        </button>
+        <select onChange={handleLimitChange} id="limit" defaultValue={12}>
+          <option value="4">4</option>
+          <option value="8">8</option>
+          <option value="12">12</option>
+          <option value="24">24</option>
+          <option value="48">48</option>
+        </select>
+      </div>
       <div className={style.ContainerFooter}>
         <Footer />
       </div>

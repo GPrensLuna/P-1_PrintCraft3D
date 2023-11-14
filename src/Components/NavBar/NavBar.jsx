@@ -21,7 +21,8 @@ function NavBar({ userData, logout }) {
   }, [localSearchValue, dispatch]);
 
   return (
-    <Navbar expand="lg" bg="primary" data-bs-theme="dark" fixed="top">
+    
+    <Navbar expand="lg" bg="primary" data-bs-theme="dark" fixed="top" >
       <Container fluid>
         <Navbar.Brand href="/">
           <img
@@ -49,7 +50,7 @@ function NavBar({ userData, logout }) {
             <>
               <Nav.Link href="/UserList">UserList</Nav.Link>
               <Nav.Link href="/ProductList">ProductList</Nav.Link>
-              <Nav.Link href="/Inventario">Inventario</Nav.Link>
+              <Nav.Link href="/Inventory">Inventario</Nav.Link>
               <Nav.Link href="/Profile">{userData.name}</Nav.Link>
             </>
           ) : null}

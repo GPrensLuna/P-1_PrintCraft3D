@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { URL } from "../../config.js";
 import styles from "./UserList.module.css";
 
-// Componente de Fila de Usuario
 const UserRow = ({
   user,
   editing,
@@ -93,21 +92,6 @@ const UserRow = ({
       {editing ? (
         <div className={styles.inputContainer}>
           <label className={styles.inputLabel}></label>
-          <input
-            className={styles.editInput}
-            type="password"
-            value={editedValues.password}
-            onChange={(e) => onInputChange("password", e.target.value)}
-          />
-        </div>
-      ) : (
-        user.password
-      )}
-    </td>
-    <td>
-      {editing ? (
-        <div className={styles.inputContainer}>
-          <label className={styles.inputLabel}></label>
           <select
             className={styles.editInput}
             value={editedValues.roll || ""}
@@ -166,7 +150,6 @@ const UserList = () => {
       phoneNumber: "",
       email: "",
       deleted: "",
-      password: "",
       roll: "",
     },
   });
@@ -211,7 +194,6 @@ const UserList = () => {
         phoneNumber: "",
         email: "",
         deleted: "",
-        password: "",
         roll: "",
       },
     });
@@ -273,7 +255,6 @@ const UserList = () => {
               <th>Fecha de Nacimiento</th>
               <th>Teléfono</th>
               <th>Email</th>
-              <th>Password</th>
               <th>Role</th>
               <th>deleted</th>
               <th>Acciones</th>

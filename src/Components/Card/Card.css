@@ -1,3 +1,24 @@
+.detail-card {
+  display: flex;
+  align-items: center;
+  min-width: 350px;
+  min-height: 400px;
+  cursor: pointer;
+ }
+ 
+ .detail-card .detail-img {
+  border-radius: 8px;
+  height: 400px;
+  left: -250px;
+  position: absolute;
+  top: 80px;
+  width: 350px;
+ }
+
+ .detail-card .detail-info {
+  padding-left: 100px;
+ }
+
 .product-card .product-image {
   border-radius: 8px;
   height: 160px;

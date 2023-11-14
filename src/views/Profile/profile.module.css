@@ -1,0 +1,17 @@
+.container {
+    margin-top: 150px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .greeting {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .loading {
+    font-size: 18px;
+    color: gray;
+  }
