@@ -10,7 +10,7 @@ import PagoPaypal from "./Components/PagoPaypal/PagoPaypal";
 import { useSelector, useDispatch } from "react-redux";
 import { LoginUser } from "./redux/actions/actions.js";
 import { URL } from "./config.js";
-import "./App.css";
+// import "./App.css";
 import ShoppingCart from "./Components/ShoppingCart/ShoppingCart";
 
 import Register from "../src/views/Register/Register.jsx";
@@ -47,20 +47,21 @@ function App() {
         console.error("Error during fetchProfileData:", error);
       }
     };
-  
+
     fetchProfileData();
   }, [dispatch]);
-  
 
   const logout = async () => {
     localStorage.removeItem("token");
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     window.location.href = "/LoginUp";
   };
-  
+
   return (
     <div className="App row justify-content-center">
-      {pathname !== "/LoginUp" && pathname !== "/Inventory" && <NavBar userData={userData} logout={logout} />}
+      {pathname !== "/LoginUp" && pathname !== "/Inventory" && (
+        <NavBar userData={userData} logout={logout} />
+      )}
 
       <Routes>
         <Route path="/" element={<Home />} />
