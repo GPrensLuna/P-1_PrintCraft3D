@@ -54,9 +54,7 @@ const Card = (props) => {
        cancelButtonText: "Cancelar",
        confirmButtonColor: "#202020",
     }).then((result) => {
-       if (result.isConfirmed) {
-         handleAddToCartClick();
-       }
+  
     });
    };
    
