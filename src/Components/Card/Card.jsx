@@ -55,7 +55,7 @@ const Card = (props) => {
        confirmButtonColor: "#202020",
     }).then((result) => {
        if (result.isConfirmed) {
-        //  handleAddToCartClick();
+         handleAddToCartClick();
        }
     });
    };
