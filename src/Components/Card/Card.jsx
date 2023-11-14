@@ -12,7 +12,7 @@ const Card = (props) => {
     price,
     size,
     material,
-    // category,
+    category,
     // onDelete,
     addToCart,
   } = props;
@@ -35,25 +35,31 @@ const Card = (props) => {
   //funcion para para ver el detail del producto con sweetalert
   const handleDetailProductClick = () => {
     Swal.fire({
-      title: `<strong>${name}</strong>`,
-      html:
-        `<img class="img-card" src="${image}" alt="${name}" />` +
-        `<p><strong>Descripción:</strong> ${description}</p>` +
-        `<p><strong>Tamaño:</strong> ${size}</p>` +
-        `<p><strong>Precio:</strong> ${price}</p>` +
-        `<p><strong>Material:</strong> ${material}</p>`,
-      showCloseButton: true,
-      showCancelButton: true,
-      focusConfirm: false,
-      confirmButtonText: "Agregar al carrito",
-      cancelButtonText: "Cancelar",
+       title: `<strong>${name}</strong>`,
+       html:
+         `<div class="detail-card">
+            <img class="detail-img" src="${image}" alt="${name}" />
+            <div class="detail-info">
+              <p><strong>Descripción:</strong> ${description}</p>
+              <p><strong>Tamaño:</strong> ${size}</p>
+              <p><strong>Material:</strong> ${material}</p>
+              <p><strong>Categoria:</strong> ${category}</p>
+              <p><strong>Precio:</strong> $${price}</p>
+            </div>
+          </div>`,
+       showCloseButton: true,
+       showCancelButton: true,
+       focusConfirm: false,
+       confirmButtonText: "Agregar al carrito",
+       cancelButtonText: "Cancelar",
+       confirmButtonColor: "#202020",
     }).then((result) => {
-      if (result.isConfirmed) {
-        handleAddToCartClick();
-      }
+       if (result.isConfirmed) {
+         handleAddToCartClick();
+       }
     });
- };
-
+   };
+   
   const handleAddToCartClick = () => {
     const productId = id;
     addToCart(productId); // Llama a la función addToCart pasada como prop

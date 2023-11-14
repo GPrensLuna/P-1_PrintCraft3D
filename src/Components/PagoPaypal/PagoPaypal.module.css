@@ -1,4 +1,9 @@
 .divPaypal {
-    position: relative;
-    margin-left: 30%;
+    display: flex;
+    background-color: white;  
+}
+
+.container {
+    background-color: white;
+
 }
