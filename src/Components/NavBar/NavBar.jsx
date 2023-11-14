@@ -50,7 +50,7 @@ function NavBar({ userData, logout }) {
             <>
               <Nav.Link href="/UserList">UserList</Nav.Link>
               <Nav.Link href="/ProductList">ProductList</Nav.Link>
-              <Nav.Link href="/Inventario">Inventario</Nav.Link>
+              <Nav.Link href="/Inventory">Inventario</Nav.Link>
               <Nav.Link href="/Profile">{userData.name}</Nav.Link>
             </>
           ) : null}

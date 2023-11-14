@@ -1,27 +1,32 @@
 import React from "react";
 import google from "../../imagenes/google.png";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { get, ref, set } from "firebase/database";
-import { auth, database } from "../../firebase.js";
+import axios from "axios";
+import { URL } from '../../config.js';
+import { GoogleAuthProvider, signInWithPopup, auth } from "../../firebase.js";
 
 const LoginRedSocial = () => {
+
   const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+  
     try {
-      const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-
-      console.log("Google Auth Result:", result);
-
-      const userRef = ref(database, 'usuarios/' + result.user.uid);
-      const snapshot = await get(userRef);
-
-      if (!snapshot.exists()) {
-        set(userRef, {
-          email: result.user.email,
-        });
-      }
+      const user = result.user;
+  
+      console.log("Información del usuario autenticado con Google:", user);
+  
+      const response = await axios.post(`${URL}Google`, {
+        firstName: user.displayName,
+        email: user.email,
+        roll: "Client",
+      });
+  
+      const receivedToken = response.data.token;
+      localStorage.setItem("token", receivedToken);
+      window.location.href = "/Profile";
     } catch (error) {
-      console.error("Error durante la autenticación con Google:", error);
+      console.error("Error al autenticar con Google:", error.message);
+      console.error("Detalles del error:", error.response);
     }
   };
 
@@ -32,7 +37,11 @@ const LoginRedSocial = () => {
       </div>
       <div className="row">
         <div className="col">
-          <button type="button" className="btn btn-outline-danger w-100 my-1" onClick={handleGoogleSignIn}>
+          <button
+            type="button"
+            className="btn btn-outline-danger w-100 my-1"
+            onClick={handleGoogleSignIn}
+          >
             <div className="row align-items-center">
               <div className="col-2">
                 <img src={google} alt="Google" width="32" className="" />

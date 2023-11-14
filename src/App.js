@@ -26,6 +26,7 @@ function App() {
         const token = localStorage.getItem("token");
   
         if (!token) {
+          console.log("No token found");
           return;
         }
   
@@ -34,25 +35,35 @@ function App() {
           Authorization: `Bearer ${token}`,
         };
   
+        console.log("Sending request to:", `${URL}Profile`);
+        console.log("Request headers:", headers);
+  
         const response = await fetch(`${URL}Profile`, {
           method: "GET",
           headers: headers,
         });
   
+        console.log("Response status:", response.status);
+  
         if (response.ok) {
           const data = await response.json();
+          console.log("Received data:", data);
           dispatch(LoginUser(data));
         } else if (response.status === 401) {
+          console.log("Unauthorized access");
         } else {
           if (response.url.endsWith("login-endpoint")) {
+            console.log("Request to login-endpoint failed");
           }
         }
       } catch (error) {
+        console.error("Error during fetchProfileData:", error);
       }
     };
   
     fetchProfileData();
   }, [dispatch]);
+  
 
   const logout = async () => {
     localStorage.removeItem("token");
@@ -60,18 +71,16 @@ function App() {
     window.location.href = "/LoginUp";
   };
   
-console.log(userData)
-
   return (
     <div className="App row justify-content-center">
-      {pathname !== "/LoginUp" && pathname !== "/Inventario" && <NavBar userData={userData} logout={logout} />}
+      {pathname !== "/LoginUp" && pathname !== "/Inventory" && <NavBar userData={userData} logout={logout} />}
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Carrito" element={<ShoppingCart />}></Route>
         <Route path="/LoginUp" element={<Login />} />
         <Route path="/Profile" element={<Profile userData={userData} />} />
-        <Route path="/Inventario" element={<Inventory />} />
+        <Route path="/Inventory" element={<Inventory />} />
         <Route path="/Pagar" element={<PagoPaypal />}></Route>
         <Route path="/UserList" element={<UserList />} />
         <Route path="/ProductList" element={<ProductList />} />
