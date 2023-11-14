@@ -4,8 +4,8 @@ import * as Yup from "yup";
 import axios from "axios";
 import { URL } from "../../config.js";
 import Login from "../login/Login";
-import './style.css';
-import Swal from 'sweetalert2';
+import "./style.css";
+import Swal from "sweetalert2";
 
 const mostrarLoginState = false;
 
@@ -19,7 +19,6 @@ const Register = () => {
     password: "",
     roll: "Client",
   };
-  
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Nombre es requerido"),
@@ -37,31 +36,46 @@ const Register = () => {
   const onSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await axios.post(`${URL}Registro`, values);
-  
+
       if (response.status === 201) {
         Swal.fire({
-          icon: 'success',
-          title: 'Registro exitoso',
+          icon: "success",
+          title: "Registro exitoso",
           showConfirmButton: false,
           timer: 1500,
         });
+        createCart(response.data.ID);
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Hubo un error en el registro',
+          icon: "error",
+          title: "Hubo un error en el registro",
           showConfirmButton: false,
           timer: 1500,
         });
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
-  
+
     setSubmitting(false);
   };
 
   const mostrarLoginHandler = () => {
     setMostrarLogin(true);
+  };
+
+  const createCart = async (userId) => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3001/PrintCraft3D/shoppingCart",
+        {
+          userId,
+        }
+      );
+      // console.log(data);
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
@@ -89,7 +103,9 @@ const Register = () => {
                           className="form-control"
                           required
                         />
-                        <label htmlFor="firstName" className="form-label">Nombre</label>
+                        <label htmlFor="firstName" className="form-label">
+                          Nombre
+                        </label>
                       </div>
                       <ErrorMessage
                         name="firstName"
@@ -106,7 +122,9 @@ const Register = () => {
                           className="form-control"
                           required
                         />
-                        <label htmlFor="lastName" className="form-label">Apellido</label>
+                        <label htmlFor="lastName" className="form-label">
+                          Apellido
+                        </label>
                       </div>
                       <ErrorMessage
                         name="lastName"
@@ -125,7 +143,9 @@ const Register = () => {
                           className="form-control"
                           required
                         />
-                        <label htmlFor="birthDate" className="form-label">Fecha de Nacimiento</label>
+                        <label htmlFor="birthDate" className="form-label">
+                          Fecha de Nacimiento
+                        </label>
                       </div>
                       <ErrorMessage
                         name="birthDate"
@@ -142,7 +162,9 @@ const Register = () => {
                           className="form-control"
                           required
                         />
-                        <label htmlFor="phoneNumber" className="form-label">Número de Teléfono</label>
+                        <label htmlFor="phoneNumber" className="form-label">
+                          Número de Teléfono
+                        </label>
                       </div>
                       <ErrorMessage
                         name="phoneNumber"
@@ -161,7 +183,9 @@ const Register = () => {
                           className="form-control"
                           required
                         />
-                        <label htmlFor="email" className="form-label">Email</label>
+                        <label htmlFor="email" className="form-label">
+                          Email
+                        </label>
                       </div>
                       <ErrorMessage
                         name="email"
@@ -178,7 +202,9 @@ const Register = () => {
                           className="form-control"
                           required
                         />
-                        <label htmlFor="password" className="form-label">Password</label>
+                        <label htmlFor="password" className="form-label">
+                          Password
+                        </label>
                       </div>
                       <ErrorMessage
                         name="password"

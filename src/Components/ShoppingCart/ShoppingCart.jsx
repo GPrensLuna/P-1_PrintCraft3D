@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
 import CardCart from "../CardCart/CardCart.jsx";
 import PagoPaypal from "../PagoPaypal/PagoPaypal.jsx";
-import './style.css';
+import style from "./ShoppingCart.module.css";
+// import { useSelector } from "react-redux";
+// import axios from "axios";
 
 const ShoppingCart = () => {
- const [cart, setCart] = useState(
+  // const userData = useSelector((state) => state.userData);
+
+  const [cart, setCart] = useState(
     (typeof window !== "undefined" &&
       JSON.parse(localStorage.getItem("cart"))) ||
       []
- );
+  );
 
- useEffect(() => {
+  useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
- }, [cart]);
+  }, [cart]);
 
- const handleAddToCart = (id) => {
+  const handleAddToCart = (id) => {
     const updatedCart = cart.map((item) => {
       if (item.id === id) {
         return { ...item, cantidad: item.cantidad + 1 };
@@ -22,9 +26,11 @@ const ShoppingCart = () => {
       return item;
     });
     setCart(updatedCart);
- };
+    console.log(cart);
+    console.log(JSON.parse(localStorage.getItem("cart")));
+  };
 
- const handleRemoveFromCart = (id) => {
+  const handleRemoveFromCart = (id) => {
     const updatedCart = cart.map((item) => {
       if (item.id === id) {
         const updatedCantidad = item.cantidad - 1;
@@ -40,26 +46,47 @@ const ShoppingCart = () => {
     const filteredCart = updatedCart.filter((item) => item !== null);
 
     setCart(filteredCart);
- };
+    console.log(cart);
+    console.log(JSON.parse(localStorage.getItem("cart")));
+  };
 
- const handleRemoveAllFromCart = (id) => {
+  const handleRemoveAllFromCart = (id) => {
     const updatedCart = cart.filter((item) => item.id !== id);
     setCart(updatedCart);
- };
+  };
 
- let total = 0;
- cart.forEach((item) => (total += item.price * item.cantidad));
+  let total = 0;
+  cart.forEach((item) => (total += item.price * item.cantidad));
 
- const priceFormatted = parseFloat(total).toLocaleString("en-US", {
+  const priceFormatted = parseFloat(total).toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
- });
+  });
 
- return (
+  // console.log(userData.userId);
+  // console.log(userData.userId);
+  // console.log(JSON.parse(localStorage.getItem("cart")));
+  // const carrito = JSON.parse(localStorage.getItem("cart"));
+
+  // const addToCart = async (dataCart) => {
+  //   try {
+  //     const { data } = await axios.post(
+  //       "http://localhost:3001/PrintCraft3D/addToCart",
+  //       dataCart
+  //     );
+  //     console.log(data);
+  //   } catch (error) {
+  //     alert(error.message);
+  //   }
+  // };
+
+  // addToCart(userData.userId, carrito, total);
+
+  return (
     <div className="Carrito">
       <div className="Row">
         <article className="Column1">
-        <h1>Carrito de Compras:</h1>
+          <h1>Carrito de Compras:</h1>
           {cart.map((p) => (
             <CardCart
               key={p.id}
@@ -71,36 +98,63 @@ const ShoppingCart = () => {
           ))}
         </article>
         <div className="Column2">
-                    <div >
-                    <div class="p-3">
-                      <div class="progresses">
-                            <div class="steps"> <span><i class="fa fa-check"></i></span> </div> <span class="line"></span>
-                            <div class="steps"> <span><i class="fa fa-check"></i></span> </div> <span class="line"></span>
-                            <div class="steps"> <span class="font-weight-bold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-fill" viewBox="0 0 16 16">
-                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                            </svg></span> </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <dl class="dlist-align">
-                            <dt>Total a pagar: {priceFormatted}</dt>
-                            <dd></dd>
-                        </dl>
-                        <dl >
-                            <dt>Descuentos: $00.00</dt>
-                        </dl>
-                        <dl>
-                            <dt>Total: {priceFormatted} <dd><strong></strong></dd> </dt>
-                            
-                        </dl>
-                    </div>
-                    <PagoPaypal cart={cart} total={total} />
+          <div>
+            <div class="p-3">
+              <div class="progresses">
+                <div class="steps">
+                  {" "}
+                  <span>
+                    <i class="fa fa-check"></i>
+                  </span>{" "}
+                </div>{" "}
+                <span class="line"></span>
+                <div class="steps">
+                  {" "}
+                  <span>
+                    <i class="fa fa-check"></i>
+                  </span>{" "}
+                </div>{" "}
+                <span class="line"></span>
+                <div class="steps">
+                  {" "}
+                  <span class="font-weight-bold">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-cart-fill"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                    </svg>
+                  </span>{" "}
                 </div>
-
+              </div>
+            </div>
+            <div class="card-body">
+              <dl class="dlist-align">
+                <dt>Total a pagar: {priceFormatted}</dt>
+                <dd></dd>
+              </dl>
+              <dl>
+                <dt>Descuentos: $00.00</dt>
+              </dl>
+              <dl>
+                <dt>
+                  Total: {priceFormatted}{" "}
+                  <dd>
+                    <strong></strong>
+                  </dd>{" "}
+                </dt>
+              </dl>
+            </div>
+            <PagoPaypal cart={cart} total={total} />
+          </div>
         </div>
       </div>
     </div>
- );
+  );
 };
 
 export default ShoppingCart;

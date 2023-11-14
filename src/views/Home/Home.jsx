@@ -14,6 +14,7 @@ function Home() {
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.allProducts);
   const searchValue = useSelector((state) => state.searchValue);
+  const userData = useSelector((state) => state.userData);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -157,6 +158,21 @@ function Home() {
     }
   };
 
+  const addToCart = async (userId, productId) => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3001/PrintCraft3D/addOneToCart",
+        {
+          userId,
+          productId,
+        }
+      );
+      console.log(data);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   const handleProductAddToCart = (productId) => {
     const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
     //Busca si existe el id del producto en el carrito
@@ -182,6 +198,9 @@ function Home() {
       };
       localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
+    console.log(`User ID: ${userData.userId}`);
+    console.log(`Product ID: ${productId}`);
+    addToCart(userData.userId, productId);
   };
 
   return (
