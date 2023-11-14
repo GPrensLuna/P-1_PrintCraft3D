@@ -1,18 +1,19 @@
+import React from 'react';
+import styles from './profile.module.css';
+
 export default function Profile({ userData }) {
   return (
-    <div>
-      <br />
-      <br />
-      <br />
+    <div className={styles.container}>
       {userData ? (
         <div>
-          <h1>Hola {userData.email}, bienvenido a tu perfil</h1>
+          <h1 className={styles.greeting}>Hola {userData.email}, bienvenido a tu perfil</h1>
           <br />
-          <h1>Hola {userData.name}, bienvenido a tu perfil</h1>
+          <h1 className={styles.greeting}>Hola {userData.name}, bienvenido a tu perfil</h1>
         </div>
       ) : (
-        <p>Cargando perfil...</p>
+        <p className={styles.loading}>Cargando perfil...</p>
       )}
     </div>
   );
 }
+

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import style from "./Inventario.module.css";
 import { URL } from "../../config.js";
 import axios from "axios";
+import {URLCLOUD} from "../../config.js"
 
 export default function Inventory() {
   const [imagePreview, setImagePreview] = useState(null);
@@ -30,7 +31,7 @@ export default function Inventory() {
       formData.append("upload_preset", "PrintCraft3DImagenes");
 
       const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/deeufsn3k/image/upload",
+        `${URLCLOUD}`,
         formData
       );
 
@@ -84,8 +85,8 @@ export default function Inventory() {
             name="image"
             accept="image/*"
             onChange={(e) => {
-              setImageSelected(e.target.files[0]); 
-            } }
+              setImageSelected(e.target.files[0]);
+            }}
             className={style.InventarioInput}
           />
           <button onClick={() => uploadImage()}>Guardar foto</button>
@@ -196,7 +197,7 @@ export default function Inventory() {
           />
         </div>
         <div>
-          <button  onClick={() => uploadImage()} type="submit" className={style.InventarioSubmitButton}>
+          <button type="submit" className={style.InventarioSubmitButton}>
             Agregar Producto
           </button>
         </div>
@@ -204,4 +205,3 @@ export default function Inventory() {
     </div>
   );
 }
-
