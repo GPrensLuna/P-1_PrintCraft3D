@@ -65,7 +65,9 @@ const Card = (props) => {
     addToCart(productId);
   }
   return (
-    <div className="product-card" onClick={handleDetailProductClick}>
+    <div className="product-card" >
+      <div onClick={handleDetailProductClick}>
+
       <img className="product-image" alt={name} src={image}  onClick={handleDetailProductClick}/>{" "}
       <div className="size-info">
         {" "}
@@ -80,6 +82,8 @@ const Card = (props) => {
           <strong>${price}</strong>
         </span>
       </div>
+      </div>
+
       <div className="add-to-cart-parent">
         <div className="cart-parent">
           <div className="ml-auto"></div>
