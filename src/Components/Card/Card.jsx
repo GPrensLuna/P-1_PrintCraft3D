@@ -54,7 +54,9 @@ const Card = (props) => {
        cancelButtonText: "Cancelar",
        confirmButtonColor: "#202020",
     }).then((result) => {
-  
+       if (result.isConfirmed) {
+         handleAddToCartClick();
+       }
     });
    };
    
@@ -63,7 +65,7 @@ const Card = (props) => {
     addToCart(productId);
   }
   return (
-    <div className="product-card">
+    <div className="product-card" onClick={handleDetailProductClick}>
       <img className="product-image" alt={name} src={image}  onClick={handleDetailProductClick}/>{" "}
       <div className="size-info">
         {" "}
