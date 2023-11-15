@@ -160,13 +160,10 @@ function Home() {
 
   const addToCart = async (userId, productId) => {
     try {
-      const { data } = await axios.post(
-        `${URL}addOneToCart`,
-        {
-          userId,
-          productId,
-        }
-      );
+      const { data } = await axios.post(`${URL}addOneToCart`, {
+        userId,
+        productId,
+      });
       console.log(data);
     } catch (error) {
       alert(error.message);

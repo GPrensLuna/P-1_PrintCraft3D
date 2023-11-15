@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import style from "./PagoPaypal.module.css";
+import Swal from "sweetalert2";
 
 const { URL } = require("../../config.js");
 
@@ -128,8 +129,16 @@ export default function PagoPaypal({ cart }) {
 
     // Example function to show a result to the user. Your site's UI library can be used instead.
     function resultMessage(message) {
-      const container = document.querySelector("#result-message");
-      container.innerHTML = message;
+      //const container = document.querySelector("#result-message");
+      //container.innerHTML = message;
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "Procesando pago",
+        text: `${message}`,
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
   }, [cart, user]);
 
