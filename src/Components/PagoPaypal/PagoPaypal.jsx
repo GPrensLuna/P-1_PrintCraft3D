@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import style from "./PagoPaypal.module.css";
+import Swal from "sweetalert2";
 
 const { URL } = require("../../config.js");
 
