@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import CardCart from "../CardCart/CardCart.jsx";
 import PagoPaypal from "../PagoPaypal/PagoPaypal.jsx";
-// import style from "./ShoppingCart.module.css";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { URL } from "../../config.js";
 import Swal from "sweetalert2";
+import "./style.css"
 
 const ShoppingCart = () => {
   const userData = useSelector((state) => state.userData);

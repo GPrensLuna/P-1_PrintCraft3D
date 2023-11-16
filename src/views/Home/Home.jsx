@@ -6,6 +6,7 @@ import { URL } from "../../config.js";
 import Footer from "../../Components/Footer/Footer";
 import Aside from "../../Components/Aside/Aside.jsx";
 import style from "./Home.module.css";
+import Reviews from "../../Components/Review/Review.jsx";
 import Card from "../../Components/Card/Card.jsx";
 import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
@@ -204,6 +205,7 @@ function Home() {
   };
 
   const handleProductAddToCart = (productId) => {
+    if (userData?.userId){
       const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
       //Busca si existe el id del producto en el carrito
       const existingProductIndex = currentCart.findIndex(
@@ -231,6 +233,18 @@ function Home() {
       //console.log(`User ID: ${userData.userId}`);
       //console.log(`Product ID: ${productId}`);
       addToCart(userData.userId, productId);
+    }
+    else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Lo siento!",
+        text: "Debes iniciar sesión",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
+
   };
 
   return (
