@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import style from "./Login.module.css";
 import { URL } from "../../config.js";
 
+
 // Define the Login component
 export default function LoginUp() {
   const [formData, setFormData] = useState({
@@ -33,6 +34,7 @@ export default function LoginUp() {
 
   return (
     <div className={style.formBackground}>
+      
       <div className={style.formContainer}>
         <form className={style.loginForm} onSubmit={handleFormSubmit}>
           <h2 className={style.loginF}>LOGIN</h2>
