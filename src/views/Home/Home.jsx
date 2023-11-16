@@ -9,7 +9,10 @@ import style from "./Home.module.css";
 import Reviews from "../../Components/Review/Review.jsx";
 import Card from "../../Components/Card/Card.jsx";
 import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
-import { addProductInfo } from "../../redux/actions/actions.js";
+import {
+  addProductInfo,
+  addFilteredProductList,
+} from "../../redux/actions/actions.js";
 
 import Swal from "sweetalert2";
 
@@ -81,6 +84,7 @@ function Home() {
           if (response.status === 200) {
             const { data } = response;
             dispatch(addProductInfo(data.results));
+            // no deberia actualizar la lista principal sino un estado llamado filtered products
             setCount(data.count);
             setLimit(data.limit);
             setLoading(false);
@@ -122,6 +126,8 @@ function Home() {
     limit,
     dispatch,
   ]);
+
+  const filteredProducts = useSelector((state) => state.filteredProductsList);
 
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);

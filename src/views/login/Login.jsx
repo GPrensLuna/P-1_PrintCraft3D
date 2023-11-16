@@ -1,3 +1,4 @@
+import React from "react";
 import logo from "../../imagenes/logo.png";
 import LoginRedSocial from "../../Components/LoginRedSocial/LoginRedSocial.jsx";
 import { useFormik } from "formik";
@@ -8,9 +9,7 @@ import { URL } from "../../config.js";
 import Swal from "sweetalert2";
 import BotonAtras from "../../Components/BotonAtras/BotonAtras.jsx";
 
-
 export default function Login() {
-
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -27,52 +26,50 @@ export default function Login() {
     }),
 
     onSubmit: async (values) => {
-        try {
-          const response = await axios.post(`${URL}login`, values);
+      try {
+        const response = await axios.post(`${URL}login`, values);
 
-          if (response.status === 200) {
-            const responseData = response.data;
-            const token = responseData.token;
-      
-            if (!token) {
-              Swal.fire({
-                title: "Inicio de sesión fallido",
-                text: "El token no está presente en la respuesta del servidor",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            } else {
-              localStorage.setItem("token", token);
-              Swal.fire({
-                position: "top-center",
-                icon: "success",
-                title: "Iniciando sesión",
-                showConfirmButton: false,
-                timer: 2000,
-              });
-            }
-          } else {
+        if (response.status === 200) {
+          const responseData = response.data;
+          const token = responseData.token;
+
+          if (!token) {
             Swal.fire({
               title: "Inicio de sesión fallido",
-              text: "Error en la respuesta del servidor",
+              text: "El token no está presente en la respuesta del servidor",
               icon: "error",
               confirmButtonText: "OK",
             });
+          } else {
+            localStorage.setItem("token", token);
+            Swal.fire({
+              position: "top-center",
+              icon: "success",
+              title: "Iniciando sesión",
+              showConfirmButton: false,
+              timer: 2000,
+            });
           }
-          window.location.href = "/Profile";
-
-        } catch (error) {
-          console.error("Error durante el inicio de sesión:", error);
-      
+        } else {
           Swal.fire({
             title: "Inicio de sesión fallido",
-            text: "Se produjo un error durante el inicio de sesión",
+            text: "Error en la respuesta del servidor",
             icon: "error",
             confirmButtonText: "OK",
           });
         }
-      },
-      
+        window.location.href = "/Profile";
+      } catch (error) {
+        console.error("Error durante el inicio de sesión:", error);
+
+        Swal.fire({
+          title: "Inicio de sesión fallido",
+          text: "Se produjo un error durante el inicio de sesión",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    },
   });
 
   return (
@@ -89,7 +86,7 @@ export default function Login() {
             onSubmit={formik.handleSubmit}
           >
             <Link to="/">
-              <BotonAtras/>
+              <BotonAtras />
             </Link>
 
             <h2 className="fw-bold text-center pt-1 mb-2">Bienvenido</h2>

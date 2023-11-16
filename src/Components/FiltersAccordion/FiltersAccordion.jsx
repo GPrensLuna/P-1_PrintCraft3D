@@ -1,46 +1,30 @@
+import React from "react";
 import Accordion from "react-bootstrap/Accordion";
-import { useState } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
+import { useSelector } from "react-redux";
 import "./FiltersAccordion.css";
 
 const FiltersAccordion = ({
   onMaterialChange,
   onCategoryChange,
   onSizeChange,
-  allProducts,
+  getAllProductsCounts,
 }) => {
-  // seleccion de los filtros
+  const counts = getAllProductsCounts();
   const [fMateriales, setFmateriales] = useState(null);
   const [fCategoria, setFcategoria] = useState(null);
   const [fTamano, setFtamano] = useState(null);
 
-  // contadores de elementos para los filtros
-  let ABSCount = allProducts.filter((e) => {
-    return e.material === "ABS";
-  });
-  let PLACount = allProducts.filter((e) => {
-    return e.material === "PLA";
-  });
-  let TPUCount = allProducts.filter((e) => {
-    return e.material === "TPU";
-  });
-  let AccesorioCount = allProducts.filter((e) => {
-    return e.category === "accesorio";
-  });
-  let FiguraCount = allProducts.filter((e) => {
-    return e.category === "figura";
-  });
-  let DecoracionCount = allProducts.filter((e) => {
-    return e.category === "decoracion";
-  });
-  let SizeMCount = allProducts.filter((e) => {
-    return e.size === "M";
-  });
-  let SizeLCount = allProducts.filter((e) => {
-    return e.size === "L";
-  });
-  let SizeSCount = allProducts.filter((e) => {
-    return e.size === "S";
-  });
+  // state para los contadores del filtro
+  const productsList = useSelector((state) => state.allProducts);
+  const [productCount, setProductCount] = useState(0);
+  console.log("before: ", productsList, productsList.length);
+  useLayoutEffect(() => {
+    if (productsList.length > 0) {
+      setProductCount(productsList.length);
+      console.log("after: ", productCount, productsList.length);
+    }
+  }, []);
 
   // funciones para activar los filtros
   const materialClickHandler = (value) => {
@@ -80,10 +64,10 @@ const FiltersAccordion = ({
               <div className="count">
                 {fMateriales === "ABS" ? (
                   <strong style={{ color: "#3767a2" }}>
-                    {ABSCount.length}
+                    {counts["ABSCount"]}
                   </strong>
                 ) : (
-                  ABSCount.length
+                  counts["ABSCount"]
                 )}
               </div>
             </div>
@@ -101,10 +85,10 @@ const FiltersAccordion = ({
               <div className="count">
                 {fMateriales === "PLA" ? (
                   <strong style={{ color: "#3767a2" }}>
-                    {PLACount.length}
+                    {counts["PLACount"]}
                   </strong>
                 ) : (
-                  PLACount.length
+                  counts["PLACount"]
                 )}
               </div>
             </div>
@@ -122,10 +106,10 @@ const FiltersAccordion = ({
               <div className="count">
                 {fMateriales === "TPU" ? (
                   <strong style={{ color: "#3767a2" }}>
-                    {TPUCount.length}
+                    {counts["TPUCount"]}
                   </strong>
                 ) : (
-                  TPUCount.length
+                  counts["TPUCount"]
                 )}
               </div>
             </div>
@@ -154,10 +138,10 @@ const FiltersAccordion = ({
               <div className="count">
                 {fCategoria === "accesorio" ? (
                   <strong style={{ color: "#3767a2" }}>
-                    {AccesorioCount.length}
+                    {counts["accesorioCount"]}
                   </strong>
                 ) : (
-                  AccesorioCount.length
+                  counts["accesorioCount"]
                 )}
               </div>
             </div>
@@ -175,10 +159,10 @@ const FiltersAccordion = ({
               <div className="count">
                 {fCategoria === "figura" ? (
                   <strong style={{ color: "#3767a2" }}>
-                    {FiguraCount.length}
+                    {counts["figuraCount"]}
                   </strong>
                 ) : (
-                  FiguraCount.length
+                  counts["figuraCount"]
                 )}
               </div>
             </div>
@@ -196,10 +180,10 @@ const FiltersAccordion = ({
               <div className="count">
                 {fCategoria === "decoracion" ? (
                   <strong style={{ color: "#3767a2" }}>
-                    {DecoracionCount.length}
+                    {counts["decoracionCount"]}
                   </strong>
                 ) : (
-                  DecoracionCount.length
+                  counts["decoracionCount"]
                 )}
               </div>
             </div>
@@ -228,10 +212,10 @@ const FiltersAccordion = ({
               <div className="count">
                 {fTamano === "M" ? (
                   <strong style={{ color: "#3767a2" }}>
-                    {SizeMCount.length}
+                    {counts["sizeMCount"]}
                   </strong>
                 ) : (
-                  SizeMCount.length
+                  counts["sizeMCount"]
                 )}
               </div>
             </div>
@@ -249,10 +233,10 @@ const FiltersAccordion = ({
               <div className="count">
                 {fTamano === "S" ? (
                   <strong style={{ color: "#3767a2" }}>
-                    {SizeSCount.length}
+                    {counts["sizeSCount"]}
                   </strong>
                 ) : (
-                  SizeSCount.length
+                  counts["sizeSCount"]
                 )}
               </div>
             </div>
@@ -270,10 +254,10 @@ const FiltersAccordion = ({
               <div className="count">
                 {fTamano === "L" ? (
                   <strong style={{ color: "#3767a2" }}>
-                    {SizeLCount.length}
+                    {counts["sizeLCount"]}
                   </strong>
                 ) : (
-                  SizeLCount.length
+                  counts["sizeLCount"]
                 )}
               </div>
             </div>

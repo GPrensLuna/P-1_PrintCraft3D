@@ -2,6 +2,7 @@ import {
   ADD_PRODUCTS_INFO,
   LOGIN_USER,
   SET_SEARCH_RESULTS,
+  SET_FILTERED_PRODUCTS_LIST,
 } from "./actions_types.js";
 
 export const addProductInfo = (addProductInfo) => {
@@ -24,4 +25,3 @@ export const updateSearchValue = (value) => {
     payload: value,
   };
 };
-
