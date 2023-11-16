@@ -10,6 +10,8 @@ import Card from "../../Components/Card/Card.jsx";
 import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
 
+import Swal from "sweetalert2";
+
 function Home() {
   const dispatch = useDispatch();
   const allProducts = useSelector((state) => state.allProducts);
@@ -160,47 +162,75 @@ function Home() {
 
   const addToCart = async (userId, productId) => {
     try {
-      const { data } = await axios.post(
-        `${URL}addOneToCart`,
-        {
-          userId,
-          productId,
+      const response = await axios.post(`${URL}addOneToCart`, {
+        userId,
+        productId,
+      });
+      const { message } = response.data
+      if (response.status===201){
+
+        let cart = JSON.parse(localStorage.getItem("cart"))
+
+        let index = cart.findIndex ((product) => product.id === productId)
+
+        if (cart[index].cantidad-1===0){
+          cart.splice(index, 1);
         }
-      );
-      console.log(data);
+        else {
+          cart[index].cantidad-=1
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart))
+  
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "No permitido",
+          text: `${message}`,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
     } catch (error) {
-      alert(error.message);
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Lo siento!",
+        text: "Ha ocurrido un error: " + error.message,
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
   };
 
   const handleProductAddToCart = (productId) => {
-    const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
-    //Busca si existe el id del producto en el carrito
-    const existingProductIndex = currentCart.findIndex(
-      (product) => product.id === productId
-    );
-    //Si no existe en el carrito lo busca en el Estado global
-    if (existingProductIndex === -1) {
-      const productToAdd = allProducts.find(
+      const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+      //Busca si existe el id del producto en el carrito
+      const existingProductIndex = currentCart.findIndex(
         (product) => product.id === productId
       );
-      if (productToAdd) {
-        //Una vez que lo encuentra en el Estado lo agrega al carrito
-        const updatedCart = [...currentCart, { ...productToAdd, cantidad: 1 }];
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
+      //Si no existe en el carrito lo busca en el Estado global
+      if (existingProductIndex === -1) {
+        const productToAdd = allProducts.find(
+          (product) => product.id === productId
+        );
+        if (productToAdd) {
+          //Una vez que lo encuentra en el Estado lo agrega al carrito
+            const updatedCart = [...currentCart, { ...productToAdd, cantidad: 1 }];
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+        }
+      } else {
+        // Si ya está en el carrito, actualiza el contador
+          const updatedCart = [...currentCart];
+          updatedCart[existingProductIndex] = {
+            ...updatedCart[existingProductIndex],
+            cantidad: updatedCart[existingProductIndex].cantidad + 1,
+          };
+          localStorage.setItem("cart", JSON.stringify(updatedCart));
       }
-    } else {
-      // Si ya está en el carrito, actualiza el contador
-      const updatedCart = [...currentCart];
-      updatedCart[existingProductIndex] = {
-        ...updatedCart[existingProductIndex],
-        cantidad: updatedCart[existingProductIndex].cantidad + 1,
-      };
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
-    }
-    console.log(`User ID: ${userData.userId}`);
-    console.log(`Product ID: ${productId}`);
-    addToCart(userData.userId, productId);
+      //console.log(`User ID: ${userData.userId}`);
+      //console.log(`Product ID: ${productId}`);
+      addToCart(userData.userId, productId);
   };
 
   return (

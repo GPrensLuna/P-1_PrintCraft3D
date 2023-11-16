@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import CardCart from "../CardCart/CardCart.jsx";
 import PagoPaypal from "../PagoPaypal/PagoPaypal.jsx";
-// import { useSelector } from "react-redux";
-// import axios from "axios";
+// import style from "./ShoppingCart.module.css";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { URL } from "../../config.js";
+import Swal from "sweetalert2";
 
 const ShoppingCart = () => {
-  // const userData = useSelector((state) => state.userData);
+  const userData = useSelector((state) => state.userData);
 
   const [cart, setCart] = useState(
     (typeof window !== "undefined" &&
@@ -17,6 +20,42 @@ const ShoppingCart = () => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
+  const addToCart = async (userId, productId) => {
+    try {
+      const response = await axios.post(`${URL}addOneToCart`, {
+        userId,
+        productId,
+      });
+
+      const { message } = response.data
+      if (response.status===201){
+
+        let cart2 = cart
+      
+        setCart(cart2)
+  
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "No permitido",
+          text: `${message}`,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+
+    } catch (error) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Lo siento!",
+        text: "Ha ocurrido un error: " + error.message,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
+  };
+
   const handleAddToCart = (id) => {
     const updatedCart = cart.map((item) => {
       if (item.id === id) {
@@ -25,8 +64,26 @@ const ShoppingCart = () => {
       return item;
     });
     setCart(updatedCart);
-    console.log(cart);
-    console.log(JSON.parse(localStorage.getItem("cart")));
+    // console.log(cart);
+    // console.log(JSON.parse(localStorage.getItem("cart")));
+    // console.log(userData.userId);
+    addToCart(userData.userId, id);
+  };
+
+  const removeItem = async (userId, productId) => {
+    try {
+      // console.log(userId);
+      // console.log(productId);
+      const { data } = await axios.delete(`${URL}deleteItem`, {
+        data: {
+          userId,
+          productId,
+        },
+      });
+      //console.log(data);
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const handleRemoveFromCart = (id) => {
@@ -45,13 +102,30 @@ const ShoppingCart = () => {
     const filteredCart = updatedCart.filter((item) => item !== null);
 
     setCart(filteredCart);
-    console.log(cart);
-    console.log(JSON.parse(localStorage.getItem("cart")));
+    // console.log(cart);
+    // console.log(JSON.parse(localStorage.getItem("cart")));
+    removeItem(userData.userId, id);
+  };
+
+  const removeItems = async (userId, productId) => {
+    try {
+      const { data } = await axios.delete(`${URL}deleteItems`, {
+        data: {
+          userId,
+          productId,
+        },
+      });
+      console.log(data);
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const handleRemoveAllFromCart = (id) => {
     const updatedCart = cart.filter((item) => item.id !== id);
     setCart(updatedCart);
+
+    removeItems(userData.userId, id);
   };
 
   let total = 0;
@@ -61,25 +135,6 @@ const ShoppingCart = () => {
     style: "currency",
     currency: "USD",
   });
-
-  // console.log(userData.userId);
-  // console.log(userData.userId);
-  // console.log(JSON.parse(localStorage.getItem("cart")));
-  // const carrito = JSON.parse(localStorage.getItem("cart"));
-
-  // const addToCart = async (dataCart) => {
-  //   try {
-  //     const { data } = await axios.post(
-  //       "http://localhost:3001/PrintCraft3D/addToCart",
-  //       dataCart
-  //     );
-  //     console.log(data);
-  //   } catch (error) {
-  //     alert(error.message);
-  //   }
-  // };
-
-  // addToCart(userData.userId, carrito, total);
 
   return (
     <div className="Carrito">
@@ -148,7 +203,7 @@ const ShoppingCart = () => {
                 </dt>
               </dl>
             </div>
-            <PagoPaypal cart={cart} total={total} />
+            <PagoPaypal cart={cart} setCart={setCart} total={total} />
           </div>
         </div>
       </div>
