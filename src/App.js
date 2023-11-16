@@ -59,7 +59,7 @@ function App() {
 
   return (
     <div className="App row justify-content-center">
-      {pathname !== "/LoginUp" && pathname !== "/Inventario" && pathname !== "/Register" && <NavBar userData={userData} logout={logout} />}
+      {pathname !== "/LoginUp" && pathname !== "/Inventory" && pathname !== "/Register" && <NavBar userData={userData} logout={logout} />}
 
       <Routes>
         <Route path="/" element={<Home />} />
