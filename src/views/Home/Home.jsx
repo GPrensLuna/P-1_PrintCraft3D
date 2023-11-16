@@ -27,8 +27,9 @@ function Home() {
     return savedPage ? parseInt(savedPage, 10) : 1;
   });
 
-  const [count, setCount] = useState(0);
-  const [limit, setLimit] = useState("");
+  const [count, setCount] = useState(1);
+  const [limit, setLimit] = useState(12);
+  const [totalPages, setTotalPages] = useState(Math.ceil(count / limit));
 
   const handleLimitChange = (event) => {
     const newLimit = parseInt(event.target.value, 10);
@@ -83,8 +84,9 @@ function Home() {
             const { data } = response;
             dispatch(addProductInfo(data.results));
             // no deberia actualizar la lista principal sino un estado llamado filtered products
-            setCount(data.count);
-            setLimit(data.limit);
+            console.log("UseEffect home: ", data.results.length, data.results);
+            setCount(data.results.length);
+            //setLimit(data.limit);
             setLoading(false);
           } else {
             setError("No se pudieron cargar los productos.");
@@ -128,8 +130,6 @@ function Home() {
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
   }, [currentPage]);
-
-  const totalPages = Math.ceil(count / limit);
 
   const loadPage = (page) => {
     if (page < 1 || page > totalPages) {
