@@ -22,7 +22,7 @@ function NavBar({ userData, logout }) {
 
   return (
     
-    <Navbar expand="lg" bg="primary" data-bs-theme="dark" fixed="top" >
+    <Navbar expand="lg" bg="secondary" data-bs-theme="dark" fixed="top" >
       <Container fluid>
         <Navbar.Brand href="/">
           <img
