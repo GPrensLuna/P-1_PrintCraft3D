@@ -205,6 +205,7 @@ function Home() {
   };
 
   const handleProductAddToCart = (productId) => {
+    if (userData?.userId){
       const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
       //Busca si existe el id del producto en el carrito
       const existingProductIndex = currentCart.findIndex(
@@ -232,6 +233,18 @@ function Home() {
       //console.log(`User ID: ${userData.userId}`);
       //console.log(`Product ID: ${productId}`);
       addToCart(userData.userId, productId);
+    }
+    else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Lo siento!",
+        text: "Debes iniciar sesión",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
+
   };
 
   return (
