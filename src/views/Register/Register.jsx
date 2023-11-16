@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { URL } from "../../config.js";
-import Login from "../login/Login";
-import "./style.css";
-import Swal from "sweetalert2";
+import './style.css';
+import { Link } from "react-router-dom";
+import Swal from 'sweetalert2';
+import logo from "../../imagenes/logo.png"
 
-const mostrarLoginState = false;
 
 const Register = () => {
   const initialValues = {
@@ -19,7 +19,7 @@ const Register = () => {
     password: "",
     roll: "Client",
   };
-
+  
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Nombre es requerido"),
     lastName: Yup.string().required("Apellido es requerido"),
@@ -31,7 +31,7 @@ const Register = () => {
       .required("Contraseña es requerida"),
   });
 
-  const [mostrarLogin, setMostrarLogin] = useState(mostrarLoginState);
+
 
   const onSubmit = async (values, { setSubmitting }) => {
     try {
@@ -60,9 +60,6 @@ const Register = () => {
     setSubmitting(false);
   };
 
-  const mostrarLoginHandler = () => {
-    setMostrarLogin(true);
-  };
 
   const createCart = async (userId) => {
     try {
@@ -79,21 +76,25 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
-      <div className="row g-2">
-        <div>
-          {mostrarLogin ? (
-            <Login />
-          ) : (
-            <div className="form_container">
-              <h2 className="text-center">REGISTRO</h2>
+    <div  >
+      <div > 
+            <div className="register-container">
+              <span>
+                <Link to="/"> 
+            <img className="d-inline-block align-top" src={logo} alt="logo" width="200" height="200"/>
+                </Link>
+              </span>
+            <div className="row g-2">
+            <br /><br />
+              <h2> Registrate</h2>
+              <br />
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={onSubmit}
               >
                 <Form>
-                  <div className="form-row">
+                  <div className="form-row md-8">
                     <div className="form-group col-md-6">
                       <div className="form-floating">
                         <Field
@@ -133,6 +134,7 @@ const Register = () => {
                       />
                     </div>
                   </div>
+                  <br />
                   <div className="form-row">
                     <div className="form-group col-md-6">
                       <div className="form-floating">
@@ -173,6 +175,7 @@ const Register = () => {
                       />
                     </div>
                   </div>
+                  <br />
                   <div className="form-row">
                     <div className="form-group col-md-6">
                       <div className="form-floating">
@@ -213,19 +216,25 @@ const Register = () => {
                       />
                     </div>
                   </div>
-                  <button type="submit" className="btn button">
-                    REGISTRAR
+                  <br />
+                  <button type="submit" className="btn btn-primary">
+                    REGISTRARSE
                   </button>
+                  <br />
+                  <br />
                   <div className="form-group">
-                    <h4>
-                      ¿Ya tienes una cuenta?
-                      <span onClick={mostrarLoginHandler}>Iniciar sesión</span>
-                    </h4>
-                  </div>
+                  <h4>
+                    ¿Ya tienes una cuenta?
+                    <span>
+                      <Link to="/LoginUp">
+                        Iniciar sesión
+                      </Link>
+                    </span>
+                  </h4>
+                </div>
                 </Form>
               </Formik>
             </div>
-          )}
         </div>
       </div>
     </div>
@@ -233,3 +242,4 @@ const Register = () => {
 };
 
 export default Register;
+  

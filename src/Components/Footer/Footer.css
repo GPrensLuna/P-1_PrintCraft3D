@@ -1,14 +1,14 @@
-@import "../../Style/StyleMaster.module.css";
+/* 
 
 .Footer { 
-    display: flex;
-    right: 0;
-    bottom: 0;
-    max-width: 100%;
-    height: 100%;
-    background-color: var(--Nabar-background);
-    color: rgb(2, 2, 2);
-    justify-content: space-evenly;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  font-weight: bold;
+  background-color: var(--Nabar-background);
+  width: 100%;
+  height: 70%;
+
 }
 
 .logo {
@@ -16,7 +16,7 @@
     width: 60%;
     margin-left: 22%;
 }
-
+ */
 
 /* .footer {
     display: flex;
