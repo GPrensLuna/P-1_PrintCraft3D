@@ -1,6 +1,7 @@
 import React from "react";
 import Accordion from "react-bootstrap/Accordion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
+import { useSelector } from "react-redux";
 import "./FiltersAccordion.css";
 
 const FiltersAccordion = ({
@@ -9,13 +10,21 @@ const FiltersAccordion = ({
   onSizeChange,
   getAllProductsCounts,
 }) => {
-  //TODO
-  // los valores del contador
-  // seleccion de los filtros
   const counts = getAllProductsCounts();
   const [fMateriales, setFmateriales] = useState(null);
   const [fCategoria, setFcategoria] = useState(null);
   const [fTamano, setFtamano] = useState(null);
+
+  // state para los contadores del filtro
+  const productsList = useSelector((state) => state.allProducts);
+  const [productCount, setProductCount] = useState(0);
+  console.log("before: ", productsList, productsList.length);
+  useLayoutEffect(() => {
+    if (productsList.length > 0) {
+      setProductCount(productsList.length);
+      console.log("after: ", productCount, productsList.length);
+    }
+  }, []);
 
   // funciones para activar los filtros
   const materialClickHandler = (value) => {

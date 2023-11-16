@@ -2,7 +2,7 @@ import {
   ADD_PRODUCTS_INFO,
   LOGIN_USER,
   SET_SEARCH_RESULTS,
-
+  SET_FILTERED_PRODUCTS_LIST,
 } from "./actions/actions_types.js";
 
 const initialState = {

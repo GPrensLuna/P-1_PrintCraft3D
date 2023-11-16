@@ -8,7 +8,10 @@ import Aside from "../../Components/Aside/Aside.jsx";
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";
 import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
-import { addProductInfo } from "../../redux/actions/actions.js";
+import {
+  addProductInfo,
+  addFilteredProductList,
+} from "../../redux/actions/actions.js";
 
 function Home() {
   const dispatch = useDispatch();
@@ -78,6 +81,7 @@ function Home() {
           if (response.status === 200) {
             const { data } = response;
             dispatch(addProductInfo(data.results));
+            // no deberia actualizar la lista principal sino un estado llamado filtered products
             setCount(data.count);
             setLimit(data.limit);
             setLoading(false);
@@ -120,6 +124,8 @@ function Home() {
     dispatch,
   ]);
 
+  const filteredProducts = useSelector((state) => state.filteredProductsList);
+
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
   }, [currentPage]);
@@ -161,7 +167,7 @@ function Home() {
   const addToCart = async (userId, productId) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:3001/PrintCraft3D/addOneToCart",
+        `${URL}addOneToCart`,
         {
           userId,
           productId,

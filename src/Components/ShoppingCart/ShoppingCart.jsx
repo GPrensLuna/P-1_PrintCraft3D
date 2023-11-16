@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import CardCart from "../CardCart/CardCart.jsx";
 import PagoPaypal from "../PagoPaypal/PagoPaypal.jsx";
-import style from "./ShoppingCart.module.css";
+<<<<<<< Updated upstream
+=======
+//import style from "./ShoppingCart.module.css";
+>>>>>>> Stashed changes
 // import { useSelector } from "react-redux";
 // import axios from "axios";
 
