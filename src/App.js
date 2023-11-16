@@ -59,9 +59,7 @@ function App() {
 
   return (
     <div className="App row justify-content-center">
-      {pathname !== "/LoginUp" && pathname !== "/Inventory" && (
-        <NavBar userData={userData} logout={logout} />
-      )}
+      {pathname !== "/LoginUp" && pathname !== "/Inventario" && pathname !== "/Register" && <NavBar userData={userData} logout={logout} />}
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -69,6 +67,7 @@ function App() {
         <Route path="/LoginUp" element={<Login />} />
         <Route path="/Profile" element={<Profile userData={userData} />} />
         <Route path="/Inventory" element={<Inventory />} />
+
         <Route path="/Pagar" element={<PagoPaypal />}></Route>
         <Route path="/UserList" element={<UserList />} />
         <Route path="/ProductList" element={<ProductList />} />

@@ -3,8 +3,11 @@ import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import styles from "./DetailProduct.module.css";
 import { URL } from "../../config.js";
+import Reviews from "../../Components/Review/Review.jsx";
+
+
 function DetailProduct() {
-  const { name } = useParams();
+  const { name, id } = useParams();
   const [Producto, setProducto] = useState([]);
 
   useEffect(() => {
@@ -49,6 +52,9 @@ function DetailProduct() {
         </h4>
         <p>{Producto.description}</p>
         <p>${Producto.price}</p>
+        <p>
+          <Reviews productId={id}/>
+        </p>
       </div>
     </div>
   );

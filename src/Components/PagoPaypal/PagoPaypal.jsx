@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import style from "./PagoPaypal.module.css";
+import Swal from "sweetalert2";
 
 const { URL } = require("../../config.js");
 
 //import { useHistory } from 'react-router-dom';
 
-export default function PagoPaypal({ cart }) {
+export default function PagoPaypal({ cart, setCart }) {
   const user = useSelector((state) => state.userData);
 
   useEffect(() => {
@@ -62,6 +63,13 @@ export default function PagoPaypal({ cart }) {
           },
           async onCancel(data) {
             alert("Payment canceled");
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "Pago cancelado",
+              showConfirmButton: false,
+              timer: 2000,
+            });
           },
           async onApprove(data, actions) {
             try {
@@ -112,6 +120,8 @@ export default function PagoPaypal({ cart }) {
                   orderData,
                   JSON.stringify(orderData, null, 2)
                 );
+                localStorage.removeItem("cart");
+                setCart([])
               }
             } catch (error) {
               console.error(error);
@@ -128,8 +138,16 @@ export default function PagoPaypal({ cart }) {
 
     // Example function to show a result to the user. Your site's UI library can be used instead.
     function resultMessage(message) {
-      const container = document.querySelector("#result-message");
-      container.innerHTML = message;
+      //const container = document.querySelector("#result-message");
+      //container.innerHTML = message;
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Procesando pago",
+        text: `${message}`,
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
   }, [cart, user]);
 

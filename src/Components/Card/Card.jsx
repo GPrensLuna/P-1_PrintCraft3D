@@ -2,6 +2,7 @@ import React from "react";
 // import style from "./Card.module.css";
 import "./Card.css";
 import Swal from "sweetalert2";
+import Reviews from "../Review/Review";
 
 const Card = (props) => {
   const {
@@ -17,20 +18,7 @@ const Card = (props) => {
     addToCart,
   } = props;
 
-  // const materialName = material ? material : "Material no disponible";
-  // const categoryName = category ? category : "Categoría no disponible";
-  // const SizeName = size ? size : "Categoría no disponible";
-  // const nameM = name ? name.toUpperCase() : "Nombre no disponible";
 
-  // const priceFormatted = parseFloat(price).toLocaleString("en-US", {
-  //   style: "currency",
-  //   currency: "USD",
-  // });
-
-  // const handleDeleteClick = () => {
-  //   const idProduct = id;
-  //   onDelete(idProduct);
-  // };
 
   //funcion para para ver el detail del producto con sweetalert
   const handleDetailProductClick = () => {
@@ -51,11 +39,14 @@ const Card = (props) => {
        showCancelButton: true,
        focusConfirm: false,
        confirmButtonText: "Agregar al carrito",
-       cancelButtonText: "Cancelar",
+       cancelButtonText: "+ Info",
        confirmButtonColor: "#202020",
     }).then((result) => {
        if (result.isConfirmed) {
          handleAddToCartClick();
+       }
+       if (result.isDismissed) {
+        // Linkear a DetailProduct
        }
     });
    };
@@ -76,6 +67,7 @@ const Card = (props) => {
       <div className="product-title">
         <strong>{name}</strong>
       </div>
+      <Reviews productId={id}/>
       <div className="product-desc">{description}</div>
       <div className="cart-price">
         <span className="offer-price">
