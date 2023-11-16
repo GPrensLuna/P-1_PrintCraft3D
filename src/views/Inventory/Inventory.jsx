@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import style from "./Inventario.module.css";
 import { URL } from "../../config.js";
 import axios from "axios";
-import {URLCLOUD} from "../../config.js"
+import { URLCLOUD } from "../../config.js";
 import Swal from "sweetalert2";
 
 export default function Inventory() {
@@ -31,10 +31,7 @@ export default function Inventory() {
       formData.append("file", imageSelected);
       formData.append("upload_preset", "PrintCraft3DImagenes");
 
-      const response = await axios.post(
-        `${URLCLOUD}`,
-        formData
-      );
+      const response = await axios.post(`${URLCLOUD}`, formData);
 
       setImagePreview(response.data.url);
     } catch (error) {
@@ -70,7 +67,7 @@ export default function Inventory() {
         stock: "",
         material: "",
         category: "",
-      })
+      });
     } catch (error) {
       console.error("Error al agregar producto:", error.message);
     }
@@ -148,7 +145,6 @@ export default function Inventory() {
             <option value="S">S</option>
             <option value="M">M</option>
             <option value="L">L</option>
-            <option value="XL">XL</option>
           </select>
         </div>
         <div>
@@ -182,8 +178,9 @@ export default function Inventory() {
             className={style.InventarioInput}
           >
             <option value="">Selecciona un Categorias</option>
-            <option value="Accesorio">Accesorio</option>
-            <option value="Figuras">Figuras</option>
+            <option value="accesorio">Accesorio</option>
+            <option value="figura">Figura</option>
+            <option value="decoracion">Decoración</option>
           </select>
         </div>
         <div>
