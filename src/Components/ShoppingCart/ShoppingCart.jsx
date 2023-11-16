@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import CardCart from "../CardCart/CardCart.jsx";
 import PagoPaypal from "../PagoPaypal/PagoPaypal.jsx";
-<<<<<<< Updated upstream
-=======
 //import style from "./ShoppingCart.module.css";
->>>>>>> Stashed changes
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { URL } from "../../config.js";
 import Swal from "sweetalert2";
-import "./style.css"
+import "./style.css";
 
 const ShoppingCart = () => {
   const userData = useSelector((state) => state.userData);
@@ -31,13 +28,12 @@ const ShoppingCart = () => {
         productId,
       });
 
-      const { message } = response.data
-      if (response.status===201){
+      const { message } = response.data;
+      if (response.status === 201) {
+        let cart2 = cart;
 
-        let cart2 = cart
-      
-        setCart(cart2)
-  
+        setCart(cart2);
+
         Swal.fire({
           position: "center",
           icon: "error",
@@ -47,7 +43,6 @@ const ShoppingCart = () => {
           timer: 2000,
         });
       }
-
     } catch (error) {
       Swal.fire({
         position: "center",
