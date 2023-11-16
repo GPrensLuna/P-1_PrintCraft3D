@@ -3,6 +3,7 @@ import style from "./Inventario.module.css";
 import { URL } from "../../config.js";
 import axios from "axios";
 import { URLCLOUD } from "../../config.js";
+import Swal from "sweetalert2";
 
 export default function Inventory() {
   const [imagePreview, setImagePreview] = useState(null);
