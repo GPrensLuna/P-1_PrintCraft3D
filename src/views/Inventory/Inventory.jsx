@@ -157,7 +157,6 @@ export default function Inventory() {
             <option value="S">S</option>
             <option value="M">M</option>
             <option value="L">L</option>
-            <option value="XL">XL</option>
           </select>
         </div>
         <div>
@@ -191,8 +190,9 @@ export default function Inventory() {
             className={style.InventarioInput}
           >
             <option value="">Selecciona un Categorias</option>
-            <option value="Accesorio">Accesorio</option>
-            <option value="Figuras">Figuras</option>
+            <option value="accesorio">Accesorio</option>
+            <option value="figura">Figura</option>
+            <option value="decoracion">Decoración</option>
           </select>
         </div>
         <div>
