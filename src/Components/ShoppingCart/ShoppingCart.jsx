@@ -5,6 +5,7 @@ import PagoPaypal from "../PagoPaypal/PagoPaypal.jsx";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { URL } from "../../config.js";
+import Swal from "sweetalert2";
 
 const ShoppingCart = () => {
   const userData = useSelector((state) => state.userData);
@@ -21,13 +22,37 @@ const ShoppingCart = () => {
 
   const addToCart = async (userId, productId) => {
     try {
-      const { data } = await axios.post(`${URL}addOneToCart`, {
+      const response = await axios.post(`${URL}addOneToCart`, {
         userId,
         productId,
       });
-      console.log(data);
+
+      const { message } = response.data
+      if (response.status===201){
+
+        let cart2 = cart
+      
+        setCart(cart2)
+  
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "No permitido",
+          text: `${message}`,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      }
+
     } catch (error) {
-      alert(error.message);
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Lo siento!",
+        text: "Ha ocurrido un error: " + error.message,
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
   };
 
@@ -55,7 +80,7 @@ const ShoppingCart = () => {
           productId,
         },
       });
-      console.log(data);
+      //console.log(data);
     } catch (error) {
       alert(error.message);
     }
@@ -178,7 +203,7 @@ const ShoppingCart = () => {
                 </dt>
               </dl>
             </div>
-            <PagoPaypal cart={cart} total={total} />
+            <PagoPaypal cart={cart} setCart={setCart} total={total} />
           </div>
         </div>
       </div>

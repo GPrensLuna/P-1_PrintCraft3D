@@ -7,7 +7,7 @@ const { URL } = require("../../config.js");
 
 //import { useHistory } from 'react-router-dom';
 
-export default function PagoPaypal({ cart }) {
+export default function PagoPaypal({ cart, setCart }) {
   const user = useSelector((state) => state.userData);
 
   useEffect(() => {
@@ -63,6 +63,13 @@ export default function PagoPaypal({ cart }) {
           },
           async onCancel(data) {
             alert("Payment canceled");
+            Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "Pago cancelado",
+              showConfirmButton: false,
+              timer: 2000,
+            });
           },
           async onApprove(data, actions) {
             try {
@@ -113,6 +120,8 @@ export default function PagoPaypal({ cart }) {
                   orderData,
                   JSON.stringify(orderData, null, 2)
                 );
+                localStorage.removeItem("cart");
+                setCart([])
               }
             } catch (error) {
               console.error(error);
@@ -132,7 +141,7 @@ export default function PagoPaypal({ cart }) {
       //const container = document.querySelector("#result-message");
       //container.innerHTML = message;
       Swal.fire({
-        position: "top-center",
+        position: "center",
         icon: "success",
         title: "Procesando pago",
         text: `${message}`,
