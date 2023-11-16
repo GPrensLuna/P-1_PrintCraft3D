@@ -3,6 +3,7 @@ import style from "./Inventario.module.css";
 import { URL } from "../../config.js";
 import axios from "axios";
 import {URLCLOUD} from "../../config.js"
+import Swal from "sweetalert2";
 
 export default function Inventory() {
   const [imagePreview, setImagePreview] = useState(null);
@@ -52,7 +53,24 @@ export default function Inventory() {
         image: imagePreview,
       });
 
-      alert("Producto agregado exitosamente");
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "Producto agregado exitosamente",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      setProducto({
+        name: "",
+        image: "",
+        description: "",
+        size: "",
+        price: "",
+        stock: "",
+        material: "",
+        category: "",
+      })
     } catch (error) {
       console.error("Error al agregar producto:", error.message);
     }
