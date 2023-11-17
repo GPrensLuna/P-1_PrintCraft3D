@@ -18,8 +18,15 @@ export default function Profile({ userData }) {
     async function fetchOrders() {
       if (userData?.userId) {
         let response = await axios.get(`${URL}Compras/${userData.userId}`);
-        setOrders(response.data.orders);
+
+        let ordenes = response.data.ordersWithProducts.map(order => {
+          return order.order
+        })
+        
+        setOrders(ordenes);
         setCount(response.data.count);
+
+        
         
         let response2 = await axios.get(`${URL}User/${userData.userId}`)
         setUser({
