@@ -19,6 +19,8 @@ function App() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userData);
   const { pathname } = useLocation();
+  console.log("userData",userData)
+
 
   useEffect(() => {
     const fetchProfileData = async () => {

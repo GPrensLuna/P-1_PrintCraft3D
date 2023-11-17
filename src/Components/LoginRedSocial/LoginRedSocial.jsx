@@ -21,14 +21,15 @@ const LoginRedSocial = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
   
-      console.log("Información del usuario autenticado con Google:", user);
-  
+      
       const response = await axios.post(`${URL}Google`, {
         firstName: user.displayName,
         email: user.email,
         roll: "Client",
       });
-  
+      
+      createCart(response.data.ID);
+      
       const receivedToken = response.data.token;
       localStorage.setItem("token", receivedToken);
   
@@ -44,7 +45,7 @@ const LoginRedSocial = () => {
         email: user.email,
         roll: "Client",
       });
-  
+      
       window.location.href = "/Profile";
 
   
@@ -56,6 +57,19 @@ const LoginRedSocial = () => {
     }
   };
   
+  const createCart = async (userId) => {
+    try {
+      const { data } = await axios.post(
+        `${URL}shoppingCart`,
+        {
+          userId,
+        }
+      );
+      // console.log(data);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   return (
     <div className="container w-100 my-4">
