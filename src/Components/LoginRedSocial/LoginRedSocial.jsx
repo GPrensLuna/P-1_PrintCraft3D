@@ -12,6 +12,7 @@ const LoginRedSocial = () => {
   const [loading, setLoading] = useState(false);
   const [userRegistered, setUserRegistered] = useState(false);
   const [userData, setUserData] = useState(null);
+  console.log(userData)
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
   
@@ -39,6 +40,8 @@ const LoginRedSocial = () => {
         email: user.email,
         roll: "Client",
       }));
+      console.log("LoginUser", LoginUser)
+
       setUserData({
         firstName: user.displayName,
         email: user.email,
