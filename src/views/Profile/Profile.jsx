@@ -9,6 +9,10 @@ export default function Profile({ userData }) {
   let [orders, setOrders] = useState([])
   let [count, setCount] = useState()
   let [showOrders, setShowOrders] = useState(false)
+  let [showProfile, setShowProfile] = useState(false)
+  let [user, setUser] = useState({})
+
+  console.log(userData)
 
   useEffect(()=>{
     async function fetchOrders() {
@@ -16,6 +20,14 @@ export default function Profile({ userData }) {
         let response = await axios.get(`${URL}Compras/${userData.userId}`);
         setOrders(response.data.orders);
         setCount(response.data.count);
+        
+        let response2 = await axios.get(`${URL}User/${userData.userId}`)
+        setUser({
+          firstName: response2.data.user.firstName,
+          lastName: response2.data.user.lastName,
+          email: response2.data.user.email,
+          phoneNumber: response2.data.user.phoneNumber
+        })
       }
     }
     fetchOrders();
@@ -33,6 +45,10 @@ export default function Profile({ userData }) {
     setShowOrders(!showOrders);
   }
 
+  const displayProfile = () => {
+    setShowProfile(!showProfile);
+  }
+
   return (
     <div className={styles.container}>
       {userData ? (
@@ -43,12 +59,26 @@ export default function Profile({ userData }) {
             <h1 className={styles.greeting}>Hola {userData.name}, bienvenido a tu perfil</h1>
           </div>
           <div>
-            <button onClick={displayOrders}>Mostrar Órdenes</button>
+            <button onClick={displayOrders} className={styles.orderButton}>Mostrar Órdenes</button>
+            <button onClick={displayProfile} className={styles.profileButton}>Informacion del perfil</button>
             {showOrders && (
               <div>
-                <ul className={styles.ul}>{mapOrders}</ul>
+                <ul className={styles.ulOrders}>{mapOrders}</ul>
               </div>
             )}
+            {showProfile && (
+              <div>
+                <ul className={styles.ulProfile}>
+                  <li className={styles.li}>Nombre: {user.firstName}</li>
+                  <li className={styles.li}>Apellido: {user.lastName}</li>
+                  <li className={styles.li}>Email: {user.email}</li>
+                  <li className={styles.li}>Telefono: {user.phoneNumber}</li>
+                </ul>
+              </div>
+            )}
+          </div>
+          <div>
+            
           </div>
         </div>
       ) : (

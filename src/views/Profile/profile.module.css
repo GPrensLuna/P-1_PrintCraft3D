@@ -16,9 +16,59 @@
     color: gray;
   }
 
-  .ul{
-    position: relative;
-    margin-left: -500px;
+  .ulOrders{
+    position: absolute;
+    top: 16.6%;
+    left: 2.5%;
     list-style-type: none;
     width: 150px;
+    border-radius: 5px;
+  }
+
+  .orderButton{
+    position: absolute;
+    top: 11.6%;
+    left: 4%;
+    color: black;
+    background-color: white;
+    border: 1px solid #677483
+  }
+
+  .orderButton:hover{
+    cursor: pointer;
+    background-color: #677483;
+  }
+
+  .ulProfile{
+    position: absolute;
+    top: 16.6%;
+    right: 12.2%;
+    list-style-type: none;
+    width: 150px;
+    border-radius: 5px;
+  }
+
+  .profileButton{
+    position: absolute;
+    top: 11.6%;
+    right: 8%;
+    color: black;
+    background-color: white;
+    border: 1px solid #677483
+  }
+
+  .profileButton:hover{
+    cursor: pointer;
+    background-color: #677483;
+  }
+
+  .li{
+    cursor: pointer;
+    border-radius: 5px;
+    width: 250px;
+  }
+  
+  .li:hover{
+    transform:scale(1.01);
+    box-shadow: 0px 0px 20px #677483;
   }
