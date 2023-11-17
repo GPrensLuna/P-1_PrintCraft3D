@@ -93,8 +93,11 @@ useEffect(() => {
 
   return (
     <div className="App row justify-content-center">
-
-      {pathname !== "/LoginUp" && pathname !== "/Inventory" && pathname !== "/Register" && <NavBar userData={userData} logout={logout} />}
+      {pathname !== "/LoginUp" &&
+        pathname !== "/Inventory" &&
+        pathname !== "/Register" && (
+          <NavBar userData={userData} logout={logout} />
+        )}
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -109,7 +112,10 @@ useEffect(() => {
         <Route path="/Producto/:name" element={<DetailProduct />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/RatingForm/:params" element={<RatingForm />} />
-        <Route path="/ShoppingHistory/:userId" element={<ShoppingHistory />} />
+        <Route
+          path="/ShoppingHistory/:userId"
+          element={<ShoppingHistory userData={userData} />}
+        />
       </Routes>
     </div>
   );

@@ -1,3 +1,35 @@
+/* ShoppingHistory.css */
+
+.shopping-history-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.order-container {
+  border: 1px solid #ddd;
+  padding: 15px;
+}
+
+.products-container {
+  margin-top: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+
+
+
+
+
+
 .root-wrapper {
   margin-top: 65px;
   width: 100%;
