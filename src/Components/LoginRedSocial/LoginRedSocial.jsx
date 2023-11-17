@@ -41,15 +41,19 @@ const LoginRedSocial = () => {
         roll: "Client",
       }));
       console.log("LoginUser", LoginUser)
+      console.log("LoginUser", LoginUser);
 
-      setUserData({
+      const userDataFromResponse = {
         firstName: user.displayName,
         email: user.email,
         roll: "Client",
-      });
-      createCart(setUserData.userId);
+        userId: response.data.userId, // Use the userId from the response
+      };
+  
+      setUserData(userDataFromResponse);
+  
+      createCart(userDataFromResponse.userId); // Pass userId to createCart function
       window.location.href = "/Profile";
-
   
     } catch (error) {
       console.error("Error al autenticar con Google:", error.message);
