@@ -14,6 +14,7 @@ import { URL } from "./config.js";
 import ShoppingCart from "./Components/ShoppingCart/ShoppingCart";
 
 import Register from "../src/views/Register/Register.jsx";
+import RatingForm from "./views/RatingForm/RatingForm.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -24,17 +25,17 @@ function App() {
     const fetchProfileData = async () => {
       try {
         const token = localStorage.getItem("token");
-  
+
         const headers = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         };
-  
+
         const response = await fetch(`${URL}Profile`, {
           method: "GET",
           headers: headers,
         });
-  
+
         if (response.ok) {
           const data = await response.json();
           dispatch(LoginUser(data));
@@ -59,7 +60,11 @@ function App() {
 
   return (
     <div className="App row justify-content-center">
-      {pathname !== "/LoginUp" && pathname !== "/Inventario" && pathname !== "/Register" && <NavBar userData={userData} logout={logout} />}
+      {pathname !== "/LoginUp" &&
+        pathname !== "/Inventario" &&
+        pathname !== "/Register" && (
+          <NavBar userData={userData} logout={logout} />
+        )}
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -73,6 +78,7 @@ function App() {
         <Route path="/ProductList" element={<ProductList />} />
         <Route path="/Producto/:name" element={<DetailProduct />} />
         <Route path="/Register" element={<Register />} />
+        <Route path="/RatingForm" element={<RatingForm />} />
       </Routes>
     </div>
   );
