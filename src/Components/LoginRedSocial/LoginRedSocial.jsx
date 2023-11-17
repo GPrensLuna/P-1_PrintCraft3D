@@ -54,7 +54,7 @@ const LoginRedSocial = () => {
   
       setUserData(userDataFromResponse);
   
-      createCart(userDataFromResponse.userId); // Pass userId to createCart function
+      createCart(LoginUser.userId); // Pass userId to createCart function
       window.location.href = "/Profile";
   
     } catch (error) {
