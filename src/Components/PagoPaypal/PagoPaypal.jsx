@@ -63,7 +63,6 @@ export default function PagoPaypal({ cart, setCart }) {
             }
           },
           async onCancel(data) {
-            alert("Payment canceled");
             Swal.fire({
               position: "center",
               icon: "error",
@@ -145,18 +144,27 @@ export default function PagoPaypal({ cart, setCart }) {
         position: "center",
         icon: "success",
         title: "Procesando pago",
-        text: `${message}`,
+        text: 'Muchas gracias!',
         showConfirmButton: false,
         timer: 2000,
       });
     }
   }, [cart, user, setCart]);
-
+//<div id="paypal-button-container" className={style.divPaypal}></div>
   return (
-    <div className={style.container}>
-      <h1>Elija su metodo de pago</h1>
+      <div>
+      {cart.length > 0 ? (
+        <div className={style.container}>
+        <h1>Elija su metodo de pago</h1>
       <div id="paypal-button-container" className={style.divPaypal}></div>
-      {/* Resto del contenido de la página de Inventario */}
+      </div>
+    ) : (
+      <div className={style.container}>
+        <h1>El carrito está vacío. Agregue productos antes de proceder al pago.</h1>
+        {/* Puedes mostrar un mensaje o redirigir al usuario a la página de productos, etc. */}
+      </div>
+    )}
+    {/* Resto del contenido de la página de Inventario */}
     </div>
   );
 }
