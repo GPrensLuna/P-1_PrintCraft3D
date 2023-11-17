@@ -6,6 +6,7 @@ import Reviews from "../../Components/Review/Review.jsx";
 import "./DetailProduct.css";
 
 function DetailProduct() {
+
   const { name } = useParams();
   const [Producto, setProducto] = useState([]);
 
@@ -24,6 +25,7 @@ function DetailProduct() {
       });
   }, [name]);
 
+
   return (
     <div className="detail-product-container">
       <div className="detail-product-image">
@@ -34,11 +36,11 @@ function DetailProduct() {
           <b>{Producto.name}</b>
         </h4>
         <p className="product-description">{Producto.description}</p>
-          <p><strong>Size:</strong> {Producto.size}</p>
-          <p><strong>Material:</strong> {Producto.material}</p>
-          <p><strong>Category:</strong> {Producto.category}</p>
-          <p className="product-price">${Producto.price}</p>
-          <Reviews productId={Producto.id}/>
+        <p><strong>Size:</strong> {Producto.size}</p>
+        <p><strong>Material:</strong> {Producto.material}</p>
+        <p><strong>Category:</strong> {Producto.category}</p>
+        <p className="product-price">${Producto.price}</p>
+        <Reviews productId={Producto.id}/>
       </div>
     </div>
   );
