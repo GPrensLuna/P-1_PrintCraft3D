@@ -28,19 +28,21 @@ export default function Orden({ order, index }) {
     const productHTML = resolvedProducts.map(
       (product) =>
         `<div class="product">
-                <img src="${product.image}" alt="${product.name}" />
+                <img class="imagen" src="${product.image}" alt="${product.name}" />
                 <p><strong>${product.name}</strong></p>
-                <p>Precio: ${product.price}</p>
+                <p><strong>Precio: $</strong>${product.price}</p>
+                <hr />
             </div>`
     );
 
     Swal.fire({
-      title: `<strong>Tu orden ${index + 1}</strong>`,
+      title: `<strong>Tu compra N° ${index + 1}</strong>`,
       html: `<div class="detail-card">
                <div class="detail-info">
-                 <p><strong>Id:</strong> ${id}</p>
-                 <p><strong>Total:</strong> ${total}</p>
-                 <p><strong>Productos:</strong></p>
+                 <span class="id"><strong>Id:</strong> ${id}</span>
+                 <span class="total"><strong>-  Total de la Compra: $</strong>${total}</span>
+                 <hr />
+                 <p><strong><u>Productos:</u></strong></p>
                 <div class="product-list">${productHTML.join("")}</div>
                </div>
              </div>`,
@@ -54,7 +56,7 @@ export default function Orden({ order, index }) {
   return (
     <div>
       <div onClick={handleShowOrder} className={styles.li}>
-        <p>Tu orden {index + 1}</p>
+        <p>Tu Compra N° {index + 1}</p>
       </div>
     </div>
   );
