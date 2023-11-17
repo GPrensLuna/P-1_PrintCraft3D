@@ -1,23 +1,28 @@
 import React from "react";
 import "./Paginado.css";
 
-const Paginado = ({ currentPage, totalPages, handleLimitChange, loadPage }) => {
+const Paginado = ({
+  getCurrentPage,
+  getTotalPages,
+  handleLimitChange,
+  loadPage,
+}) => {
   return (
     <div>
       <button
         className="anterior-button Pbtn"
-        onClick={() => loadPage(currentPage - 1)}
-        disabled={currentPage === 1}
+        onClick={() => loadPage(getCurrentPage() - 1)}
+        disabled={getCurrentPage() === 1}
       >
         Anterior
       </button>
       <span>
-        {currentPage} de {totalPages}
+        {getCurrentPage()} de {getTotalPages()}
       </span>
       <button
         className="siguiente-button Pbtn"
-        onClick={() => loadPage(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        onClick={() => loadPage(getCurrentPage() + 1)}
+        disabled={getCurrentPage() === getTotalPages()}
       >
         Siguiente
       </button>

@@ -22,29 +22,24 @@ function Home() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(() => {
-    const savedPage = localStorage.getItem("currentPage");
-    return savedPage ? parseInt(savedPage, 10) : 1;
-  });
 
+  //estados para el paginado
+  const [currentPage, setCurrentPage] = useState(1);
   const [count, setCount] = useState(1);
   const [limit, setLimit] = useState(12);
-  const [totalPages, setTotalPages] = useState(Math.ceil(count / limit));
+  const [totalPages, setTotalPages] = useState(0);
 
+  //estados para los filtros
+  const [selectedMaterials, setSelectedMaterials] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+
+  // funciones manejo de filtros
   const handleLimitChange = (event) => {
     const newLimit = parseInt(event.target.value, 10);
     setLimit(newLimit);
     setCurrentPage(1);
   };
-
-  useEffect(() => {
-    setLimit(limit);
-    setCurrentPage(1);
-  }, [limit]);
-
-  const [selectedMaterials, setSelectedMaterials] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
 
   const handleMaterialChange = (material) => {
     setSelectedMaterials(material);
@@ -62,6 +57,26 @@ function Home() {
     setSelectedMaterials(null);
     setSelectedCategory(null);
     setSelectedSize(null);
+  };
+
+  // funcion cambio de pagina - paginado
+  const loadPage = (page) => {
+    if (page < 1 || page > totalPages) {
+      return;
+    }
+    setCurrentPage(page);
+    console.log("home current page: ", currentPage);
+  };
+
+  // funcion que devuelve el valor de current page
+  // lo usa el componente paginado
+  const getCurrentPage = () => {
+    return currentPage;
+  };
+  // funcion que devuelve el valor de totalPages
+  // lo usa el componente paginado
+  const getTotalPages = () => {
+    return totalPages;
   };
 
   useEffect(() => {
@@ -83,10 +98,9 @@ function Home() {
           if (response.status === 200) {
             const { data } = response;
             dispatch(addProductInfo(data.results));
-            // no deberia actualizar la lista principal sino un estado llamado filtered products
-            console.log("UseEffect home: ", data.results.length, data.results);
-            setCount(data.results.length);
-            //setLimit(data.limit);
+            setCount(data.count);
+            setLimit(data.limit);
+            setTotalPages(Math.floor(data.count / data.limit));
             setLoading(false);
           } else {
             setError("No se pudieron cargar los productos.");
@@ -127,17 +141,7 @@ function Home() {
     dispatch,
   ]);
 
-  useEffect(() => {
-    localStorage.setItem("currentPage", currentPage);
-  }, [currentPage]);
-
-  const loadPage = (page) => {
-    if (page < 1 || page > totalPages) {
-      return;
-    }
-    setCurrentPage(page);
-  };
-
+  // funcion de gestion - (por el momento innecesario)
   const handleProductDelete = async (idProduct) => {
     const shouldDelete = window.confirm(
       "¿Seguro que quieres eliminar este producto?"
@@ -163,6 +167,7 @@ function Home() {
     }
   };
 
+  // funciones relacionadas con el carrito
   const addToCart = async (userId, productId) => {
     try {
       const response = await axios.post(`${URL}addOneToCart`, {
@@ -295,8 +300,8 @@ function Home() {
       <div className={style.paginationWrapper}>
         <div>
           <Paginado
-            currentPage={currentPage}
-            totalPages={totalPages}
+            getCurrentPage={getCurrentPage}
+            getTotalPages={getTotalPages}
             handleLimitChange={handleLimitChange}
             loadPage={loadPage}
           />
