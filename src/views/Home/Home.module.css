@@ -8,7 +8,14 @@
 .ContainerCarusel {
   grid-column: 1 /4;
 }
-
+.dark-mode {
+  background-color: #07070799;
+  color: #acacac;
+}
+.darkMode {
+  background-color: #07070799; /* Cambia el color de fondo para el modo oscuro */
+  color: #acacac; /* Cambia el color del texto para el modo oscuro */
+}
 .ContainerAsaider {
   grid-column: 1/2;
   gap: 1rem;
@@ -61,7 +68,6 @@
   width: 100%;
   max-width: 500px;
   min-width: 300px;
-  background-color: #fff;
   overflow: hidden;
 }
 

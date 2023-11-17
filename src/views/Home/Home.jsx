@@ -1,4 +1,3 @@
-// Home.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,6 +27,10 @@ function Home() {
   const [count, setCount] = useState(1);
   const [limit, setLimit] = useState(12);
   const [totalPages, setTotalPages] = useState(0);
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedDarkMode = localStorage.getItem("darkMode");
+    return savedDarkMode === "true";
+  });
 
   //estados para los filtros
   const [selectedMaterials, setSelectedMaterials] = useState(null);
@@ -252,23 +255,38 @@ function Home() {
       });
     }
   };
+  const toggleDarkMode = () => {
+    setDarkMode((prevDarkMode) => {
+      const newDarkMode = !prevDarkMode;
+      localStorage.setItem("darkMode", newDarkMode.toString()); // Guarda en localStorage
+      return newDarkMode;
+    });
+  };
 
   return (
-    <main className={style.main}>
+    <main className={`${style.main} ${darkMode ? style.darkMode : ""}`}>
       <div className={style.ContainerCarusel}>
         <CarouselHome />
       </div>
-      <div className={style.ContainerAsaider}>
+      <div
+        className={`${style.ContainerAsaider} ${
+          darkMode ? style.darkMode : ""
+        }`}
+      >
         <Aside
           onMaterialChange={handleMaterialChange}
           onCategoryChange={handleCategoryChange}
           onSizeChange={handleSizeChange}
           allProducts={allProducts}
           resetAllFilters={resetAllFilters}
+          darkMode={darkMode}
         />
       </div>
 
       <div className={style.ContainerHome}>
+        <button className={style.BTNDarkMode} onClick={toggleDarkMode}>
+          {darkMode ? "Modo Claro" : "Modo Oscuro"}
+        </button>
         <div className={style.ContainerCards}>
           {loading ? (
             <p>Cargando productos...</p>

@@ -4,7 +4,7 @@
   height: 100%;
   justify-content: center;
   text-align: center;
-  margin: 0;
+  padding: 5px;
 }
 
 /* checkboxx */
@@ -13,6 +13,10 @@
   background: #ff5733;
   transition: 0.2s ease-in-out;
   border-radius: 0px 10px 10px 0px;
+}
+.darkMode {
+  background-color: #07070799; /* Cambia el color de fondo para el modo oscuro */
+  color: #acacac; /* Cambia el color del texto para el modo oscuro */
 }
 
 .AsideLabel {
@@ -38,26 +42,4 @@
   width: 15px;
   background: black;
   border-radius: 100%;
-}
-
-label input:checked ~ span {
-  box-shadow: 0px 0px 30px #ff5733;
-}
-
-span:after {
-  content: "";
-  position: absolute;
-  border: solid white;
-  border-width: 0px 3px 3px 0px;
-  transform: rotate(45deg);
-  width: 4px;
-  height: 8px;
-  left: 4px;
-  top: 0.5px;
-  opacity: 0;
-  transition: 0.5s ease-in-out;
-}
-
-label input:checked ~ span:after {
-  opacity: 1;
 }
