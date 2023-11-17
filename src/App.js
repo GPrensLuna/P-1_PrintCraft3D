@@ -48,7 +48,10 @@ useEffect(() => {
             headers: headers,
           }
         );
-
+          console.log(
+            "purchasesResponse: " + JSON.stringified,
+            purchasesResponse
+          );
         let purchasesData = [];
 
         if (purchasesResponse.ok) {
