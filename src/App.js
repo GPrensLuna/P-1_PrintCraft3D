@@ -49,20 +49,22 @@ useEffect(() => {
           }
         );
 
+        let purchasesData = [];
+
         if (purchasesResponse.ok) {
-          const purchasesData = await purchasesResponse.json();
-
-          // Combinar la información del perfil y las compras
-          const combinedData = { ...profileData, purchases: purchasesData };
-
-          // Guardar la información combinada en el estado o donde sea necesario
-          dispatch(LoginUser(combinedData));
-
-          // También puedes actualizar el token en el localStorage si es necesario
-          // localStorage.setItem("token", nuevoToken);
+          purchasesData = await purchasesResponse.json();
         } else {
           console.log("Request to Compras endpoint failed");
         }
+
+        // Combinar la información del perfil y las compras
+        const combinedData = { ...profileData, purchases: purchasesData };
+
+        // Guardar la información combinada en el estado o donde sea necesario
+        dispatch(LoginUser(combinedData));
+
+        // También puedes actualizar el token en el localStorage si es necesario
+        // localStorage.setItem("token", nuevoToken);
       } else {
         if (profileResponse.url.endsWith("login-endpoint")) {
           console.log("Request to login-endpoint failed");
@@ -75,6 +77,7 @@ useEffect(() => {
 
   fetchProfileData();
 }, [dispatch]);
+
 
 
   const logout = async () => {
