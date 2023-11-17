@@ -21,36 +21,61 @@ function App() {
   const { pathname } = useLocation();
 
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-  
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        };
-  
-        const response = await fetch(`${URL}Profile`, {
-          method: "GET",
-          headers: headers,
-        });
-  
-        if (response.ok) {
-          const data = await response.json();
-          dispatch(LoginUser(data));
-        } else {
-          if (response.url.endsWith("login-endpoint")) {
-            console.log("Request to login-endpoint failed");
-          }
-        }
-      } catch (error) {
-        console.error("Error during fetchProfileData:", error);
-      }
-    };
+useEffect(() => {
+  const fetchProfileData = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-    fetchProfileData();
-  }, [dispatch]);
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
+      // Obtener la información del perfil
+      const profileResponse = await fetch(`${URL}Profile`, {
+        method: "GET",
+        headers: headers,
+      });
+
+      if (profileResponse.ok) {
+        const profileData = await profileResponse.json();
+
+        // Obtener la información adicional (compras) usando el UserId del perfil
+        const purchasesResponse = await fetch(
+          `${URL}Compras/${profileData.UserId}`,
+          {
+            method: "GET",
+            headers: headers,
+          }
+        );
+
+        if (purchasesResponse.ok) {
+          const purchasesData = await purchasesResponse.json();
+
+          // Combinar la información del perfil y las compras
+          const combinedData = { ...profileData, purchases: purchasesData };
+
+          // Guardar la información combinada en el estado o donde sea necesario
+          dispatch(LoginUser(combinedData));
+
+          // También puedes actualizar el token en el localStorage si es necesario
+          // localStorage.setItem("token", nuevoToken);
+        } else {
+          console.log("Request to Compras endpoint failed");
+        }
+      } else {
+        if (profileResponse.url.endsWith("login-endpoint")) {
+          console.log("Request to login-endpoint failed");
+        }
+      }
+    } catch (error) {
+      console.error("Error during fetchProfileData:", error);
+    }
+  };
+
+  fetchProfileData();
+}, [dispatch]);
+
 
   const logout = async () => {
     localStorage.removeItem("token");
