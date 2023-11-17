@@ -14,6 +14,7 @@ export default function PagoPaypal({ cart, setCart }) {
     let userData;
     if (user?.userId) {
       userData = user;
+      console.log(userData)
     }
 
     const script = document.createElement("script");
@@ -149,7 +150,7 @@ export default function PagoPaypal({ cart, setCart }) {
         timer: 2000,
       });
     }
-  }, [cart, user]);
+  }, [cart, user, setCart]);
 
   return (
     <div className={style.container}>

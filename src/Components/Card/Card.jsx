@@ -55,25 +55,23 @@ const Card = (props) => {
   return (
     <div className="product-card">
       <div onClick={handleDetailProductClick}>
-        <img
-          className="product-image"
-          alt={name}
-          src={image}
-          onClick={handleDetailProductClick}
-        />{" "}
-        <div className="size-info">
-          {" "}
-          <strong>size: {size}</strong>
-        </div>
-        <div className="product-title">
-          <strong>{name}</strong>
-        </div>
-        <div className="product-desc">{description}</div>
-        <div className="cart-price">
-          <span className="offer-price">
-            <strong>${price}</strong>
-          </span>
-        </div>
+
+
+      <img className="product-image" alt={name} src={image}  onClick={handleDetailProductClick}/>{" "}
+      <div className="size-info">
+        {" "}
+        <strong>size: {size}</strong>
+      </div>
+      <div className="product-title">
+        <strong>{name}</strong>
+      </div>
+      <div className="product-desc">{description}</div>
+      <div className="cart-price">
+        <span className="offer-price">
+          <strong>${price}</strong>
+        </span>
+      </div>
+
       </div>
 
       <div className="add-to-cart-parent">

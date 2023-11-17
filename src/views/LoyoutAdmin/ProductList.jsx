@@ -244,7 +244,7 @@ const ProductList = () => {
   const getOptionsForField = (fieldName) => {
     switch (fieldName) {
       case "size":
-        return ["S", "M", "L", "XL"];
+        return ["S", "M", "L"];
       case "category":
         return ["accesorio", "figura", "decoracion"];
       case "material":

@@ -22,36 +22,68 @@ function App() {
   const userData = useSelector((state) => state.userData);
   const { pathname } = useLocation();
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const token = localStorage.getItem("token");
 
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        };
 
-        const response = await fetch(`${URL}Profile`, {
-          method: "GET",
-          headers: headers,
-        });
+useEffect(() => {
+  const fetchProfileData = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-        if (response.ok) {
-          const data = await response.json();
-          dispatch(LoginUser(data));
-        } else {
-          if (response.url.endsWith("login-endpoint")) {
-            console.log("Request to login-endpoint failed");
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
+      // Obtener la información del perfil
+      const profileResponse = await fetch(`${URL}Profile`, {
+        method: "GET",
+        headers: headers,
+      });
+
+      if (profileResponse.ok) {
+        const profileData = await profileResponse.json();
+  
+        const purchasesResponse = await fetch(
+          `${URL}Compras/${profileData.userId}`,
+          {
+            method: "GET",
+            headers: headers,
+
           }
-        }
-      } catch (error) {
-        console.error("Error during fetchProfileData:", error);
-      }
-    };
+        );
 
-    fetchProfileData();
-  }, [dispatch]);
+        let purchasesData = [];
+
+        if (purchasesResponse.ok) {
+          purchasesData = await purchasesResponse.json();
+        } else {
+          console.log("Request to Compras endpoint failed");
+        }
+
+        // Combinar la información del perfil y las compras
+        const combinedData = { ...profileData, purchases: purchasesData };
+
+        // Guardar la información combinada en el estado o donde sea necesario
+        console.log("combinedData", combinedData)
+        dispatch(LoginUser(combinedData));
+
+
+        // También puedes actualizar el token en el localStorage si es necesario
+        // localStorage.setItem("token", nuevoToken);
+      } else {
+        if (profileResponse.url.endsWith("login-endpoint")) {
+          console.log("Request to login-endpoint failed");
+        }
+      }
+    } catch (error) {
+      console.error("Error during fetchProfileData:", error);
+    }
+  };
+
+  fetchProfileData();
+}, [dispatch]);
+
+
 
   const logout = async () => {
     localStorage.removeItem("token");
@@ -61,11 +93,8 @@ function App() {
 
   return (
     <div className="App row justify-content-center">
-      {pathname !== "/LoginUp" &&
-        pathname !== "/Inventario" &&
-        pathname !== "/Register" && (
-          <NavBar userData={userData} logout={logout} />
-        )}
+
+      {pathname !== "/LoginUp" && pathname !== "/Inventory" && pathname !== "/Register" && <NavBar userData={userData} logout={logout} />}
 
       <Routes>
         <Route path="/" element={<Home />} />
