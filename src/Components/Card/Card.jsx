@@ -67,7 +67,6 @@ const Card = (props) => {
       <div className="product-title">
         <strong>{name}</strong>
       </div>
-      <Reviews productId={id}/>
       <div className="product-desc">{description}</div>
       <div className="cart-price">
         <span className="offer-price">
