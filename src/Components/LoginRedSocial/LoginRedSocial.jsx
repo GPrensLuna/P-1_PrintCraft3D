@@ -50,9 +50,10 @@ const LoginRedSocial = () => {
         roll: "Client",
         userId: id, // Use the userId from the response
       };
-      console.log("userDataFromResponse", userDataFromResponse);
 
-      createCart(userDataFromResponse.userId);
+      if (id){
+        createCart(userDataFromResponse.userId);
+      }
 
       setUserData(userDataFromResponse);
       window.location.href = "/Profile";
