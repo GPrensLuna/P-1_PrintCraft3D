@@ -39,7 +39,7 @@ useEffect(() => {
 
       if (profileResponse.ok) {
         const profileData = await profileResponse.json();
-
+        console.log("profile", profileData)
         // Obtener la información adicional (compras) usando el UserId del perfil
         const purchasesResponse = await fetch(
           `${URL}Compras/${profileData.UserId}`,
@@ -49,8 +49,9 @@ useEffect(() => {
           }
         );
           console.log(
-            "purchasesResponse: " + JSON.stringified,
-            purchasesResponse
+            "purchasesResponse: " ,
+            purchasesResponse,
+            profileData.UserId
           );
         let purchasesData = [];
 
