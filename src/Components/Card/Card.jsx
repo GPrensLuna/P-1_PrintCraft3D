@@ -2,7 +2,6 @@ import React from "react";
 // import style from "./Card.module.css";
 import "./Card.css";
 import Swal from "sweetalert2";
-import Reviews from "../Review/Review";
 
 const Card = (props) => {
   const {
@@ -22,16 +21,17 @@ const Card = (props) => {
   const handleDetailProductClick = () => {
     Swal.fire({
       title: `<strong>${name}</strong>`,
-      html: `<div class="detail-card">
-            <img class="detail-img" src="${image}" alt="${name}" />
-            <div class="detail-info">
-              <p><strong>Descripción:</strong> ${description}</p>
-              <p><strong>Tamaño:</strong> ${size}</p>
-              <p><strong>Material:</strong> ${material}</p>
-              <p><strong>Categoria:</strong> ${category}</p>
-              <p><strong>Precio:</strong> $${price}</p>
-            </div>
-          </div>`,
+      html: `
+        <div class="detail-card">
+          <img class="detail-img" src="${image}" alt="${name}" />
+          <div class="detail-info">
+            <p><strong>Descripción:</strong> ${description}</p>
+            <p><strong>Tamaño:</strong> ${size}</p>
+            <p><strong>Material:</strong> ${material}</p>
+            <p><strong>Categoria:</strong> ${category}</p>
+            <p><strong>Precio:</strong> $${price}</p>
+          </div>
+        </div>`,
       showCloseButton: true,
       showCancelButton: true,
       focusConfirm: false,
@@ -41,22 +41,20 @@ const Card = (props) => {
     }).then((result) => {
       if (result.isConfirmed) {
         handleAddToCartClick();
-      }
-      if (result.isDismissed) {
-        // Linkear a DetailProduct
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // Redirect to the specified route when cancel button is pressed
+        window.location.href = `Producto/${name}`;
       }
     });
   };
-
+   
   const handleAddToCartClick = () => {
     const productId = id;
     addToCart(productId);
   };
   return (
-    <div className="product-card">
-      <div onClick={handleDetailProductClick}>
-
-
+    <div className="product-card" >
+      <div >
       <img className="product-image" alt={name} src={image}  onClick={handleDetailProductClick}/>{" "}
       <div className="size-info">
         {" "}

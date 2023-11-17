@@ -6,12 +6,10 @@ import { URL } from "../../config.js";
 import Footer from "../../Components/Footer/Footer";
 import Aside from "../../Components/Aside/Aside.jsx";
 import style from "./Home.module.css";
-import Reviews from "../../Components/Review/Review.jsx";
 import Card from "../../Components/Card/Card.jsx";
 import CarouselHome from "../../Components/CarouselHome/CarouselHome.jsx";
 import Paginado from "../../Components/Paginado/Paginado.jsx";
 import { addProductInfo } from "../../redux/actions/actions.js";
-
 import Swal from "sweetalert2";
 
 function Home() {
