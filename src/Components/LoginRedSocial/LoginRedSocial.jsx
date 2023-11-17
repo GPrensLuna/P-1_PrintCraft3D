@@ -63,7 +63,6 @@ const LoginRedSocial = () => {
     }
   };
 
-  let userId = userData.userId
   
   const createCart = async (userId) => {
     try {
