@@ -49,6 +49,8 @@ const LoginRedSocial = () => {
         roll: "Client",
         userId: response.data.userId, // Use the userId from the response
       };
+      console.log("userDataFromResponse", userDataFromResponse);
+      console.log("userDataFromResponse.userId", userDataFromResponse.userId);
   
       setUserData(userDataFromResponse);
   
