@@ -54,7 +54,7 @@ const LoginRedSocial = () => {
   
       setUserData(userDataFromResponse);
   
-      createCart(LoginUser.userId); // Pass userId to createCart function
+      console.log(userDataFromResponse.userId); // Pass userId to createCart function
       window.location.href = "/Profile";
   
     } catch (error) {
@@ -66,7 +66,7 @@ const LoginRedSocial = () => {
   };
 
   
-  const createCart = async (userId) => {
+/*   const createCart = async (userId) => {
     try {
       const { data } = await axios.post(
         `${URL}shoppingCart`,
@@ -78,7 +78,7 @@ const LoginRedSocial = () => {
     } catch (error) {
       alert(error.message);
     }
-  };
+  }; */
 
   return (
     <div className="container w-100 my-4">
