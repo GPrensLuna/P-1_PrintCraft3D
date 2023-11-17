@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { URL } from "../../config.js";
 import axios from "axios";
@@ -28,21 +29,30 @@ export default function Orden({ order, index }) {
     const productHTML = resolvedProducts.map(
       (product) =>
         `<div class="product">
-                <img class="imagen" src="${product.image}" alt="${product.name}" />
-                <p><strong>${product.name}</strong></p>
-                <p><strong>Precio: $</strong>${product.price}</p>
-                <hr />
-            </div>`
+      <img src="${product.image}" alt="${product.name}" style="max-width: 100px; max-height: 100px;" />
+
+      <p><strong>${product.name}</strong></p>
+      <p>Precio: ${product.price}</p>
+
+      <!-- Botón con evento onclick -->
+      <button onclick="redirigirARuta('${product.id}')">Rewiu</button>
+    </div>`
     );
 
+    // Función que redirige a la ruta deseada con el ID del producto
+    function redirigirARuta(productId) {
+      // Reemplaza 'tu-ruta-aqui' con la ruta a la que quieres redirigir, y agrega el ID del producto
+      window.location.href = `tu-ruta-aqui/${productId}`;
+    }
+
     Swal.fire({
-      title: `<strong>Tu compra N° ${index + 1}</strong>`,
+      title: `<strong>Tu orden ${index + 1}</strong>`,
       html: `<div class="detail-card">
-               <div class="detail-info">
-                 <span class="id"><strong>Id:</strong> ${id}</span>
-                 <span class="total"><strong>-  Total de la Compra: $</strong>${total}</span>
-                 <hr />
-                 <p><strong><u>Productos:</u></strong></p>
+     window.location.href =${URL}RatingForm/${id}+"&";        
+      <div class="detail-info">
+                 <p><strong>Id:</strong> ${id}</p>
+                 <p><strong>Total:</strong> ${total}</p>
+                 <p><strong>Productos:</strong></p>
                 <div class="product-list">${productHTML.join("")}</div>
                </div>
              </div>`,
@@ -56,7 +66,7 @@ export default function Orden({ order, index }) {
   return (
     <div>
       <div onClick={handleShowOrder} className={styles.li}>
-        <p>Tu Compra N° {index + 1}</p>
+        <p>Tu orden {index + 1}</p>
       </div>
     </div>
   );
