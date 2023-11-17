@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import google from "../../imagenes/google.png";
 import axios from "axios";
@@ -51,7 +52,7 @@ const LoginRedSocial = () => {
         userId: id, // Use the userId from the response
       };
 
-      if (id){
+      if (id) {
         createCart(userDataFromResponse.userId);
       }
 

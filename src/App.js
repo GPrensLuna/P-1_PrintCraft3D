@@ -15,7 +15,6 @@ import ShoppingCart from "./Components/ShoppingCart/ShoppingCart";
 
 import Register from "../src/views/Register/Register.jsx";
 import RatingForm from "./views/RatingForm/RatingForm.jsx";
-import ShoppingHistory from "./views/ShoppingHistory/ShoppingHistory.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -112,10 +111,7 @@ useEffect(() => {
         <Route path="/Producto/:name" element={<DetailProduct />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/RatingForm/:params" element={<RatingForm />} />
-        <Route
-          path="/ShoppingHistory/:userId"
-          element={<ShoppingHistory userData={userData} />}
-        />
+ 
       </Routes>
     </div>
   );

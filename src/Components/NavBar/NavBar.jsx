@@ -44,7 +44,6 @@ function NavBar({ userData, logout }) {
           {userData && userData.roll === "Client" ? (
             <>
               <Nav.Link href="/Profile">{userData.name}</Nav.Link>
-              <Nav.Link href="/ShoppingHistory">Shopping history</Nav.Link>
             </>
           ) : null}
 
@@ -54,9 +53,6 @@ function NavBar({ userData, logout }) {
               <Nav.Link href="/ProductList">ProductList</Nav.Link>
               <Nav.Link href="/Inventory">Inventario</Nav.Link>
               <Nav.Link href="/Profile">{userData.name}</Nav.Link>
-              <Nav.Link href={`/ShoppingHistory/${userData.userId}`}>
-                Shopping history
-              </Nav.Link>
             </>
           ) : null}
           <Nav.Link href="/Carrito">Carrito</Nav.Link>

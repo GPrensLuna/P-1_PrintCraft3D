@@ -1,7 +1,9 @@
 import React from "react";
 import "./ShoppingHistory.css";
+import { useSelector } from "react-redux";
 
-const ShoppingHistory = ({ userData }) => {
+const ShoppingHistory = () => {
+  const userData = useSelector((state) => state.userData);
   console.log("Shopping History", userData);
 
   const { name, email, purchases } = userData;
