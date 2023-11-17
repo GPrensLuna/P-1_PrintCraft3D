@@ -5,21 +5,21 @@
     background-color: #f9f9f9;
     border-radius: 8px;
   }
-  
+
   .average-score {
     color: #007bff;
   }
-  
+
   .reviews-list {
     list-style-type: none;
     padding: 0;
   }
-  
+
   .review-item {
     border-bottom: 1px solid #eee;
     padding: 10px;
   }
-  
+
   .review-item:last-child {
     border-bottom: none;
   }
@@ -28,7 +28,7 @@
     display: inline-block;
     margin-bottom: 5px;
    }
-   
+
    .star {
     display: inline-block;
     width: 20px;
@@ -36,4 +36,3 @@
     background-size: cover;
     margin-right: 3px;
    }
-   
