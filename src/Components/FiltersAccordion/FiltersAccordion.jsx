@@ -18,11 +18,9 @@ const FiltersAccordion = ({
   // state para los contadores del filtro
   const productsList = useSelector((state) => state.allProducts);
   const [productCount, setProductCount] = useState(0);
-  console.log("before: ", productsList, productsList.length);
   useLayoutEffect(() => {
     if (productsList.length > 0) {
       setProductCount(productsList.length);
-      console.log("after: ", productCount, productsList.length);
     }
   }, []);
 
