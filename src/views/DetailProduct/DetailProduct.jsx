@@ -12,7 +12,7 @@ function DetailProduct() {
 
   useEffect(() => {
     axios
-      .get(${URL}Producto/${name})
+      .get(`${URL}Producto/${name}`)
       .then((response) => {
         if (response && response.data) {
           setProducto(response.data);
