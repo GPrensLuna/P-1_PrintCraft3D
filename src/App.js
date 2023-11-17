@@ -37,6 +37,7 @@ function App() {
   
         if (response.ok) {
           const data = await response.json();
+          console.log("data",data)
           dispatch(LoginUser(data));
         } else {
           if (response.url.endsWith("login-endpoint")) {
