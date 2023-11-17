@@ -7,7 +7,7 @@ const Reviews = ({ productId }) => {
   const [averageScore, setAverageScore] = useState(0);
 
   useEffect(() => {
-    fetch(${URL}Reviews/${productId})
+    fetch(`${URL}Reviews/${productId}`)
       .then((response) => response.json())
       .then((data) => {
         setReviews(data.reviews);
@@ -19,7 +19,7 @@ const Reviews = ({ productId }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       if (reviews && reviews.length > 0) {
-        await fetch(${URL}Product/${reviews[0]?.ProductId})
+        await fetch(`${URL}Product/${reviews[0]?.ProductId}`)
           .then((response) => response.json())
           .then((data) => setAverageScore(data.averageScore.toFixed(2)))
           .catch((error) => console.error('Error fetching score data:', error));
@@ -36,7 +36,7 @@ const Reviews = ({ productId }) => {
       const fetchUsers = async () => {
         await Promise.all(
           reviews.map((review) =>
-            fetch(${URL}User/${review.UserId})
+            fetch(`${URL}User/${review.UserId}`)
               .then((response) => response.json())
               .then((data) => setUsers((prevUsers) => [...prevUsers, data.user.firstName]))
               .catch((error) => console.error('Error fetching user data:', error))
