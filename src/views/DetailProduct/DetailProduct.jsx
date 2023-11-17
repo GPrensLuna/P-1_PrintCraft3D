@@ -1,20 +1,18 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import styles from "./DetailProduct.module.css";
 import { URL } from "../../config.js";
 import Reviews from "../../Components/Review/Review.jsx";
-
+import "./DetailProduct.css";
 
 function DetailProduct() {
-  const { name, id } = useParams();
+  const { name } = useParams();
   const [Producto, setProducto] = useState([]);
 
   useEffect(() => {
     axios
       .get(`${URL}Producto/${name}`)
       .then((response) => {
-        // Verificar que la respuesta tenga la estructura esperada
         if (response && response.data) {
           setProducto(response.data);
         } else {
@@ -22,39 +20,25 @@ function DetailProduct() {
         }
       })
       .catch((error) => {
-        // Manejar errores de manera más descriptiva
-        if (error.response) {
-          // El servidor respondió con un código de estado diferente de 2xx
-          console.error(
-            `Error fetching product: Server responded with ${error.response.status} - ${error.response.data}`
-          );
-        } else if (error.request) {
-          // La solicitud fue hecha pero no se recibió respuesta
-          console.error(
-            "Error fetching product: No response received from the server"
-          );
-        } else {
-          // Algo sucedió en la configuración de la solicitud que desencadenó un error
-          console.error(
-            "Error fetching product: Request configuration error",
-            error.message
-          );
-        }
+        // Handle errors
       });
   }, [name]);
 
   return (
-    <div className={styles.productContainer}>
-      <img src={Producto.image} className={styles.Imagen} alt="" />
-      <div className={styles.productDetails}>
+    <div className="detail-product-container">
+      <div className="detail-product-image">
+        <img src={Producto.image} alt={Producto.name} />
+      </div>
+      <div className="detail-product-info">
         <h4>
           <b>{Producto.name}</b>
         </h4>
-        <p>{Producto.description}</p>
-        <p>${Producto.price}</p>
-        <p>
-          <Reviews productId={id}/>
-        </p>
+        <p className="product-description">{Producto.description}</p>
+          <p><strong>Size:</strong> {Producto.size}</p>
+          <p><strong>Material:</strong> {Producto.material}</p>
+          <p><strong>Category:</strong> {Producto.category}</p>
+          <p className="product-price">${Producto.price}</p>
+          <Reviews productId={Producto.id}/>
       </div>
     </div>
   );

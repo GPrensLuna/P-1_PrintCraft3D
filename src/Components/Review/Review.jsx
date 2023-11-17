@@ -18,10 +18,10 @@ const Reviews = ({ productId }) => {
 
  return (
     <div>
-      <h2>Puntuación: {averageScore}</h2>
+      <h2>Punt:{averageScore}</h2>
       <h3>Comentarios:</h3>
       <ul>
-        {reviews.map((review) => (
+        {reviews?.map((review) => (
           <li key={review.id}>{review}</li>
         ))}
       </ul>
