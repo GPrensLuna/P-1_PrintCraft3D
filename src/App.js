@@ -19,7 +19,6 @@ function App() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userData);
   const { pathname } = useLocation();
-  console.log("userData",userData)
 
 
   useEffect(() => {
@@ -39,7 +38,6 @@ function App() {
   
         if (response.ok) {
           const data = await response.json();
-          console.log("data",data)
           dispatch(LoginUser(data));
         } else {
           if (response.url.endsWith("login-endpoint")) {
