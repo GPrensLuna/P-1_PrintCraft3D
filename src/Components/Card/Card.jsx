@@ -18,14 +18,11 @@ const Card = (props) => {
     addToCart,
   } = props;
 
-
-
   //funcion para para ver el detail del producto con sweetalert
   const handleDetailProductClick = () => {
     Swal.fire({
-       title: `<strong>${name}</strong>`,
-       html:
-         `<div class="detail-card">
+      title: `<strong>${name}</strong>`,
+      html: `<div class="detail-card">
             <img class="detail-img" src="${image}" alt="${name}" />
             <div class="detail-info">
               <p><strong>Descripción:</strong> ${description}</p>
@@ -35,45 +32,48 @@ const Card = (props) => {
               <p><strong>Precio:</strong> $${price}</p>
             </div>
           </div>`,
-       showCloseButton: true,
-       showCancelButton: true,
-       focusConfirm: false,
-       confirmButtonText: "Agregar al carrito",
-       cancelButtonText: "+ Info",
-       confirmButtonColor: "#202020",
+      showCloseButton: true,
+      showCancelButton: true,
+      focusConfirm: false,
+      confirmButtonText: "Agregar al carrito",
+      cancelButtonText: "+ Info",
+      confirmButtonColor: "#202020",
     }).then((result) => {
-       if (result.isConfirmed) {
-         handleAddToCartClick();
-       }
-       if (result.isDismissed) {
+      if (result.isConfirmed) {
+        handleAddToCartClick();
+      }
+      if (result.isDismissed) {
         // Linkear a DetailProduct
-       }
+      }
     });
-   };
-   
+  };
+
   const handleAddToCartClick = () => {
     const productId = id;
     addToCart(productId);
-  }
+  };
   return (
-    <div className="product-card" >
+    <div className="product-card">
       <div onClick={handleDetailProductClick}>
-
-      <img className="product-image" alt={name} src={image}  onClick={handleDetailProductClick}/>{" "}
-      <div className="size-info">
-        {" "}
-        <strong>size: {size}</strong>
-      </div>
-      <div className="product-title">
-        <strong>{name}</strong>
-      </div>
-      <Reviews productId={id}/>
-      <div className="product-desc">{description}</div>
-      <div className="cart-price">
-        <span className="offer-price">
-          <strong>${price}</strong>
-        </span>
-      </div>
+        <img
+          className="product-image"
+          alt={name}
+          src={image}
+          onClick={handleDetailProductClick}
+        />{" "}
+        <div className="size-info">
+          {" "}
+          <strong>size: {size}</strong>
+        </div>
+        <div className="product-title">
+          <strong>{name}</strong>
+        </div>
+        <div className="product-desc">{description}</div>
+        <div className="cart-price">
+          <span className="offer-price">
+            <strong>${price}</strong>
+          </span>
+        </div>
       </div>
 
       <div className="add-to-cart-parent">
