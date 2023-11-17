@@ -6,12 +6,7 @@ import styles from './Orden.module.css'
 
 export default function Orden({order, index}) {
 
-    let [products, setProducts] = useState([])
     let {id, total} = order
-    useEffect(() => {
-        console.log('Productos: ', products);
-      }, [products]);
-
 
     const getProducts = async (data) => {
         // Utilizar Promise.all para esperar a que todas las Promises se resuelvan
@@ -23,9 +18,6 @@ export default function Orden({order, index}) {
         const resolvedProducts = await Promise.all(productPromises);
 
         // Actualizar el estado con los datos resueltos
-        resolvedProducts.forEach((product) => {
-            setProducts((prevProducts) => [...prevProducts, product]);
-        })
         return resolvedProducts
     }
     const handleShowOrder = async () =>{
@@ -43,8 +35,6 @@ export default function Orden({order, index}) {
             </div>`
         ));
 
-        console.log('productHTML: ', productHTML)
-
         Swal.fire({
           title: `<strong>Tu orden ${index+1}</strong>`,
           html:
@@ -60,11 +50,7 @@ export default function Orden({order, index}) {
           showConfirmButton: false,
           cancelButtonText: "Cerrar",
           focusConfirm: false,
-       }).then((result) => {
-        if (result.isDismissed) {
-         setProducts([])
-        }
-     });
+       });
       }
 
     return <div >
