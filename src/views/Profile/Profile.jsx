@@ -11,8 +11,6 @@ export default function Profile({ userData }) {
   let [showProfile, setShowProfile] = useState(false);
   let [user, setUser] = useState({});
 
-  console.log(userData);
-
   useEffect(() => {
     async function fetchOrders() {
       if (userData?.userId) {
@@ -41,7 +39,7 @@ export default function Profile({ userData }) {
 
   if (orders && count) {
     mapOrders = orders.map((order, index) => {
-      return <Orden order={order} index={index} />;
+      return <Orden order={order} index={index} userData={userData} />;
     });
   }
 

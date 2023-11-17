@@ -21,68 +21,62 @@ function App() {
   const userData = useSelector((state) => state.userData);
   const { pathname } = useLocation();
 
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const token = localStorage.getItem("token");
 
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        };
 
-useEffect(() => {
-  const fetchProfileData = async () => {
-    try {
-      const token = localStorage.getItem("token");
+        // Obtener la información del perfil
+        const profileResponse = await fetch(`${URL}Profile`, {
+          method: "GET",
+          headers: headers,
+        });
 
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      };
+        if (profileResponse.ok) {
+          const profileData = await profileResponse.json();
 
-      // Obtener la información del perfil
-      const profileResponse = await fetch(`${URL}Profile`, {
-        method: "GET",
-        headers: headers,
-      });
+          const purchasesResponse = await fetch(
+            `${URL}Compras/${profileData.userId}`,
+            {
+              method: "GET",
+              headers: headers,
+            }
+          );
 
-      if (profileResponse.ok) {
-        const profileData = await profileResponse.json();
-  
-        const purchasesResponse = await fetch(
-          `${URL}Compras/${profileData.userId}`,
-          {
-            method: "GET",
-            headers: headers,
+          let purchasesData = [];
 
+          if (purchasesResponse.ok) {
+            purchasesData = await purchasesResponse.json();
+          } else {
+            console.log("Request to Compras endpoint failed");
           }
-        );
 
-        let purchasesData = [];
+          // Combinar la información del perfil y las compras
+          const combinedData = { ...profileData, purchases: purchasesData };
 
-        if (purchasesResponse.ok) {
-          purchasesData = await purchasesResponse.json();
+          // Guardar la información combinada en el estado o donde sea necesario
+
+          dispatch(LoginUser(combinedData));
+
+          // También puedes actualizar el token en el localStorage si es necesario
+          // localStorage.setItem("token", nuevoToken);
         } else {
-          console.log("Request to Compras endpoint failed");
+          if (profileResponse.url.endsWith("login-endpoint")) {
+            console.log("Request to login-endpoint failed");
+          }
         }
-
-        // Combinar la información del perfil y las compras
-        const combinedData = { ...profileData, purchases: purchasesData };
-
-        // Guardar la información combinada en el estado o donde sea necesario
-        console.log("combinedData", combinedData)
-        dispatch(LoginUser(combinedData));
-
-
-        // También puedes actualizar el token en el localStorage si es necesario
-        // localStorage.setItem("token", nuevoToken);
-      } else {
-        if (profileResponse.url.endsWith("login-endpoint")) {
-          console.log("Request to login-endpoint failed");
-        }
+      } catch (error) {
+        console.error("Error during fetchProfileData:", error);
       }
-    } catch (error) {
-      console.error("Error during fetchProfileData:", error);
-    }
-  };
+    };
 
-  fetchProfileData();
-}, [dispatch]);
-
-
+    fetchProfileData();
+  }, [dispatch]);
 
   const logout = async () => {
     localStorage.removeItem("token");
@@ -111,7 +105,6 @@ useEffect(() => {
         <Route path="/Producto/:name" element={<DetailProduct />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/RatingForm/:params" element={<RatingForm />} />
- 
       </Routes>
     </div>
   );
