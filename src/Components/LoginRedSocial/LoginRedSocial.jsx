@@ -12,9 +12,9 @@ const LoginRedSocial = () => {
   const [loading, setLoading] = useState(false);
   const [userRegistered, setUserRegistered] = useState(false);
   const [userData, setUserData] = useState(null);
-  console.log(userData)
   const handleGoogleSignIn = async () => {
-    const provider = new GoogleAuthProvider();
+
+    const provider = new GoogleAuthProvider(userData);
   
     try {
       setLoading(true);
@@ -40,8 +40,6 @@ const LoginRedSocial = () => {
         email: user.email,
         roll: "Client",
       }));
-      console.log("LoginUser", LoginUser)
-      console.log("LoginUser", LoginUser);
 
       const userDataFromResponse = {
         firstName: user.displayName,
@@ -49,12 +47,10 @@ const LoginRedSocial = () => {
         roll: "Client",
         userId: response.data.userId, // Use the userId from the response
       };
-      console.log("userDataFromResponse", userDataFromResponse);
-      console.log("userDataFromResponse.userId", userDataFromResponse.userId);
-  
+      
+      createCart(userDataFromResponse.userId);
+      
       setUserData(userDataFromResponse);
-  
-      console.log(userDataFromResponse.userId); // Pass userId to createCart function
       window.location.href = "/Profile";
   
     } catch (error) {
@@ -66,7 +62,7 @@ const LoginRedSocial = () => {
   };
 
   
-/*   const createCart = async (userId) => {
+ const createCart = async (userId) => {
     try {
       const { data } = await axios.post(
         `${URL}shoppingCart`,
@@ -78,7 +74,7 @@ const LoginRedSocial = () => {
     } catch (error) {
       alert(error.message);
     }
-  }; */
+  }; 
 
   return (
     <div className="container w-100 my-4">
