@@ -12,7 +12,7 @@ const LoginRedSocial = () => {
   const [loading, setLoading] = useState(false);
   const [userRegistered, setUserRegistered] = useState(false);
   const [userData, setUserData] = useState(null);
-
+  console.log(userData)
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
   
@@ -22,36 +22,35 @@ const LoginRedSocial = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
   
+      
       const response = await axios.post(`${URL}Google`, {
         firstName: user.displayName,
         email: user.email,
         roll: "Client",
       });
-  
+      
+      
       const receivedToken = response.data.token;
       localStorage.setItem("token", receivedToken);
   
       // Actualizar el estado si el usuario ya está registrado
       setUserRegistered(true);
-      dispatch(
-        LoginUser({
-          firstName: user.displayName,
-          email: user.email,
-          roll: "Client",
-        })
-      );
-  
-      const userDataFromResponse = {
+      dispatch(LoginUser({
         firstName: user.displayName,
         email: user.email,
         roll: "Client",
-        userId: response.data.userId,
-      };
-  
-      setUserData(userDataFromResponse);
-  
-      createCart(userDataFromResponse.userId); 
+      }));
+      console.log("LoginUser", LoginUser)
+
+      setUserData({
+        firstName: user.displayName,
+        email: user.email,
+        roll: "Client",
+      });
+      createCart(setUserData.userId);
       window.location.href = "/Profile";
+
+  
     } catch (error) {
       console.error("Error al autenticar con Google:", error.message);
       console.error("Detalles del error:", error.response);
@@ -59,8 +58,9 @@ const LoginRedSocial = () => {
       setLoading(false);
     }
   };
-  
 
+  let userId = userData.userId
+  
   const createCart = async (userId) => {
     try {
       const { data } = await axios.post(
