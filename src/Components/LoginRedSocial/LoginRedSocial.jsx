@@ -41,14 +41,17 @@ const LoginRedSocial = () => {
         })
       );
 
+      console.log("LoginUser", LoginUser);
+
       const userDataFromResponse = {
         firstName: user.displayName,
         email: user.email,
         roll: "Client",
         userId: response.data.userId, // Use the userId from the response
       };
+      console.log("userDataFromResponse", userDataFromResponse);
 
-      createCart(userDataFromResponse.userId);
+      //createCart(userDataFromResponse.userId);
 
       setUserData(userDataFromResponse);
       window.location.href = "/Profile";
@@ -60,16 +63,16 @@ const LoginRedSocial = () => {
     }
   };
 
-  const createCart = async (userId) => {
-    try {
-      const { data } = await axios.post(`${URL}shoppingCart`, {
-        userId,
-      });
-      // console.log(data);
-    } catch (error) {
-      alert(error.message);
-    }
-  };
+  // const createCart = async (userId) => {
+  //   try {
+  //     const { data } = await axios.post(`${URL}shoppingCart`, {
+  //       userId,
+  //     });
+  //     // console.log(data);
+  //   } catch (error) {
+  //     alert(error.message);
+  //   }
+  // };
 
   return (
     <div className="container w-100 my-4">
