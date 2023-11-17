@@ -61,7 +61,9 @@ useEffect(() => {
         const combinedData = { ...profileData, purchases: purchasesData };
 
         // Guardar la información combinada en el estado o donde sea necesario
+        console.log("combinedData", combinedData)
         dispatch(LoginUser(combinedData));
+
 
         // También puedes actualizar el token en el localStorage si es necesario
         // localStorage.setItem("token", nuevoToken);
