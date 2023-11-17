@@ -21,8 +21,7 @@ function NavBar({ userData, logout }) {
   }, [localSearchValue, dispatch]);
 
   return (
-    
-    <Navbar expand="lg" bg="secondary" data-bs-theme="dark" fixed="top" >
+    <Navbar expand="lg" bg="secondary" data-bs-theme="dark" fixed="top">
       <Container fluid>
         <Navbar.Brand href="/">
           <img
@@ -43,7 +42,10 @@ function NavBar({ userData, logout }) {
           <Nav.Link href="/">Home</Nav.Link>
 
           {userData && userData.roll === "Client" ? (
-            <Nav.Link href="/Profile">{userData.name}</Nav.Link>
+            <>
+              <Nav.Link href="/Profile">{userData.name}</Nav.Link>
+              <Nav.Link href="/ShoppingHistory">Shopping history</Nav.Link>
+            </>
           ) : null}
 
           {userData && userData.roll === "Admin" ? (
@@ -52,6 +54,7 @@ function NavBar({ userData, logout }) {
               <Nav.Link href="/ProductList">ProductList</Nav.Link>
               <Nav.Link href="/Inventory">Inventario</Nav.Link>
               <Nav.Link href="/Profile">{userData.name}</Nav.Link>
+              <Nav.Link href="/ShoppingHistory">Shopping history</Nav.Link>
             </>
           ) : null}
           <Nav.Link href="/Carrito">Carrito</Nav.Link>
