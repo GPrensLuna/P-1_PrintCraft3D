@@ -1,5 +1,4 @@
 // Import dependencies
-import React from "react";
 import axios from "axios";
 import React, { useState } from "react";
 import style from "./Login.module.css";
