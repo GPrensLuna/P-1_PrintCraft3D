@@ -28,7 +28,6 @@ const LoginRedSocial = () => {
         roll: "Client",
       });
       
-      createCart(response.data.ID);
       
       const receivedToken = response.data.token;
       localStorage.setItem("token", receivedToken);
@@ -45,7 +44,7 @@ const LoginRedSocial = () => {
         email: user.email,
         roll: "Client",
       });
-      
+      createCart(response.data.ID);
       window.location.href = "/Profile";
 
   
