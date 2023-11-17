@@ -29,6 +29,7 @@ const LoginRedSocial = () => {
       console.log("response", response);
 
       const receivedToken = response.data.token;
+      const id = response.data.id
       localStorage.setItem("token", receivedToken);
 
       // Actualizar el estado si el usuario ya está registrado
@@ -45,7 +46,7 @@ const LoginRedSocial = () => {
         firstName: user.displayName,
         email: user.email,
         roll: "Client",
-        userId: response.data.userId, // Use the userId from the response
+        userId: id, // Use the userId from the response
       };
 
       createCart(userDataFromResponse.userId);
