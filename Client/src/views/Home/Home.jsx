@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { URL } from "../../config.js";
-import Footer from "../../Components/Footer/Footer";
+import Footer from "../../Components/Footer/Footer.jsx";
 import Aside from "../../Components/Aside/Aside.jsx";
 import style from "./Home.module.css";
 import Card from "../../Components/Card/Card.jsx";

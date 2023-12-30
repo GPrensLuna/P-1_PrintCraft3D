@@ -3,17 +3,17 @@ import "./App.css";
 import React, { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./views/Home/Home.jsx";
-import { Login, Inventory, Profile, UserList, ProductList } from "./views";
+import { Login, Inventory, Profile, UserList, ProductList } from "./views/index.js";
 import NavBar from "./Components/NavBar/NavBar.jsx";
 import DetailProduct from "./views/DetailProduct/DetailProduct.jsx";
-import PagoPaypal from "./Components/PagoPaypal/PagoPaypal";
+import PagoPaypal from "./Components/PagoPaypal/PagoPaypal.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import { LoginUser } from "./redux/actions/actions.js";
 import { URL } from "./config.js";
 // import "./App.css";
-import ShoppingCart from "./Components/ShoppingCart/ShoppingCart";
+import ShoppingCart from "./Components/ShoppingCart/ShoppingCart.jsx";
 
-import Register from "../src/views/Register/Register.jsx";
+import Register from "./views/Register/Register.jsx";
 import RatingForm from "./views/RatingForm/RatingForm.jsx";
 
 function App() {
