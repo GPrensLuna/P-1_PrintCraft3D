@@ -41,11 +41,7 @@ git merge nombre_de_otra_rama
 
 
 
-<<<<<<< HEAD
-...tus cambios...
-=======
 ...cambios de la otra rama...
->>>>>>> nombre_de_otra_rama
 
 
 
@@ -83,3 +79,7 @@ git commit -m "Mensaje de confirmación"
 
 
 git push origin nombre_de_tu_rama
+
+git add . 
+git commit -m "♻️Actualizacion" 
+git push
