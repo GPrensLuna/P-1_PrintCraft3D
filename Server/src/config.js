@@ -1,8 +1,8 @@
-//const PORT = process.env.PORT;
-//const LOCALHOST = process.env.LOCALHOST;
+const PORT = process.env.PORT;
+const LOCALHOST = process.env.LOCALHOST;
 
-  const PORT = 3001;
-const LOCALHOST = "localhost"; 
+  //const PORT = 3001;
+//const LOCALHOST = "localhost"; 
 
 const URL_FONT = "https://printcraft3d.vercel.app/";
 const SECRETKEY = "printcraft3d";
