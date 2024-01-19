@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.text-aling{
+    text-align: center;
+}
+
+.grid-Home {
+    display: grid;
+    grid-template-columns: 1fr; 
+}
+
+@media (min-width: 768px) {
+    .grid-Home {
+        grid-template-columns: 350px minmax(380px, 1fr); 
+    }
+
+}
+
+.grid-products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+}
