@@ -51,13 +51,14 @@ export interface ProductsRowProps {
   handleDeleteChange: (productId: number, isDeleted: boolean) => void;
 }
 
-export interface EditableFieldProps {
+export type EditableFieldProps = {
   editing: boolean;
-  value: string | number | boolean | undefined;
+  value: string | number | readonly string[] | undefined;
   name: string;
-  handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  type?: string;
-}
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: "text" | "number" | "password" | "email" | "date"; // Ajusta los tipos permitidos aquí
+};
+
 
 export type ModalEditProductsProps = {
     editingProduct: Product;
