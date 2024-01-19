@@ -11,22 +11,29 @@ interface LoadProductsArgs {
     search?: string;
 }
 
-
-
 export const ProductsApi = createApi({
     reducerPath: 'productsApi',
     baseQuery: fetchBaseQuery({ baseUrl: URL_BACKEND }),
     endpoints: (builder) => ({
         getProducts: builder.query<Product[], LoadProductsArgs>({
-            query: ({ page = 1, limit = 12, selectedMaterials = '', selectedCategory = '', selectedSize = '', search = '' }) => {
-                const queryParams = new URLSearchParams({
-                    page: page.toString(),
-                    limit: limit.toString(),
-                    material: Array.isArray(selectedMaterials) ? selectedMaterials.join(',') : selectedMaterials,
-                    category: Array.isArray(selectedCategory) ? selectedCategory.join(',') : selectedCategory,
-                    tamaño: Array.isArray(selectedSize) ? selectedSize.join(',') : selectedSize,
-                    search,
-                });
+            query: ({ page = 1, limit = 12, selectedMaterials, selectedCategory, selectedSize, search }) => {
+                const queryParams = new URLSearchParams();
+                queryParams.set('page', page.toString());
+                queryParams.set('limit', limit.toString());
+
+                if (selectedMaterials) {
+                    queryParams.set('material', Array.isArray(selectedMaterials) ? selectedMaterials.join(',') : selectedMaterials);
+                }
+                if (selectedCategory) {
+                    queryParams.set('category', Array.isArray(selectedCategory) ? selectedCategory.join(',') : selectedCategory);
+                }
+                if (selectedSize) {
+                    queryParams.set('size', Array.isArray(selectedSize) ? selectedSize.join(',') : selectedSize); // Cambié 'tamaño' por 'size'
+                }
+                if (search) {
+                    queryParams.set('search', search);
+                }
+
                 const url = `Inventario?${queryParams.toString()}`;
                 return url;
             }

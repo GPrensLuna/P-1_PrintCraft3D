@@ -10,7 +10,10 @@ export const fetchProducts = async (): Promise<Product[]> => {
             },
         });
         if (!response.ok) {
-            throw new Error("Error al obtener los productos");
+            throw new Error(`Error al obtener los productos: ${response.status}`);
+        }
+        if (!response.headers.get('content-type')?.includes('application/json')) {
+            throw new Error("La respuesta no es JSON");
         }
         const products = await response.json();
         return products;
@@ -30,7 +33,7 @@ export const updateProduct = async (productId: number, productData: Product): Pr
             body: JSON.stringify(productData),
         });
         if (!response.ok) {
-            throw new Error("Error al actualizar el producto");
+            throw new Error(`Error al actualizar el producto: ${response.status}`);
         }
     } catch (error) {
         console.error("Error en updateProduct:", error);

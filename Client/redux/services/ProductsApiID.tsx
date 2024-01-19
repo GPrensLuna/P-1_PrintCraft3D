@@ -11,7 +11,10 @@ export const ProductsApiID = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: URL_BACKEND }),
     endpoints: (builder) => ({
         getProducts: builder.query<Product[], LoadProductsArgs>({
-            query: ({ id }) => `Product/${id}`, // Devolvemos la URL directamente
+            query: ({ id }) => {
+                const url = id ? `Product/${id}` : 'Product';
+                return url;
+            },
         }),
     }),
 });
