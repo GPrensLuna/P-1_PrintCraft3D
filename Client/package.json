@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^2.0.1",
     "env": "^0.0.2",
     "firebase": "^10.7.2",
+    "framer-motion": "^10.18.0",
     "lodash": "^4.17.21",
     "next-auth": "^4.24.5",
     "next-redux-wrapper": "^8.1.0",

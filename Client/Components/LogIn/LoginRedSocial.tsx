@@ -1,14 +1,18 @@
 "use client"
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 import { GoogleAuthProvider, signInWithPopup, auth } from '@/firebase.js';
 import { setLoginUser } from '@/redux/features/LogInSlice';
 import google from '@/img/google.webp';
 import { URL_BACKEND } from '@/config';
+import { UserState } from '@/Ts/Login'
 
 export const LoginRedSocial = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
+
   const [userRegistered, setUserRegistered] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState({});
@@ -19,7 +23,6 @@ export const LoginRedSocial = () => {
     try {
       setLoading(true);
       const result = await signInWithPopup(auth, provider);
-      console.log('Resultado de signInWithPopup:', result);
       const user = result.user;
 
       const response = await fetch(`${URL_BACKEND}/Google`, {
@@ -37,11 +40,10 @@ export const LoginRedSocial = () => {
       }
 
       const responseData = await response.json();
-      console.log('Respuesta del backend:', responseData);
 
       const receivedToken = responseData.token;
       const id = responseData.id;
-      // Guardar el token y los datos del usuario en localStorage
+
       localStorage.setItem('token', receivedToken);
       localStorage.setItem('userData', JSON.stringify({
         firstName: user.displayName,
@@ -56,7 +58,6 @@ export const LoginRedSocial = () => {
         email: user.email,
         roll: "Client",
       }));
-      console.log(setLoginUser)
       setUserData({
         ...userData,
         userId: id,
@@ -66,7 +67,7 @@ export const LoginRedSocial = () => {
         createCart(id);
       }
 
-      window.location.href = '/Profile';
+      router.push('/Profile');  // Redirección usando Next.js router
     } catch (error) {
       console.error('Error al autenticar con Google:', error);
     } finally {

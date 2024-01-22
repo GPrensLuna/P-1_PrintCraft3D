@@ -26,3 +26,4 @@ export const productsSlice = createSlice({
 
 export const { setProducts, setError } = productsSlice.actions;
 export default productsSlice.reducer;
+

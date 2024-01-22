@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,15 +9,24 @@ import { RootState } from '@/redux/store';
 import { setSearchValue } from '@/redux/features/SearchSlice';
 import { Links } from "@/Ts/Links";
 import Logo_PrintCraft3D from '@/img/Logo_PrintCraft3D.webp';
-import { UserState } from '@/Ts/Login'
+import { UserState } from '@/Ts/Login';
+import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 
 export const Navbar = () => {
   const [click, setClick] = useState(false);
   const handleClick = () => setClick(!click);
   const dispatch = useDispatch();
+  const router = useRouter();
   const [searchValueLocal, setSearchValueLocal] = useState("");
 
   const logInData = useSelector((state: RootState) => state.logIn as UserState);
+  const isLoggedIn = Boolean(localStorage.getItem("token"));
+
+  const navVariants = {
+    hidden: { y: -50, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
+  };
 
   useEffect(() => {
     const storedUserData = localStorage.getItem('userData');
@@ -40,46 +49,59 @@ export const Navbar = () => {
     return () => clearTimeout(timerId);
   }, [searchValueLocal, dispatch]);
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userData");
+    dispatch(setLoginUser({}));
+    router.push("/LoginUp");
+  };
+
   const links = [
-    { href: "/", text: "🏠 Home" },
-    { href: "/ShoppingCart", text: "🛒 Cart " },
-    { href: "/LoginUp", text: "🦸 LoginUp" },
-    { href: "/Profile", text: logInData?.firstName ? `🦸 ${logInData.firstName}` : "🦸 Profile" },
-    { href: "/Admin/UserList", text: "📋 User List" },
-    { href: "/Admin/ProductList", text: "📦 Product List" },
+    { id: 1, href: "/", text: "🏠 Home" },
+    { id: 2, href: "/ShoppingCart", text: "🛒 Cart " },
+    { id: 3, href: "/Admin/UserList", text: "📋 User List" },
+    { id: 4, href: "/Admin/ProductList", text: "📦 Product List" },
+    ...(!isLoggedIn
+      ? []
+      : [{ id: 5, href: "/Profile", text: `🦸 ${logInData.firstName}` }]),
+    ...(!isLoggedIn
+      ? [{ id: 6, href: "/LoginUp", text: "🦸 LoginUp" }]
+      : [{ id: 7, href: "", text: "🚪Logout", onClick: logout }]),
   ];
 
-  const ListItem = ({ href, text }: Links) => (
-    <Link href={href} passHref>
-      <li className="border-b w-40 h-10 border-slate-800 hover:bg-sky-900 hover:rounded flex justify-center items-center cursor-pointer">
+  const ListItem = ({ href, text, onClick }: Links) => {
+    return href ? (
+      <Link href={href} passHref>
+        <li className="cursor-pointer" onClick={onClick}>
+          {text}
+        </li>
+      </Link>
+    ) : (
+      <li className="cursor-pointer" onClick={onClick}>
         {text}
       </li>
-    </Link>
-  );
-
-  const ListNav = ({ href, text }: Links) => (
-    <Link href={href} passHref>
-      <li className="my-4 py-4 border-b border-slate.800 hover:bg-sky-800 hover:rounded cursor-pointer">
-        {text}
-      </li>
-    </Link>
-  );
+    );
+  };
 
 
   const content = (
-    <div className="lg:hidden z-50 block absolute top-16 w-full left-0 right-0 transition bg-gradient-to-r from-blue-950 via-sky-800 to-sky-600">
-      <ul className="text-center text-x1 p-10">
+    <div className="lg:hidden block absolute top-16 w-full left-0 right-0 transition">
+      <ul className="text-center p-10">
         {links.map((link) => (
-          <ListNav key={link.href} href={link.href} text={link.text} />
+          <ListItem key={link.id} href={link.href} text={link.text} onClick={link.onClick} />
         ))}
+
       </ul>
     </div>
   );
 
   return (
-    <nav
+    <motion.nav
       className="bg-gradient-to-r from-sky-950 via-sky-800 to-sky-600 h-10vh flex justify-between z-50 text-white lg:py-5 px-20 py-4"
       style={{ minWidth: "450px" }}
+      initial="hidden"
+      animate="visible"
+      variants={navVariants}
     >
       <section className="flex items-center flex-1 ">
         <Link href="/">
@@ -91,9 +113,10 @@ export const Navbar = () => {
       </section>
       <section className="lg:flex hidden flex-1 items-center justify-end font-normal">
         <ul className="flex gap-6 text-[16px]">
-          {links.map((links) => (
-            <ListItem key={links.href} href={links.href} text={links.text} />
+          {links.map((link) => (
+            <ListItem key={link.id} href={link.href} text={link.text} onClick={link.onClick} />
           ))}
+
           <input
             type="search"
             className="relative m-0 block w-48 min-w-0 flex-auto border  border-b-1 border-l-0 border-r-0 border-t-0 rounded-md bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] outline-none transition duration-200 ease-in-out focus:z-[3] focus:text-slate-50 "
@@ -131,6 +154,6 @@ export const Navbar = () => {
           </svg>
         )}
       </button>
-    </nav>
+    </motion.nav>
   );
 };
