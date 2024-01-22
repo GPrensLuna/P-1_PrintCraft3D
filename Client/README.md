@@ -36,5 +36,5 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 git add .
-git commit -m "diseño terminado revisar errores de babel, implemetar login de terceros y register "
+git commit -m "Firebase + login"
 git push

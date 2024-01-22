@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "Components/index.js", "config.js", "app/Admin/ProductList/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "Components/index.js", "config.js", "app/Admin/ProductList/page.jsx", "firebase.js"],
   "exclude": ["node_modules"]
 }
