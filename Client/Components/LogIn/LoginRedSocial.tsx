@@ -41,7 +41,14 @@ export const LoginRedSocial = () => {
 
       const receivedToken = responseData.token;
       const id = responseData.id;
+      // Guardar el token y los datos del usuario en localStorage
       localStorage.setItem('token', receivedToken);
+      localStorage.setItem('userData', JSON.stringify({
+        firstName: user.displayName,
+        email: user.email,
+        roll: "Client",
+        userId: id,
+      }));
 
       setUserRegistered(true);
       dispatch(setLoginUser({

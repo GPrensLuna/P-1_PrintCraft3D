@@ -1,15 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
+// src/redux/features/LogInSlice.ts
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { UserState } from '@/Ts/Login';
+
+const initialState: UserState = {};
 
 export const logInSlice = createSlice({
   name: 'LoginUser',
-  initialState: {},
+  initialState,
   reducers: {
-    setLoginUser: (state, action) => {
+    setLoginUser: (state, action: PayloadAction<UserState>) => {
       return {
         ...state,
-        firstName: action.payload.firstName,
-        email: action.payload.email,
-        roll: action.payload.roll,
+        ...action.payload,
       };
     },
   },

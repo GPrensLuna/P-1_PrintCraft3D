@@ -1,18 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import React, { useState, useEffect } from 'react';
 import Link from "next/link";
-import Image from 'next/image'
-import { Links } from "@/Ts/Links";
-import { useDispatch } from 'react-redux';
-import { useState, useEffect } from "react";
-import Logo_PrintCraft3D from '@/img/Logo_PrintCraft3D.webp'
+import Image from 'next/image';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoginUser } from '@/redux/features/LogInSlice';
+import { RootState } from '@/redux/store';
 import { setSearchValue } from '@/redux/features/SearchSlice';
+import { Links } from "@/Ts/Links";
+import Logo_PrintCraft3D from '@/img/Logo_PrintCraft3D.webp';
+import { UserState } from '@/Ts/Login'
 
 export const Navbar = () => {
   const [click, setClick] = useState(false);
   const handleClick = () => setClick(!click);
   const dispatch = useDispatch();
   const [searchValueLocal, setSearchValueLocal] = useState("");
+
+  const logInData = useSelector((state: RootState) => state.logIn as UserState);
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      dispatch(setLoginUser(userData));
+    }
+  }, [dispatch]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
@@ -31,7 +44,7 @@ export const Navbar = () => {
     { href: "/", text: "🏠 Home" },
     { href: "/ShoppingCart", text: "🛒 Cart " },
     { href: "/LoginUp", text: "🦸 LoginUp" },
-    { href: "/Profile", text: "🦸 Profile" },
+    { href: "/Profile", text: logInData?.firstName ? `🦸 ${logInData.firstName}` : "🦸 Profile" },
     { href: "/Admin/UserList", text: "📋 User List" },
     { href: "/Admin/ProductList", text: "📦 Product List" },
   ];
