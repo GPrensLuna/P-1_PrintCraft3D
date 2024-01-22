@@ -28,17 +28,18 @@ export const ProductsApi = createApi({
                     queryParams.set('category', Array.isArray(selectedCategory) ? selectedCategory.join(',') : selectedCategory);
                 }
                 if (selectedSize) {
-                    queryParams.set('size', Array.isArray(selectedSize) ? selectedSize.join(',') : selectedSize); // Cambié 'tamaño' por 'size'
+                    queryParams.set('size', Array.isArray(selectedSize) ? selectedSize.join(',') : selectedSize);
                 }
                 if (search) {
                     queryParams.set('search', search);
                 }
 
                 const url = `Inventario?${queryParams.toString()}`;
-                return url;
-            }
+                return { url }; // Return an object with 'url' property
+            },
         }),
     }),
 });
+
 
 export const { useGetProductsQuery } = ProductsApi;
