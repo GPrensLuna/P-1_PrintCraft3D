@@ -7,7 +7,6 @@ import { GoogleAuthProvider, signInWithPopup, auth } from '@/firebase.js';
 import { setLoginUser } from '@/redux/features/LogInSlice';
 import google from '@/img/google.webp';
 import { URL_BACKEND } from '@/config';
-import { UserState } from '@/Ts/Login'
 
 export const LoginRedSocial = () => {
   const dispatch = useDispatch();
