@@ -1,11 +1,34 @@
+"use client";
+
 import React from "react";
 import * as Components from "@/Components";
 import Link from "next/link";
+import { signIn, signOut, useSession } from "next-auth/react";
+
 
 
 export default function LoginUp() {
+  const { data: session, status } = useSession();
 
+  console.log({ session, status });
 
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (session) {
+    return (
+      <>
+        Signed in as {session.user?.email} <br />
+        <button
+          onClick={() => signOut()}
+          className="btn btn-danger"
+        >
+          Sign out
+        </button>
+      </>
+    );
+  }
   return (
     <main className="bg-gray-100 flex justify-center items-center min-h-screen px-4">
       <section className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
@@ -53,7 +76,10 @@ export default function LoginUp() {
             </div>
 
             <div className="mt-4">
-              <button type="submit" className="submit-button bg-green-700 hover:bg-green-800 text-white py-3 rounded-lg w-full transition duration-150 ease-in-out">
+              <button
+                onClick={() => signIn()}
+
+                type="submit" className="submit-button bg-green-700 hover:bg-green-800 text-white py-3 rounded-lg w-full transition duration-150 ease-in-out">
                 Iniciar Sesión
               </button>
             </div>

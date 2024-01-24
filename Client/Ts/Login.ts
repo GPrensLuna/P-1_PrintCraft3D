@@ -1,4 +1,5 @@
 export interface UserState {
+  [x: string]: any;
   firstName?: string | null;
   email?: string | null;
   roll?: string | null;

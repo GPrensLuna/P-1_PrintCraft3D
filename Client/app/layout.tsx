@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Providers } from '@/redux/providers'
+import { SessionAuthProvider } from '@/redux/context/SessionProvaider'
 import { Inter } from 'next/font/google'
 import '@/Style/globals.css'
 import * as Components from "@/Components";
@@ -22,12 +23,18 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-
+      <head>
+        <link rel="icon" type="image/svg+xml" href="/user.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>PrintCraft3D</title>
+      </head>
       <body className={inter.className}>
         <Providers>
           <main className='bg-sky-100'>
-            <Components.Navbar />
-            {children}
+            <SessionAuthProvider>
+              <Components.Navbar />
+              {children}
+            </SessionAuthProvider>
             <Components.Footer />
           </main>
         </Providers>

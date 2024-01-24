@@ -12,6 +12,7 @@ import Logo_PrintCraft3D from '@/img/Logo_PrintCraft3D.webp';
 import { UserState } from '@/Ts/Login';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { string } from 'yup';
 
 export const Navbar = () => {
   const [click, setClick] = useState(false);
@@ -22,6 +23,9 @@ export const Navbar = () => {
 
   const logInData = useSelector((state: RootState) => state.logIn as UserState);
   const isLoggedIn = Boolean(localStorage.getItem("token"));
+
+  const userRole = useSelector((state: RootState) => state.logIn.role) || "";
+
 
   const navVariants = {
     hidden: { y: -50, opacity: 0 },
@@ -57,10 +61,11 @@ export const Navbar = () => {
   };
 
   const links = [
-    { id: 1, href: "/", text: "🏠 Home" },
-    { id: 2, href: "/ShoppingCart", text: "🛒 Cart " },
-    { id: 3, href: "/Admin/UserList", text: "📋 User List" },
-    { id: 4, href: "/Admin/ProductList", text: "📦 Product List" },
+    { id: 1, href: "/", text: "🏠 Home", roles: ["Client", "Admin"] },
+    { id: 2, href: "/ShoppingCart", text: "🛒 Cart", roles: ["Client", "Admin"] },
+    { id: 3, href: "/Admin/UserList", text: "📋 User List", roles: ["Admin"] },
+    { id: 4, href: "/Admin/ProductList", text: "📦 Product List", roles: ["Admin"] },
+    // ... (otros enlaces)
     ...(!isLoggedIn
       ? []
       : [{ id: 5, href: "/Profile", text: `🦸 ${logInData.firstName}` }]),
@@ -72,9 +77,10 @@ export const Navbar = () => {
   const ListItem = ({ href, text, onClick }: Links) => {
     return href ? (
       <Link href={href} passHref>
-        <li className="cursor-pointer" onClick={onClick}>
+        <li className="cursor-pointer hover:bg-cyan-700 text-white px-4 py-2 block text-md" onClick={onClick}>
           {text}
         </li>
+
       </Link>
     ) : (
       <li className="cursor-pointer" onClick={onClick}>
@@ -85,15 +91,17 @@ export const Navbar = () => {
 
 
   const content = (
-    <div className="lg:hidden block absolute top-16 w-full left-0 right-0 transition">
-      <ul className="text-center p-10">
+    <div className="block absolute top-24 w-full left-0 right-0 transition z-10 bg-sky-800 shadow-md">
+      <ul className="text-center divide-y divide-gray-200">
         {links.map((link) => (
           <ListItem key={link.id} href={link.href} text={link.text} onClick={link.onClick} />
         ))}
-
       </ul>
     </div>
+
   );
+
+  const filteredLinks = links.filter(link => link.roles?.includes(userRole));
 
   return (
     <motion.nav
@@ -111,9 +119,9 @@ export const Navbar = () => {
           </div>
         </Link>
       </section>
-      <section className="lg:flex hidden flex-1 items-center justify-end font-normal">
+      <section className="lg:flex flex-1 items-center justify-end font-normal">
         <ul className="flex gap-6 text-[16px]">
-          {links.map((link) => (
+          {filteredLinks.map((link) => (
             <ListItem key={link.id} href={link.href} text={link.text} onClick={link.onClick} />
           ))}
 
@@ -127,8 +135,8 @@ export const Navbar = () => {
           />
         </ul>
       </section>
-      <div className="lg:hidden block">{click && content}</div>
-      <button className="block lg:hidden transition" onClick={handleClick}>
+      <div className="xl:hidden block">{click && content}</div>
+      <button className="block xl:hidden transition px-3" onClick={handleClick}>
         {click ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"

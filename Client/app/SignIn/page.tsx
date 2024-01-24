@@ -78,14 +78,12 @@ export default function SignIn() {
                         <p className="text-red-500 text-xs italic">{errors.lastName?.message}</p>
                     </div>
 
-                    {/* Campos Fecha de Nacimiento y Teléfono */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div>
                             <label htmlFor="birthDate" className="block text-gray-700 text-sm font-semibold mb-2">
                                 Fecha de Nacimiento
                             </label>
                             <input {...register('birthDate')} id="birthDate" type="date" className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" />
-                            <p className="text-red-500 text-xs italic">{errors.birthDate?.message}</p>
                         </div>
                         <div>
                             <label htmlFor="phoneNumber" className="block text-gray-700 text-sm font-semibold mb-2">
