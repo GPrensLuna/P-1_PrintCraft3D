@@ -6,3 +6,4 @@ export const STORAGE = process.env.NEXT_PUBLIC_STORAGE;
 export const MESSAGING = process.env.NEXT_PUBLIC_MESSAGING;
 export const APPID = process.env.NEXT_PUBLIC_APPID;
 export const ID = process.env.NEXT_PUBLIC_ID;
+export const SECRET = process.env.NEXTAUTH_SECRET;

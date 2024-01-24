@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from 'next/image';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setLoginUser } from '@/redux/features/LogInSlice';
 import { setSearchValue } from '@/redux/features/SearchSlice';
 import { Links } from "@/Ts/Links";
@@ -11,6 +11,9 @@ import Logo_PrintCraft3D from '@/img/Logo_PrintCraft3D.webp';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { signOut, useSession } from "next-auth/react";
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+
 
 
 export const Navbar = () => {
@@ -20,9 +23,7 @@ export const Navbar = () => {
   const router = useRouter();
   const [searchValueLocal, setSearchValueLocal] = useState("");
   const { data: session } = useSession();
-
-
-  const isLoggedIn = Boolean(localStorage.getItem("token"));
+  const ProfileData = useSelector((state: RootState) => state.DataUser);
 
   const navVariants = {
     hidden: { y: -50, opacity: 0 },
@@ -62,7 +63,7 @@ export const Navbar = () => {
     { id: 4, href: "/Admin/ProductList", text: "📦 Product List" },
     ...(!session
       ? []
-      : [{ id: 5, href: "/Profile", text: `🦸 ` }]),
+      : [{ id: 5, href: "/Profile", text: `🦸 ${ProfileData.profile.name} ` }]),
     ...(!session
       ? [{ id: 6, href: "/LoginUp", text: "🦸 LoginUp" }]
       : [{ id: 7, href: "", text: "🚪Logout", onClick: logout }]),

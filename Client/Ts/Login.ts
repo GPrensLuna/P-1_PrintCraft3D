@@ -11,3 +11,8 @@ export interface Links {
   onClick?: () => void | string;
   isLogout?: boolean;
 }
+
+export interface DataProfile {
+      name?: string;
+    email?: string;
+}

@@ -23,7 +23,6 @@ const handler = NextAuth({
           }
         );
         const user = await res.json();
-        console.log(user);
 
         if (user.error) throw user;
 
@@ -41,7 +40,7 @@ const handler = NextAuth({
     },
   },
   pages: {
-    signIn: "/",
+    signIn: "/LoginUp",
   },
 });
 

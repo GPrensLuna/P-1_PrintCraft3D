@@ -4,11 +4,12 @@ import { useState, FormEvent } from "react";
 import * as Components from "@/Components";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useRouter } from 'next/navigation';
 
 
 
 export default function LoginUp() {
-
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,8 +26,10 @@ export default function LoginUp() {
     });
 
     if (result?.error) {
-      setModalMessage(result.error);
+      setModalMessage("No se a podido iniciar la secion con exíto verifique el email o password");
       setIsModalOpen(true);
+    } else {
+      router.push('/Profile')
     }
   };
 
