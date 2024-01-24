@@ -1,12 +1,52 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
+"use client"
+import { URL_BACKEND } from "@/config";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+
 export default function Profile() {
+    const { data: session, status } = useSession();
+    const [perfil, setPerfil] = useState({});
+    const [cargaPerfil, setCargaPerfil] = useState(false);
+    console.log(perfil)
+
+    useEffect(() => {
+        const obtenerDatosPerfil = async () => {
+            if (session) {
+                try {
+                    const token = session?.user?.token
+                    const res = await fetch(`${URL_BACKEND}Profile`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const datosPerfil = await res.json();
+                    setPerfil(datosPerfil)
+                } catch (error) {
+                    console.error('Error al obtener los datos del perfil:', error);
+                }
+            }
+        };
+        obtenerDatosPerfil();
+    }, [session]);
+
+    if (status === "loading" || cargaPerfil) {
+        return <p>Cargando perfil...</p>;
+    }
+
+
+
     return (
         <div className="max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg">
             <div className="px-6 py-4">
                 <div className="flex justify-center">
                     <img className="object-cover w-32 h-32 rounded-full border-2 border-indigo-500" src="https://via.placeholder.com/150" alt="Profile" />
                 </div>
-                <h1 className="text-xl font-semibold text-gray-800 text-center mt-2">Nombre del Usuario</h1>
+                <h1 className="text-xl font-semibold text-gray-800 text-center mt-2"></h1>
                 <p className="text-center text-gray-600">Desarrollador Web</p>
 
                 <div className="flex items-center mt-4 text-gray-700">

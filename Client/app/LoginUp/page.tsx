@@ -1,42 +1,43 @@
 "use client";
 
-import React from "react";
+import { useState, FormEvent } from "react";
 import * as Components from "@/Components";
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 
 
 export default function LoginUp() {
-  const { data: session, status } = useSession();
 
-  console.log({ session, status });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
-  if (status === "loading") {
-    return <p>Loading...</p>;
-  }
 
-  if (session) {
-    return (
-      <>
-        Signed in as {session.user?.email} <br />
-        <button
-          onClick={() => signOut()}
-          className="btn btn-danger"
-        >
-          Sign out
-        </button>
-      </>
-    );
-  }
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const result = await signIn('credentials', {
+      redirect: false,
+      email,
+      password
+    });
+
+    if (result?.error) {
+      setModalMessage(result.error);
+      setIsModalOpen(true);
+    }
+  };
+
+
   return (
     <main className="bg-gray-100 flex justify-center items-center min-h-screen px-4">
       <section className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
         <article className="flex flex-col">
 
           <h1 className="font-bold text-center pt-2 mb-4 text-xl">Bienvenido</h1>
-
-          <form className="flex flex-col gap-6" noValidate>
+          <form className="flex flex-col gap-6" noValidate onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Email
@@ -46,6 +47,7 @@ export default function LoginUp() {
                 id="email"
                 name="email"
                 placeholder="Example@example.com"
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full form-input p-3 mb-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
               />
             </div>
@@ -59,26 +61,13 @@ export default function LoginUp() {
                 id="password"
                 name="password"
                 placeholder="Password..."
+                onChange={(e) => setPassword(e.target.value)}
                 className="form-input w-full p-3 mb-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
               />
             </div>
 
-            <div className="flex items-center mb-4">
-              <input
-                type="checkbox"
-                id="connected"
-                name="connected"
-                className="form-check-input h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-              />
-              <label htmlFor="connected" className="ml-2 block text-sm text-gray-900">
-                Mantenerme conectado
-              </label>
-            </div>
-
             <div className="mt-4">
               <button
-                onClick={() => signIn()}
-
                 type="submit" className="submit-button bg-green-700 hover:bg-green-800 text-white py-3 rounded-lg w-full transition duration-150 ease-in-out">
                 Iniciar Sesión
               </button>
@@ -100,6 +89,11 @@ export default function LoginUp() {
           </form>
         </article>
       </section>
+      <Components.Modalwarning
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        message={modalMessage}
+      />
     </main>
 
   );

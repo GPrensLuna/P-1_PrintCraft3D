@@ -4,25 +4,24 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { ModalAlertSignIn } from '@/Components'; // Importa tu componente Modal aquí
+import { ModalAlertSignIn } from '@/Components';
+import { URL_BACKEND } from '@/config';
 
-// Definición del tipo para los datos del formulario
 interface IFormInput {
     firstName: string;
     lastName: string;
     email: string;
     password: string;
-    birthDate: object;
+    birthDate: string;
     phoneNumber: number;
 }
 
-// Esquema de validación con Yup
 const schema = yup.object({
     firstName: yup.string().required('El nombre es obligatorio'),
     lastName: yup.string().required('El apellido es obligatorio'),
     email: yup.string().email('Debe ser un email válido').required('El email es obligatorio'),
     password: yup.string().min(6, 'La contraseña debe tener al menos 6 caracteres').required('La contraseña es obligatoria'),
-    birthDate: yup.object().required('El nombre es obligatorio'),
+    birthDate: yup.string().required('El nombre es obligatorio'),
     phoneNumber: yup.number().required('El nombre es obligatorio'),
 }).required();
 
@@ -33,12 +32,27 @@ export default function SignIn() {
         resolver: yupResolver(schema)
     });
 
-    const onSubmit = (data: IFormInput) => {
-        // Lógica de envío de datos del formulario
-        // Ejemplo:
-        console.log(data);
-        handleSuccess();
-        // handleError(); en caso de error
+    const onSubmit = async (data: IFormInput) => {
+        try {
+            const response = await fetch(`${URL_BACKEND}Registro`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+
+            const responseData = await response.json();
+            handleSuccess();
+        } catch (error) {
+            console.error('Error en el registro:', error);
+            handleError();
+        }
     };
 
     const handleSuccess = () => {
@@ -60,7 +74,6 @@ export default function SignIn() {
             <div className="w-full max-w-lg">
                 <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Regístrate</h2>
                 <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
-                    {/* Campo Nombre */}
                     <div className="mb-4">
                         <label htmlFor="firstName" className="block text-gray-700 text-sm font-semibold mb-2">
                             Nombre
@@ -69,7 +82,6 @@ export default function SignIn() {
                         <p className="text-red-500 text-xs italic">{errors.firstName?.message}</p>
                     </div>
 
-                    {/* Campo Apellido */}
                     <div className="mb-4">
                         <label htmlFor="lastName" className="block text-gray-700 text-sm font-semibold mb-2">
                             Apellido
@@ -94,7 +106,6 @@ export default function SignIn() {
                         </div>
                     </div>
 
-                    {/* Campos Email y Password */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
                             <label htmlFor="email" className="block text-gray-700 text-sm font-semibold mb-2">
@@ -112,7 +123,6 @@ export default function SignIn() {
                         </div>
                     </div>
 
-                    {/* Botones y Link */}
                     <div className="flex items-center justify-between">
                         <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
                             REGISTRARSE

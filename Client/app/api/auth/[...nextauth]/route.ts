@@ -1,28 +1,48 @@
-import NextAuth from "next-auth/next";
+import { URL_BACKEND } from "@/config";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 const handler = NextAuth({
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "email", type: "email", placeholder: "test@test.com" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials, req) {
+        const res = await fetch(
+          `${URL_BACKEND}login`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              email: credentials?.email,
+              password: credentials?.password,
+            }),
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        const user = await res.json();
+        console.log(user);
 
-    providers: [
-  CredentialsProvider({
-    name: "Credentials",
-    credentials: {
-      username: { label: "email", type: "email", placeholder: "jsmith@test.com" },
-      password: { label: "Password", type: "password" }
+        if (user.error) throw user;
+
+        return user;
+      },
+    }),
+  ],
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user };
     },
-    async authorize(credentials, req) {
-      const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
+    async session({ session, token }) {
+      session.user = token as any;
+      return session;
+    },
+  },
+  pages: {
+    signIn: "/",
+  },
+});
 
-      if (user) {
-        return user
-      } else {
-        return null
-
-      }
-    }
-  })
-]
-
-})
-
-export { handler as GET, handler as POST}
+export { handler as GET, handler as POST };
