@@ -1,6 +1,7 @@
-import { URL_BACKEND } from "@/config";
+import { URL_BACKEND, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "@/config";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 
 const handler = NextAuth({
   providers: [
@@ -29,6 +30,10 @@ const handler = NextAuth({
         return user;
       },
     }),
+     GoogleProvider({
+      clientId: GOOGLE_CLIENT_ID as string,
+      clientSecret:GOOGLE_CLIENT_SECRET  as string,
+    }),
   ],
   callbacks: {
     async jwt({ token, user }) {
@@ -38,6 +43,12 @@ const handler = NextAuth({
       session.user = token as any;
       return session;
     },
+    async signIn({ account, profile }) {
+      if (account.provider === "google") {
+        return profile.email_verified && profile.email.endsWith("@example.com")
+      }
+      return true 
+    }
   },
   pages: {
     signIn: "/LoginUp",

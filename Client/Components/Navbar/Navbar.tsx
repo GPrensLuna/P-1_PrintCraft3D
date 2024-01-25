@@ -8,7 +8,6 @@ import { setLoginUser } from '@/redux/features/LogInSlice';
 import { setSearchValue } from '@/redux/features/SearchSlice';
 import { Links } from "@/Ts/Links";
 import Logo_PrintCraft3D from '@/img/Logo_PrintCraft3D.webp';
-import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { signOut, useSession } from "next-auth/react";
 import { useSelector } from 'react-redux';
@@ -20,10 +19,10 @@ export const Navbar = () => {
   const [click, setClick] = useState(false);
   const handleClick = () => setClick(!click);
   const dispatch = useDispatch();
-  const router = useRouter();
   const [searchValueLocal, setSearchValueLocal] = useState("");
   const { data: session } = useSession();
   const ProfileData = useSelector((state: RootState) => state.DataUser);
+  console.log(ProfileData)
 
   const navVariants = {
     hidden: { y: -50, opacity: 0 },
@@ -51,10 +50,6 @@ export const Navbar = () => {
     return () => clearTimeout(timerId);
   }, [searchValueLocal, dispatch]);
 
-  const logout = () => {
-    signOut()
-    router.push('/LoginUp')
-  };
 
   const links = [
     { id: 1, href: "/", text: "🏠 Home" },
@@ -66,7 +61,7 @@ export const Navbar = () => {
       : [{ id: 5, href: "/Profile", text: `🦸 ${ProfileData.profile.name} ` }]),
     ...(!session
       ? [{ id: 6, href: "/LoginUp", text: "🦸 LoginUp" }]
-      : [{ id: 7, href: "", text: "🚪Logout", onClick: logout }]),
+      : [{ id: 7, href: "", text: "🚪Logout", onClick: () => signOut() }]),
   ];
 
   const ListItem = ({ href, text, onClick }: Links) => {
