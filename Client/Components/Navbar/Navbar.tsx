@@ -22,7 +22,6 @@ export const Navbar = () => {
   const [searchValueLocal, setSearchValueLocal] = useState("");
   const { data: session } = useSession();
   const ProfileData = useSelector((state: RootState) => state.DataUser);
-  console.log(ProfileData)
 
   const navVariants = {
     hidden: { y: -50, opacity: 0 },
