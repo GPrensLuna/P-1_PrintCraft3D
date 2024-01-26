@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { User } = require("../../db");
+const { User } = require("../../db.js");
 const { serialize } = require("cookie");
 const { SECRETKEY } = require("../../config.js");
 

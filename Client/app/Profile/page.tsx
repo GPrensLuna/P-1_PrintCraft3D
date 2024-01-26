@@ -21,7 +21,7 @@ export default function Profile() {
     useEffect(() => {
         const obtenerDatosPerfil = async () => {
             if (session) {
-                setCargaPerfil(true); // Inicia la carga del perfil
+                setCargaPerfil(true);
                 try {
                     const token = session?.user?.token;
                     const res = await fetch(`${URL_BACKEND}/Profile`, {

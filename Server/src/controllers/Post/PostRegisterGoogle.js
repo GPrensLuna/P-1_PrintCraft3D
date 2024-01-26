@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { User } = require("../../db");
-const { sendWelcomeEmail } = require("../../email/mailer/mailer");
+const { User } = require("../../db.js");
+const { sendWelcomeEmail } = require("../../email/mailer/mailer.js");
 const { SECRETKEY } = require("../../config.js");
 const { serialize } = require("cookie"); // Importa la función serialize
 
@@ -56,11 +56,13 @@ async function PostRegisterGoogle(req, res) {
         maxAge: 3600000,
       };
 
-      let {id} = newUser
+      let { id } = newUser;
       const tokenCookie = serialize("token", token, cookieOptions);
 
       res.setHeader("Set-Cookie", tokenCookie);
-      res.status(201).json({ token, message: "Usuario registrado exitosamente" , id});
+      res
+        .status(201)
+        .json({ token, message: "Usuario registrado exitosamente", id });
 
       sendWelcomeEmail(newUser);
     }
@@ -68,7 +70,9 @@ async function PostRegisterGoogle(req, res) {
     console.error("Error en el registro:", error);
 
     if (error.name === "SequelizeValidationError") {
-      return res.status(400).json({ error: "Error de validación en la creación del usuario" });
+      return res
+        .status(400)
+        .json({ error: "Error de validación en la creación del usuario" });
     }
 
     res.status(500).json({ message: "Error en el servidor" });

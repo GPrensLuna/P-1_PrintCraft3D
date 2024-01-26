@@ -1,16 +1,12 @@
 "use client"
 import Image from 'next/image';
-//import { useDispatch } from 'react-redux';
 import google from '@/img/google.webp';
 //import { URL_BACKEND } from '@/config';
 import { signIn, useSession } from "next-auth/react";
-//import { useRouter } from 'next/navigation';
 
 export const LoginRedSocial = () => {
 
-  //const { data: session } = useSession();
 
-  //console.log(session)
 
 
   return (

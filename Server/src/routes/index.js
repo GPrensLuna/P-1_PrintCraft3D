@@ -6,7 +6,9 @@ const { PostLogin } = require("../controllers/Post/PostLogin.js");
 
 const { PostLogout } = require("../controllers/Post/PostLogout.js");
 const { PostRegister } = require("../controllers/Post/PostRegister.js");
-const { PostRegisterGoogle } = require("../controllers/Post/PostRegisterGoogle.js");
+const {
+  PostRegisterGoogle,
+} = require("../controllers/Post/PostRegisterGoogle.js");
 
 const { postReview } = require("../controllers/Post/PostReview.js");
 const { PostBuyOrder } = require("../controllers/Post/PostBuyOrder.js");
@@ -43,7 +45,6 @@ const deleteShoppingCart = require("../controllers/deleteShoppingCart.js");
 
 const { GetUserById } = require("../controllers/Get/GetUserById.js");
 
-
 router.get("/", (req, res) => {
   return res.json("hola desde router PrintCraft3D");
 });
@@ -52,8 +53,7 @@ router.post("/Login", PostLogin);
 router.post("/Logout", PostLogout);
 router.post("/Registro", PostRegister);
 router.post("/Google", PostRegisterGoogle);
-router.post("/Reviews", postReview)
-
+router.post("/Reviews", postReview);
 
 router.get("/Inventario", GetInventario);
 router.post("/Inventario", PostInventory);
@@ -71,16 +71,12 @@ router.put("/ProductsLista/:productId", PutProducts);
 router.get("/Profile", GetProfile);
 
 router.get("/Reviews/:idProduct", GetReviewsById);
-router.get("/Order/:idOrder", GetOrderProducts)
+router.get("/Order/:idOrder", GetOrderProducts);
 
-// router of the Admin
 router.get("/User", GetUser);
 router.put("/User/:id", PutUser);
-//router.delete("/Users/:idUser", DeleteUser);
 router.get("/ProductsLista", GetProducts);
-//router.put("/ProductsLista/:id", PutProducts);
 
-//hola
 router.get("/User/:idUser", GetUserById);
 router.get("/Compras/:idUser", GetOrder);
 router.post("/BuyOrder", PostBuyOrder);

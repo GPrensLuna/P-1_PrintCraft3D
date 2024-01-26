@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Product, Reviews} = require("../../db");
+const { Product, Reviews } = require("../../db.js");
 const { URL_FONT } = require("../../config.js");
 
 const GetInventario = async (req, res) => {
@@ -27,7 +27,7 @@ const GetInventario = async (req, res) => {
       };
     }
 
-    const {count, rows: products} = await Product.findAndCountAll({
+    const { count, rows: products } = await Product.findAndCountAll({
       where: { ...filterCriteria, deleted: false },
       limit,
       offset,
