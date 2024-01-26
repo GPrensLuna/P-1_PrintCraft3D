@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize')
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
@@ -30,7 +30,11 @@ module.exports = (sequelize) => {
         allowNull: true,
         unique: true, // To ensure each email is unique
       },
-        roll: {
+      image: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      roll: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -41,7 +45,7 @@ module.exports = (sequelize) => {
 
       creationDate: {
         type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW, 
+        defaultValue: DataTypes.NOW,
         allowNull: true,
       },
       deleted: {
@@ -53,4 +57,4 @@ module.exports = (sequelize) => {
       timestamps: false,
     }
   );
-}
+};

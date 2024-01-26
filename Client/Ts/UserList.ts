@@ -1,6 +1,6 @@
 
 export interface User {
-    id: number;
+    id?: number;
     firstName?: string;
     lastName?: string;
     birthDate?: string;
@@ -8,6 +8,12 @@ export interface User {
     email?: string;
     roll?: string;
     deleted?: boolean;
+}
+export interface Profile {
+    email?: string;
+    given_name?: string;
+    family_name?: string;
+    picture?: string;
 }
 
 export type UserRowProps = {

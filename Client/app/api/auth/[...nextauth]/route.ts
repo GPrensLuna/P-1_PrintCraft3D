@@ -1,7 +1,8 @@
 import { URL_BACKEND, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET} from "@/config";
-import NextAuth, { Profile } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import { Profile } from '@/Ts/UserList'
 
 interface ExtendedProfile extends Profile {
   email_verified?: boolean;
@@ -48,25 +49,36 @@ const handler = NextAuth({
       session.user = token as any;
       return session;
     },
-    async signIn({ account, profile }): Promise<boolean | string> {
-        if (account && account.provider === "google") {
+    async signIn({ account, profile }: { account: any; profile?: Profile }): Promise<boolean | string> {
+  if (account && account.provider === "google" && profile) {
+    // Verificar si profile no es undefined antes de usar sus propiedades
+    const requestBody = JSON.stringify({
+      email: profile.email,
+      firstName: profile.given_name,
+      lastName: profile.family_name,
+      image: profile.picture
+    });
 
-              const res = await fetch(`${URL_BACKEND}google`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ profile })
-        });
-             const data = await res.json();
-             console.log(data)
+    console.log("Contenido enviado al servidor:", requestBody);
 
-        if (data.error) {
-          return false;
-        }
+    const res = await fetch(`${URL_BACKEND}google`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: requestBody
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    if (data.error) {
+      return false;
+    }
   }
-    return true;
-  }
+  return true;
+}
+
 
   },
   pages: {

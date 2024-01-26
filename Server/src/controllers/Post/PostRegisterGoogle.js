@@ -38,6 +38,7 @@ async function PostRegisterGoogle(req, res) {
         firstName: req.body.firstName,
         email: req.body.email,
         roll: req.body.roll || "Client",
+        image: req.body.image,
       });
 
       const token = jwt.sign(
@@ -45,6 +46,8 @@ async function PostRegisterGoogle(req, res) {
           userId: newUser.id,
           email: newUser.email,
           name: newUser.firstName,
+          image: newUser.image,
+
           roll: newUser.roll,
         },
         SECRETKEY,

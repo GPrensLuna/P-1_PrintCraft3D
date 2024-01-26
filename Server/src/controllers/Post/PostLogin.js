@@ -25,6 +25,7 @@ const PostLogin = async (req, res) => {
             email: user.email,
             name: user.firstName,
             roll: user.roll,
+            image: user.image,
           },
           SECRETKEY,
           { expiresIn: "1h" }
