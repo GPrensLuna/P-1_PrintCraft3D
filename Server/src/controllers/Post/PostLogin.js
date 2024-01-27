@@ -39,7 +39,14 @@ const PostLogin = async (req, res) => {
 
         res.setHeader("Set-Cookie", tokenCookie);
 
-        res.status(200).json({ message: "Inicio de sesión exitoso", token });
+        res.status(200).json({
+          token,
+          message: "Inicio de sesión exitoso",
+          image: user.image,
+          email: user.email,
+          name: user.firstName,
+          roll: user.roll,
+        });
       } else {
         console.error("Contraseña incorrecta");
         res.status(401).json({ error: "Contraseña incorrecta" });

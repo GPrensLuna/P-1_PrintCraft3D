@@ -1,9 +1,8 @@
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User } = require("../../db.js");
 const { sendWelcomeEmail } = require("../../email/mailer/mailer.js");
 const { SECRETKEY } = require("../../config.js");
-const { serialize } = require("cookie"); // Importa la función serialize
+const { serialize } = require("cookie");
 
 async function PostRegisterGoogle(req, res) {
   try {
@@ -18,6 +17,7 @@ async function PostRegisterGoogle(req, res) {
           email: existingUser.email,
           name: existingUser.firstName,
           roll: existingUser.roll,
+          image: existingUser.image,
         },
         SECRETKEY,
         { expiresIn: "1h" }
@@ -31,13 +31,21 @@ async function PostRegisterGoogle(req, res) {
       const tokenCookie = serialize("token", token, cookieOptions);
 
       res.setHeader("Set-Cookie", tokenCookie);
-      res.status(200).json({ token, message: "Inicio de sesión exitoso" });
+      res.status(200).json({
+        token,
+        message: "Inicio de sesión exitoso",
+        image: existingUser.image,
+        email: existingUser.email,
+        name: existingUser.firstName,
+        roll: existingUser.roll,
+      });
     } else {
       // Crear un nuevo usuario
       const newUser = await User.create({
         firstName: req.body.firstName,
         email: req.body.email,
         roll: req.body.roll || "Client",
+        image: req.body.image,
         image: req.body.image,
       });
 
@@ -46,9 +54,8 @@ async function PostRegisterGoogle(req, res) {
           userId: newUser.id,
           email: newUser.email,
           name: newUser.firstName,
-          image: newUser.image,
-
           roll: newUser.roll,
+          image: newUser.image,
         },
         SECRETKEY,
         { expiresIn: "1h" }
@@ -59,13 +66,17 @@ async function PostRegisterGoogle(req, res) {
         maxAge: 3600000,
       };
 
-      let { id } = newUser;
       const tokenCookie = serialize("token", token, cookieOptions);
 
       res.setHeader("Set-Cookie", tokenCookie);
-      res
-        .status(201)
-        .json({ token, message: "Usuario registrado exitosamente", id });
+      res.status(201).json({
+        token,
+        message: "Usuario registrado exitosamente",
+        roll: newUser.roll,
+        name: newUser.firstName,
+        image: newUser.image,
+        email: newUser.email,
+      });
 
       sendWelcomeEmail(newUser);
     }
