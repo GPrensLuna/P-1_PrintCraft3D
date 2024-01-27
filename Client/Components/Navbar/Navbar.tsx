@@ -57,7 +57,7 @@ export const Navbar = () => {
     { id: 4, href: "/Admin/ProductList", text: "📦 Product List" },
     ...(!session
       ? []
-      : [{ id: 5, href: "/Profile", text: `🦸 ${ProfileData.profile.name} ` }]),
+      : [{ id: 5, href: "/Profile", text: `🦸 ${ProfileData?.profile?.name} ` }]),
     ...(!session
       ? [{ id: 6, href: "/LoginUp", text: "🦸 LoginUp" }]
       : [{ id: 7, href: "", text: "🚪Logout", onClick: () => signOut() }]),

@@ -14,6 +14,7 @@ export interface Profile {
     given_name?: string;
     family_name?: string;
     picture?: string;
+    role?: string;
 }
 
 export type UserRowProps = {

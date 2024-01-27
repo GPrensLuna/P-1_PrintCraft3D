@@ -8,6 +8,7 @@ interface ExtendedProfile extends Profile {
   email_verified?: boolean;
 }
 
+
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
@@ -42,16 +43,10 @@ const handler = NextAuth({
   ],
 
   callbacks: {
-    async jwt({ token, user }) {
-      return { ...token, ...user };
-    },
-    async session({ session, token }) {
-      session.user = token as any;
-      return session;
-    },
-    async signIn({ account, profile }: { account: any; profile?: Profile }): Promise<boolean | string> {
-  if (account && account.provider === "google" && profile) {
-    // Verificar si profile no es undefined antes de usar sus propiedades
+   
+  async signIn({ account, profile }: { account: any; profile?: ExtendedProfile }): Promise<boolean | string> {
+  // Asegurarse de que la autenticación es a través de Google
+  if (account.provider === "google" && profile) {
     const requestBody = JSON.stringify({
       email: profile.email,
       firstName: profile.given_name,
@@ -59,8 +54,7 @@ const handler = NextAuth({
       image: profile.picture
     });
 
-    console.log("Contenido enviado al servidor:", requestBody);
-
+    // Hacer una petición POST a tu backend
     const res = await fetch(`${URL_BACKEND}google`, {
       method: 'POST',
       headers: {
@@ -69,17 +63,33 @@ const handler = NextAuth({
       body: requestBody
     });
 
-    const data = await res.json();
-    console.log(data);
+    const user = await res.json();
+    
+    console.log(user)
 
-    if (data.error) {
-      return false;
+    if (user.error) {
+      throw new Error(user.error); 
     }
+     return (user);
   }
-  return true;
-}
+  
+  return true; 
+},
+ async jwt({ token, user, account }) {
+  if (account?.provider === "google" && user) {
+    token.userRole = "user"; 
+  }
+
+  return { ...token, ...user };
+},
+
+async session({ session, token }) {
+  session.user = token.userRole ? { ...token, ...session.user } : token;
+  return session;
+},
 
 
+  
   },
   pages: {
     signIn: "/LoginUp",

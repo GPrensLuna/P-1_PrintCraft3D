@@ -10,6 +10,7 @@ import { setProfile } from '@/redux/features/profileSlice';
 interface Perfil {
     name?: string;
     email?: string;
+    picture?: string;
 }
 
 export default function Profile() {
@@ -24,17 +25,28 @@ export default function Profile() {
                 setCargaPerfil(true);
                 try {
                     const token = session?.user?.token;
-                    const res = await fetch(`${URL_BACKEND}/Profile`, {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
 
-                    const datosPerfil = await res.json();
+                    let datosPerfil;
+
+                    if (token) {
+                        const res = await fetch(`${URL_BACKEND}/Profile`, {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        datosPerfil = await res.json();
+                        console.log(datosPerfil);
+                    } else {
+                        datosPerfil = session.user;
+                        console.log('Datos del usuario desde la sesión:', datosPerfil);
+                    }
+
                     setPerfil(datosPerfil);
-                    dispatch(setProfile(datosPerfil))
+                    dispatch(setProfile(datosPerfil));
+
                 } catch (error) {
                     console.error('Error al obtener los datos del perfil:', error);
                 } finally {
@@ -45,6 +57,7 @@ export default function Profile() {
         obtenerDatosPerfil();
     }, [dispatch, session]);
 
+
     if (status === "loading" || cargaPerfil) {
         return <p>Cargando perfil...</p>;
     }
@@ -53,7 +66,7 @@ export default function Profile() {
         <div className="max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg mt-2">
             <div className="px-6 py-4">
                 <div className="flex justify-center">
-                    <img className="object-cover w-32 h-32 rounded-full border-2 border-indigo-500" src="https://via.placeholder.com/150" alt="Profile" />
+                    <img className="object-cover w-32 h-32 rounded-full border-2 border-indigo-500" src={perfil.picture} alt="Profile" />
                 </div>
                 <h1 className="text-xl font-semibold text-gray-800 text-center mt-2">
                     {perfil.name}

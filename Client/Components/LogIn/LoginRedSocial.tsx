@@ -2,13 +2,9 @@
 import Image from 'next/image';
 import google from '@/img/google.webp';
 //import { URL_BACKEND } from '@/config';
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 export const LoginRedSocial = () => {
-
-
-
-
   return (
     <div className="container w-100 my-4">
       <div className="row">
