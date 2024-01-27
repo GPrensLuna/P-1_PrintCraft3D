@@ -4,7 +4,6 @@ const router = express.Router();
 
 const { PostLogin } = require("../controllers/Post/PostLogin.js");
 
-const { PostLogout } = require("../controllers/Post/PostLogout.js");
 const { PostRegister } = require("../controllers/Post/PostRegister.js");
 const {
   PostRegisterGoogle,
@@ -50,7 +49,6 @@ router.get("/", (req, res) => {
 });
 
 router.post("/Login", PostLogin);
-router.post("/Logout", PostLogout);
 router.post("/Registro", PostRegister);
 router.post("/Google", PostRegisterGoogle);
 router.post("/Reviews", postReview);
