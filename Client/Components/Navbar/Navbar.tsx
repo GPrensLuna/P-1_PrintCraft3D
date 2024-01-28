@@ -10,8 +10,6 @@ import { Links } from "@/Ts/Links";
 import Logo_PrintCraft3D from '@/img/Logo_PrintCraft3D.webp';
 import { motion } from 'framer-motion';
 import { signOut, useSession } from "next-auth/react";
-import { useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
 
 
 
@@ -21,7 +19,8 @@ export const Navbar = () => {
   const dispatch = useDispatch();
   const [searchValueLocal, setSearchValueLocal] = useState("");
   const { data: session } = useSession();
-  const ProfileData = useSelector((state: RootState) => state.DataUser);
+
+
 
   const navVariants = {
     hidden: { y: -50, opacity: 0 },
@@ -49,18 +48,19 @@ export const Navbar = () => {
     return () => clearTimeout(timerId);
   }, [searchValueLocal, dispatch]);
 
+  const isAdmin = session?.user?.roll === 'Admin';
 
   const links = [
     { id: 1, href: "/", text: "🏠 Home" },
-    { id: 2, href: "/ShoppingCart", text: "🛒 Cart " },
-    { id: 3, href: "/Admin/UserList", text: "📋 User List" },
-    { id: 4, href: "/Admin/ProductList", text: "📦 Product List" },
+    { id: 2, href: "/ShoppingCart", text: "🛒 Cart" },
+    ...(isAdmin ? [
+      { id: 3, href: "/Admin/UserList", text: "📋 User List" },
+      { id: 4, href: "/Admin/ProductList", text: "📦 Product List" }
+    ] : []),
     ...(!session
-      ? []
-      : [{ id: 5, href: "/Profile", text: `🦸 ${ProfileData?.profile?.name} ` }]),
-    ...(!session
-      ? [{ id: 6, href: "/LoginUp", text: "🦸 LoginUp" }]
-      : [{ id: 7, href: "", text: "🚪Logout", onClick: () => signOut() }]),
+      ? [{ id: 5, href: "/LoginUp", text: "🦸 LoginUp" }]
+      : [{ id: 6, href: "/Profile", text: `🦸 ${session.user.name}` },
+      { id: 7, href: "", text: "🚪Logout", onClick: () => signOut() }])
   ];
 
   const ListItem = ({ href, text, onClick }: Links) => {
@@ -120,6 +120,9 @@ export const Navbar = () => {
             onChange={handleSearchChange}
           />
         </ul>
+      </section>
+      <section>
+
       </section>
       <div className="lg:hidden block">{click && content}</div>
       <button className="block lg:hidden transition" onClick={handleClick}>

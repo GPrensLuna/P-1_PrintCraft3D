@@ -29,10 +29,7 @@ export default function LoginUp() {
       setModalMessage("No se a podido iniciar la secion con exíto verifique el email o password");
       setIsModalOpen(true);
     } else {
-      //window.location.href = '/Profile'
-      setTimeout(() => {
-        router.push('/Profile');
-      }, 5000);
+      router.push('/Profile');
     }
   };
 

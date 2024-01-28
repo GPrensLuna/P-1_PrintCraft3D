@@ -1,16 +1,14 @@
-// next-auth.d.ts
 import "next-auth";
+import { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
-  /**
-   * Extiende los tipos de sesión y usuario para incluir propiedades personalizadas.
-   */
+  interface User {
+    roll?: string;
+  }
+
   interface Session {
-    user?: {
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-      token?: string | null; 
-    };
+    user: {
+      roll?: string | null ;
+    } & DefaultSession["user"];
   }
 }

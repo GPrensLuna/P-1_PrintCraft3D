@@ -1,77 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 "use client"
-import { URL_BACKEND } from "@/config";
-import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useDispatch } from 'react-redux';
-import { setProfile } from '@/redux/features/profileSlice';
-
-interface Perfil {
-    name?: string;
-    email?: string;
-    picture?: string;
-}
 
 export default function Profile() {
-    const dispatch = useDispatch();
-    const { data: session, status } = useSession();
-    const [perfil, setPerfil] = useState<Perfil>({});
-    const [cargaPerfil, setCargaPerfil] = useState(false);
+    const { data: session } = useSession();
 
-    useEffect(() => {
-        const obtenerDatosPerfil = async () => {
-            if (session) {
-                setCargaPerfil(true);
-                try {
-                    const token = session?.user?.token;
-
-                    let datosPerfil;
-
-                    if (token) {
-                        const res = await fetch(`${URL_BACKEND}/Profile`, {
-                            method: 'GET',
-                            headers: {
-                                'Authorization': `Bearer ${token}`,
-                                'Content-Type': 'application/json'
-                            }
-                        });
-
-                        datosPerfil = await res.json();
-                        console.log(datosPerfil);
-                    } else {
-                        datosPerfil = session.user;
-                        console.log('Datos del usuario desde la sesión:', datosPerfil);
-                    }
-
-                    setPerfil(datosPerfil);
-                    dispatch(setProfile(datosPerfil));
-
-                } catch (error) {
-                    console.error('Error al obtener los datos del perfil:', error);
-                } finally {
-                    setCargaPerfil(false);
-                }
-            }
-        };
-        obtenerDatosPerfil();
-    }, [dispatch, session]);
-
-
-    if (status === "loading" || cargaPerfil) {
-        return <p>Cargando perfil...</p>;
-    }
+    const defaultImage = '/profile-default.svg';
 
     return (
         <div className="max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg mt-2">
             <div className="px-6 py-4">
                 <div className="flex justify-center">
-                    <img className="object-cover w-32 h-32 rounded-full border-2 border-indigo-500" src={perfil.picture} alt="Profile" />
+                    <img className="object-cover w-32 h-32 rounded-full border-2 border-indigo-500" src={session?.user?.image ?? defaultImage} alt="Profile" />
                 </div>
                 <h1 className="text-xl font-semibold text-gray-800 text-center mt-2">
-                    {perfil.name}
+                    {session?.user?.name}
                 </h1>
-                <p className="text-center text-gray-600">{perfil.email}</p>
+                <p className="text-center text-gray-600">{session?.user?.email}</p>
 
                 <div className="flex items-center mt-4 text-gray-700">
                     <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" className="w-6 h-6 text-gray-500">

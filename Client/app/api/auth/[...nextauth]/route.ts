@@ -1,13 +1,12 @@
-import { URL_BACKEND, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET} from "@/config";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { Profile } from '@/Ts/UserList'
+import { URL_BACKEND, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "@/config";
+import { Profile } from '@/Ts/UserList';
 
 interface ExtendedProfile extends Profile {
   email_verified?: boolean;
 }
-
 
 const handler = NextAuth({
   providers: [
@@ -18,83 +17,78 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const res = await fetch(
-          `${URL_BACKEND}login`,
-          {
-            method: "POST",
-            body: JSON.stringify({
-              email: credentials?.email,
-              password: credentials?.password,
-            }),
-            headers: { "Content-Type": "application/json" },
-          }
-        );
+        const res = await fetch(`${URL_BACKEND}login`, {
+          method: "POST",
+          body: JSON.stringify({
+            email: credentials?.email,
+            password: credentials?.password,
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
         const user = await res.json();
 
-        if (user.error) throw user;
+        if (user.error) throw new Error(user.error);
 
         return user;
       },
     }),
-  GoogleProvider({
-    clientId: GOOGLE_CLIENT_ID as string,
-    clientSecret: GOOGLE_CLIENT_SECRET as string
-  })
+    GoogleProvider({
+      clientId: GOOGLE_CLIENT_ID as string,
+      clientSecret: GOOGLE_CLIENT_SECRET as string,
+    }),
   ],
-
   callbacks: {
-   
-  async signIn({ account, profile }: { account: any; profile?: ExtendedProfile }): Promise<boolean | string> {
-  // Asegurarse de que la autenticación es a través de Google
-  if (account.provider === "google" && profile) {
-    const requestBody = JSON.stringify({
-      email: profile.email,
-      firstName: profile.given_name,
-      lastName: profile.family_name,
-      image: profile.picture
-    });
+    async signIn({ account, profile }) {
+      if (account.provider === "google" && profile) {
+        const requestBody = JSON.stringify({
+          email: profile.email,
+          firstName: profile.given_name,
+          lastName: profile.family_name,
+          image: profile.picture,
+        });
 
-    // Hacer una petición POST a tu backend
-    const res = await fetch(`${URL_BACKEND}google`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: requestBody
-    });
+        const res = await fetch(`${URL_BACKEND}google`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: requestBody,
+        });
 
-    const user = await res.json();
-    
-    console.log(user)
+        const user = await res.json();
 
-    if (user.error) {
-      throw new Error(user.error); 
-    }
-     return (user);
+        if (user.error) {
+          throw new Error(user.error);
+        }
+        return user;
+      }
+      return true;
+    },
+    // Ejemplo en tus callbacks de next-auth
+async jwt({ token, user }) {
+  if (user?.roll) {
+    token.userRoll = user.roll;
   }
-  
-  return true; 
-},
- async jwt({ token, user, account }) {
-  if (account?.provider === "google" && user) {
-    token.userRole = "user"; 
-  }
-
-  return { ...token, ...user };
+  return token;
 },
 
 async session({ session, token }) {
-  session.user = token.userRole ? { ...token, ...session.user } : token;
+  if (token.userRoll) {
+    session.user.roll = token.userRoll;
+  }
   return session;
 },
 
-
-  
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith(baseUrl + "/LoginUp") || url.startsWith(baseUrl + "/api/auth/signout")) {
+        return baseUrl + "/Profile";
+      }
+      return url.startsWith(baseUrl) ? url : baseUrl;
+    },
   },
   pages: {
     signIn: "/LoginUp",
   },
 });
-
 
 export { handler as GET, handler as POST };
