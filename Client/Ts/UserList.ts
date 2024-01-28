@@ -1,15 +1,16 @@
 
 export interface User {
-    id?: number;
+    id?: number ;
     firstName?: string;
     lastName?: string;
     birthDate?: string;
     phoneNumber?: string;
     email?: string;
-    roll?: string;
+    roll?: string ;
     deleted?: boolean;
 }
 export interface Profile {
+    id?: number;
     email?: string;
     given_name?: string;
     family_name?: string;
@@ -18,7 +19,7 @@ export interface Profile {
 }
 
 export type UserRowProps = {
-    user: User;
+    user: User ;
     editingUser: User | null;
     handleCancelEdit:()=> void;
     handleSaveEdit: (userId: number) => void;
@@ -30,6 +31,7 @@ export type UserRowProps = {
 
 export interface EditableFieldProps {
     editing: boolean;
+    id?: number;
     value: string | undefined;
     name: string;
     handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

@@ -38,7 +38,7 @@ export const UserRow = ({ user, editingUser, handleSaveEdit, handleEditClick, ha
 
     const handleConfirm = () => {
         setShowConfirmation(false);
-        handleSaveEdit(user.id);
+        handleSaveEdit(user.id!);
     };
 
     const handleCancel = () => {
@@ -71,8 +71,8 @@ export const UserRow = ({ user, editingUser, handleSaveEdit, handleEditClick, ha
                     {isEditing ? (
                         <Dropdown
                             options={roleOptions}
-                            value={editingUser.roll || ""}
-                            onChange={(newRole) => handleRoleChange(user.id, newRole)}
+                            value={editingUser?.roll || ""}
+                            onChange={(newRole) => handleRoleChange(user.id!, newRole)}
                         />
                     ) : (
                         user.roll
@@ -82,8 +82,8 @@ export const UserRow = ({ user, editingUser, handleSaveEdit, handleEditClick, ha
                     {isEditing ? (
                         <Dropdown
                             options={deleteOptions}
-                            value={editingUser.deleted ? "Sí" : "No"}
-                            onChange={(newDelete) => handleDeleteChange(user.id, newDelete === "Sí")}
+                            value={editingUser?.deleted ? "Sí" : "No"}
+                            onChange={(newDelete) => handleDeleteChange(user.id!, newDelete === "Sí")}
                         />
                     ) : (
                         user.deleted ? "Sí" : "No"
