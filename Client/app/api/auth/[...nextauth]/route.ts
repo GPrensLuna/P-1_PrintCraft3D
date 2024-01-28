@@ -38,7 +38,7 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ account, profile }) {
+   async signIn({ account, profile }: { account: any; profile?: ExtendedProfile }): Promise<boolean | string> {
       if (account.provider === "google" && profile) {
         const requestBody = JSON.stringify({
           email: profile.email,
@@ -74,10 +74,20 @@ async jwt({ token, user }) {
 
 async session({ session, token }) {
   if (token.userRoll) {
-    session.user.roll = token.userRoll;
+    if (session.user) {
+      // Si session.user existe, se asigna token.userRoll a session.user.roll
+      // Se convierte token.userRoll a string para asegurar el tipo correcto
+      session.user.roll = String(token.userRoll);
+    } else {
+      // Si session.user no existe, se crea un nuevo objeto user
+      // Se asigna token.userRoll a roll, usando coalescencia nula para manejar undefined
+      session.user = { roll:token?.userRoll ?? null };
+    }
   }
   return session;
 },
+
+
 
     async redirect({ url, baseUrl }) {
       if (url.startsWith(baseUrl + "/LoginUp") || url.startsWith(baseUrl + "/api/auth/signout")) {
