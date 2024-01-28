@@ -6,7 +6,9 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 
-
+interface CopyButtonProps {
+  copyContent: string;
+}
 
 export default function LoginUp() {
   const router = useRouter();
@@ -33,9 +35,52 @@ export default function LoginUp() {
     }
   };
 
+  const CopyButton: React.FC<CopyButtonProps> = ({ copyContent }) => {
+    const copyToClipboard = () => {
+      navigator.clipboard.writeText(copyContent).then(() => {
+      }, (err) => {
+        console.error('Error al copiar: ', err);
+      });
+    };
+
+    return (
+      <button
+        onClick={copyToClipboard}
+        className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300"
+      >
+        Copiar
+      </button>
+    );
+  };
 
   return (
     <main className="bg-gray-100 flex justify-center items-center min-h-screen px-4">
+      <div className="absolute top-40 left-20 bg-sky-500 rounded-lg w-56 h-80 p-4">
+        <h1>NOTA:</h1>
+        <div className="flex flex-col items-center gap-2">
+          <span>Client</span>
+          <div className="flex gap-2 items-center">
+            <h2>User: test@test.com</h2>
+            <CopyButton copyContent="test@test.com" />
+          </div>
+          <div className="flex gap-2 items-center">
+            <h2>Pass: 123456</h2>
+            <CopyButton copyContent="123456" />
+          </div>
+        </div>
+        <div className="flex flex-col items-center gap-2 mt-4">
+          <span>Admin</span>
+          <div className="flex gap-2 items-center">
+            <h2>User: Admin@Admin.com</h2>
+            <CopyButton copyContent="Admin@Admin.com" />
+          </div>
+          <div className="flex gap-2 items-center">
+            <h2>Pass: admins</h2>
+            <CopyButton copyContent="admins" />
+          </div>
+        </div>
+      </div>
+
       <section className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
         <article className="flex flex-col">
 

@@ -36,6 +36,7 @@ module.exports = (sequelize) => {
       },
       roll: {
         type: DataTypes.STRING,
+        defaultValue: "Client",
         allowNull: true,
       },
       password: {
