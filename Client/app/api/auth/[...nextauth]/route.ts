@@ -75,17 +75,15 @@ async jwt({ token, user }) {
 async session({ session, token }) {
   if (token.userRoll) {
     if (session.user) {
-      // Si session.user existe, se asigna token.userRoll a session.user.roll
-      // Se convierte token.userRoll a string para asegurar el tipo correcto
-      session.user.roll = String(token.userRoll);
+      session.user.roll = typeof token.userRoll === 'string' ? token.userRoll : undefined;
     } else {
-      // Si session.user no existe, se crea un nuevo objeto user
-      // Se asigna token.userRoll a roll, usando coalescencia nula para manejar undefined
-      session.user = { roll:token?.userRoll ?? null };
+      session.user = { roll: typeof token.userRoll === 'string' ? token.userRoll : undefined };
     }
   }
   return session;
 },
+
+
 
 
 
