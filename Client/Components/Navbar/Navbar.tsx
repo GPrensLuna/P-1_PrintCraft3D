@@ -8,7 +8,6 @@ import { setLoginUser } from '@/redux/features/LogInSlice';
 import { setSearchValue } from '@/redux/features/SearchSlice';
 import { Links } from "@/Ts/Links";
 import Logo_PrintCraft3D from '@/img/Logo_PrintCraft3D.webp';
-import { motion } from 'framer-motion';
 import { signOut, useSession } from "next-auth/react";
 
 
@@ -90,12 +89,9 @@ export const Navbar = () => {
   );
 
   return (
-    <motion.nav
+    <nav
       className="bg-gradient-to-r from-sky-950 via-sky-800 to-sky-600 h-10vh flex justify-between z-50 text-white lg:py-5 px-20 py-4"
       style={{ minWidth: "450px" }}
-      initial="hidden"
-      animate="visible"
-      variants={navVariants}
     >
       <section className="flex items-center flex-1 ">
         <Link href="/">
@@ -151,6 +147,6 @@ export const Navbar = () => {
           </svg>
         )}
       </button>
-    </motion.nav>
+    </nav>
   );
 };

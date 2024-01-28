@@ -16,6 +16,8 @@ interface IFormInput {
     phoneNumber: number;
 }
 
+
+
 const schema = yup.object({
     firstName: yup.string().required('El nombre es obligatorio'),
     lastName: yup.string().required('El apellido es obligatorio'),
@@ -28,7 +30,7 @@ const schema = yup.object({
 export default function SignIn() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
-    const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<IFormInput>({
         resolver: yupResolver(schema)
     });
 
@@ -58,6 +60,7 @@ export default function SignIn() {
     const handleSuccess = () => {
         setModalMessage("Registro exitoso!");
         setModalOpen(true);
+        reset();
     };
 
     const handleError = () => {
@@ -72,8 +75,8 @@ export default function SignIn() {
     return (
         <section className="container mx-auto p-6 flex justify-center items-center h-screen">
             <div className="w-full max-w-lg">
-                <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Regístrate</h2>
-                <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
+                <h2 className="text-4xl font-bold text-center text-gray-800 mb-8">Regístrate</h2>
+                <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-xl rounded-lg px-8 pt-6 pb-8 mb-4">
                     <div className="mb-4">
                         <label htmlFor="firstName" className="block text-gray-700 text-sm font-semibold mb-2">
                             Nombre
@@ -123,11 +126,11 @@ export default function SignIn() {
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between">
-                        <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                    <div className="flex flex-col items-center justify-between mt-6">
+                        <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-300">
                             REGISTRARSE
                         </button>
-                        <Link href="/LoginUp" className="inline-block align-baseline font-semibold text-sm text-blue-600 hover:text-blue-800 transition duration-300">
+                        <Link href="/LoginUp" className="inline-block align-baseline font-semibold text-sm text-blue-500 hover:text-blue-700 transition duration-300">
                             ¿Ya tienes una cuenta? Iniciar sesión
                         </Link>
                     </div>
