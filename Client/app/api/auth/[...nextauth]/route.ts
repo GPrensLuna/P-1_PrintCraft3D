@@ -40,7 +40,7 @@ const handler = NextAuth({
   callbacks: {
    async signIn({ account, profile }: { account: any; profile?: ExtendedProfile }): Promise<boolean | string> {
       if (account.provider === "google" && profile) {
-        const requestBody = JSON.stringify({
+         const requestBody = JSON.stringify({
           email: profile.email,
           firstName: profile.given_name,
           lastName: profile.family_name,
@@ -82,11 +82,6 @@ async session({ session, token }) {
   }
   return session;
 },
-
-
-
-
-
     async redirect({ url, baseUrl }) {
       if (url.startsWith(baseUrl + "/LoginUp") || url.startsWith(baseUrl + "/api/auth/signout")) {
         return baseUrl + "/Profile";

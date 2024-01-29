@@ -55,7 +55,7 @@ export default function LoginUp() {
 
   return (
     <main className="bg-gray-100 flex justify-center items-center min-h-screen px-4">
-      <div className="absolute top-40 left-20 bg-sky-500 rounded-lg w-56 h-80 p-4">
+      <div className="left-20 bg-sky-500 rounded-lg w-56 h-80 p-4">
         <h1>NOTA:</h1>
         <div className="flex flex-col items-center gap-2">
           <span>Client</span>

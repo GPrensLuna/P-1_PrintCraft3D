@@ -1,18 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @next/next/no-img-element */
 "use client"
+import Image from 'next/image';
 import { useSession } from "next-auth/react";
 
 export default function Profile() {
     const { data: session } = useSession();
 
     const defaultImage = '/profile-default.svg';
-
+    const imageUrl = session?.user?.image || defaultImage;
     return (
         <div className="max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg mt-2">
             <div className="px-6 py-4">
-                <div className="flex justify-center">
-                    <img className="object-cover w-32 h-32 rounded-full border-2 border-indigo-500" src={session?.user?.image ?? defaultImage} alt="Profile" />
+                <div className="flex justify-center rounded-lg">
+                    <Image
+                        className='rounded-full'
+                        src={imageUrl}
+                        width={96}
+                        height={96}
+                        alt="Descripción de la imagen"
+                    />
                 </div>
                 <h1 className="text-xl font-semibold text-gray-800 text-center mt-2">
                     {session?.user?.name}
