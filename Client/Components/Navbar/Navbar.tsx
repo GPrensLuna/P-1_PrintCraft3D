@@ -19,13 +19,6 @@ export const Navbar = () => {
   const [searchValueLocal, setSearchValueLocal] = useState("");
   const { data: session } = useSession();
 
-
-
-  const navVariants = {
-    hidden: { y: -50, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
-  };
-
   useEffect(() => {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
@@ -65,28 +58,28 @@ export const Navbar = () => {
   const ListItem = ({ href, text, onClick }: Links) => {
     return href ? (
       <Link href={href} passHref>
-        <li className="cursor-pointer" onClick={onClick}>
+        <li className="cursor-pointer py-5 items-center justify-center" onClick={onClick}>
           {text}
         </li>
       </Link>
     ) : (
-      <li className="cursor-pointer" onClick={onClick}>
+      <li className="cursor-pointer  items-center justify-center" onClick={onClick}>
         {text}
       </li>
     );
   };
 
-
   const content = (
-    <div className="lg:hidden block absolute top-16 w-full left-0 right-0 transition">
-      <ul className="text-center p-10">
+    <div className="lg:hidden block absolute top-16 w-full left-0 right-0 transition bg-gradient-to-r from-sky-950 via-sky-800 to-sky-600 h-10vh shadow-lg rounded-b-xl">
+      <ul className="text-center space-y-4 py-10">
         {links.map((link) => (
-          <ListItem key={link.id} href={link.href} text={link.text} onClick={link.onClick} />
+          <ListItem key={link.id} className="text-white font-semibold hover:text-sky-200 " href={link.href} text={link.text} onClick={link.onClick} />
         ))}
-
       </ul>
     </div>
   );
+
+
 
   return (
     <nav
@@ -102,9 +95,9 @@ export const Navbar = () => {
         </Link>
       </section>
       <section className="lg:flex hidden flex-1 items-center justify-end font-normal">
-        <ul className="flex gap-6 text-[16px]">
+        <ul className="flex gap-6 text-[16px]  items-center justify-center">
           {links.map((link) => (
-            <ListItem key={link.id} href={link.href} text={link.text} onClick={link.onClick} />
+            <ListItem key={link.id} href={link.href} text={link.text} onClick={link.onClick} className={''} />
           ))}
 
           <input
