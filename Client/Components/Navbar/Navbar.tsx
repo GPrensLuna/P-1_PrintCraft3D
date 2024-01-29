@@ -10,8 +10,6 @@ import { Links } from "@/Ts/Links";
 import Logo_PrintCraft3D from '@/img/Logo_PrintCraft3D.webp';
 import { signOut, useSession } from "next-auth/react";
 
-
-
 export const Navbar = () => {
   const [click, setClick] = useState(false);
   const handleClick = () => setClick(!click);
@@ -55,65 +53,56 @@ export const Navbar = () => {
       { id: 7, href: "", text: "🚪Logout", onClick: () => signOut() }])
   ];
 
-  const ListItem = ({ href, text, onClick }: Links) => {
+  const ListItem = ({ href, text, onClick, isActive }: Links) => {
+    const baseStyle = "cursor-pointer flex items-center justify-center py-2 lg:py-5";
+    const activeStyle = isActive ? "border-b-2 border-blue-500" : "";
+
     return href ? (
       <Link href={href} passHref>
-        <li className="cursor-pointer py-5 items-center justify-center" onClick={onClick}>
+        <li className={`${baseStyle} ${activeStyle} hover:text-blue-300 focus:text-blue-400`} onClick={onClick}>
           {text}
         </li>
       </Link>
     ) : (
-      <li className="cursor-pointer  items-center justify-center" onClick={onClick}>
+      <li className={`${baseStyle} ${activeStyle} hover:text-blue-300 focus:text-blue-400`} onClick={onClick}>
         {text}
       </li>
     );
   };
 
-  const content = (
-    <div className="lg:hidden block absolute top-16 w-full left-0 right-0 transition bg-gradient-to-r from-sky-950 via-sky-800 to-sky-600 h-10vh shadow-lg rounded-b-xl">
-      <ul className="text-center space-y-4 py-10">
+  const mobileMenu = (
+    <div className={`lg:hidden ${click ? 'block' : 'hidden'} z-20 absolute top-14 w-full left-0 right-0 transition bg-gradient-to-r from-sky-950 via-sky-800 to-sky-600 shadow-lg rounded-b-xl`}>
+      <ul className="text-center space-y-4 py-8">
         {links.map((link) => (
-          <ListItem key={link.id} className="text-white font-semibold hover:text-sky-200 " href={link.href} text={link.text} onClick={link.onClick} />
+          <ListItem key={link.id} href={link.href} text={link.text} onClick={link.onClick} className={''} isActive={false} />
         ))}
       </ul>
     </div>
   );
 
-
-
   return (
-    <nav
-      className="bg-gradient-to-r from-sky-950 via-sky-800 to-sky-600 h-10vh flex justify-between z-50 text-white lg:py-5 px-20 py-4"
-      style={{ minWidth: "450px" }}
-    >
-      <section className="flex items-center flex-1 ">
-        <Link href="/">
-          <div className="flex justify-center items-center">
-            <Image src={Logo_PrintCraft3D} alt="Logo_PrintCraft3D" width={60} height={60} />
-            <span className="text-3xl  font-bold">PrintCraft3D</span>
-          </div>
-        </Link>
-      </section>
-      <section className="lg:flex hidden flex-1 items-center justify-end font-normal">
-        <ul className="flex gap-6 text-[16px]  items-center justify-center">
+    <nav className="bg-gradient-to-r from-sky-950 via-sky-800 to-sky-600 h-14 lg:h-16 flex justify-between items-center z-50 text-white px-4 lg:px-20">
+      <Link href="/" className="flex items-center">
+        <Image src={Logo_PrintCraft3D} alt="Logo_PrintCraft3D" width={50} height={50} />
+        <span className="text-2xl lg:text-3xl font-bold ml-2">PrintCraft3D</span>
+      </Link>
+      <section className="hidden lg:flex flex-1 items-center justify-end">
+        <ul className="flex gap-4 lg:gap-6 items-center">
           {links.map((link) => (
-            <ListItem key={link.id} href={link.href} text={link.text} onClick={link.onClick} className={''} />
+            <ListItem key={link.id} href={link.href} text={link.text} onClick={link.onClick} className={''} isActive={false} />
           ))}
-
-          <input
-            type="search"
-            className="relative m-0 block w-48 min-w-0 flex-auto border  border-b-1 border-l-0 border-r-0 border-t-0 rounded-md bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] outline-none transition duration-200 ease-in-out focus:z-[3] focus:text-slate-50 "
-            id="search"
-            placeholder="Search"
-            value={searchValueLocal}
-            onChange={handleSearchChange}
-          />
+          <li>
+            <input
+              type="search"
+              className="w-36 lg:w-48 border-b-2 border-white bg-transparent text-white placeholder-gray-300 px-2 py-1 focus:outline-none"
+              placeholder="Search"
+              value={searchValueLocal}
+              onChange={handleSearchChange}
+            />
+          </li>
         </ul>
       </section>
-      <section>
-
-      </section>
-      <div className="lg:hidden block">{click && content}</div>
+      <div className="lg:hidden block">{click && mobileMenu}</div>
       <button className="block lg:hidden transition" onClick={handleClick}>
         {click ? (
           <svg

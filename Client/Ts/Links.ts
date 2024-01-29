@@ -3,4 +3,5 @@ export interface Links {
   text?: string;
   onClick?: () => void;
   className: string
+  isActive: boolean;
 }
