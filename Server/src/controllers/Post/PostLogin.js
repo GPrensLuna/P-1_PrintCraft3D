@@ -42,6 +42,7 @@ const PostLogin = async (req, res) => {
         res.status(200).json({
           token,
           message: "Inicio de sesión exitoso",
+          id: user.id,
           image: user.image,
           email: user.email,
           name: user.firstName,
