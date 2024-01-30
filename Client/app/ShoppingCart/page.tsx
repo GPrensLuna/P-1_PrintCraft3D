@@ -250,12 +250,13 @@ export default function Cart() {
             {showPaymentModal && (
                 <Components.ModalShowPayment
                     title="Pago"
-                    message="Hola"
+                    total={cartItems.reduce((total, item) => total + item.price * (item.count ?? 0), 0)}
+                    cartItems={cartItems}
                     onConfirm={() => setShowPaymentModal(false)}
                     onCancel={() => setShowPaymentModal(false)}
                 />
-
             )}
+
             {showEmptyCartWarning && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70">
                     <div className="bg-white rounded-lg p-8 max-w-sm shadow-md">
@@ -265,7 +266,6 @@ export default function Cart() {
                         <button
                             onClick={() => {
                                 setShowEmptyCartWarning(false);
-                                // Redirige al usuario a la página de inicio ("/")
                                 window.location.href = "/";
                             }}
                             className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring focus:ring-red-300 mr-2">

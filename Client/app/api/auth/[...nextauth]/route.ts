@@ -28,7 +28,6 @@ const handler = NextAuth({
         const user = await res.json();
 
         if (user.error) throw new Error(user.error);
-
         return user;
       },
     }),

@@ -18,10 +18,17 @@ export interface ModalAlertProps {
     onCancel:()=>void,
     onConfirm:()=>void,
 }
-export interface ModalShowPaymentProps {
-    title?:string,
-    message?:string,
-    onCancel?:()=>void,
-    onConfirm?:()=>void,
-    children?: React.ReactNode;
+export interface CartItem {
+  name: string;
+  price: number;
+  quantity: number;
 }
+
+export interface ModalShowPaymentProps {
+  title: string;
+  total: number;
+  cartItems: CartItem[];
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+
