@@ -8,7 +8,7 @@ const startServer = async () => {
     server.listen(PORT, LOCALHOST, () => {
       console.log(`Server is listening at port ${PORT} : `);
 
-      console.log(`http://${LOCALHOST}:${PORT}`);
+      console.log(`http://${LOCALHOST}:${PORT}/PrintCraft3D/`);
 
       console.log(`${URL_FONT}`);
     });

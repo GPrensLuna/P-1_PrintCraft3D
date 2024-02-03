@@ -37,32 +37,40 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-   async signIn({ account, profile }: { account: any; profile?: ExtendedProfile }): Promise<boolean | string> {
-      if (account.provider === "google" && profile) {
-         const requestBody = JSON.stringify({
-          email: profile.email,
-          firstName: profile.given_name,
-          lastName: profile.family_name,
-          image: profile.picture,
-        });
+async signIn({ account, profile }: { account: any; profile?: ExtendedProfile }): Promise<boolean | string> {
+  if (account.provider === "google" && profile) {
+    const requestBody = JSON.stringify({
+      email: profile.email,
+      firstName: profile.given_name,
+      lastName: profile.family_name,
+      image: profile.picture,
+    });
 
-        const res = await fetch(`${URL_BACKEND}google`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: requestBody,
-        });
+    try {
 
-        const user = await res.json();
+      const res = await fetch(`${URL_BACKEND}google`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: requestBody,
+      });
 
-        if (user.error) {
-          throw new Error(user.error);
-        }
-        return user;
+      const user = await res.json();
+
+      if (user.error) {
+        throw new Error(user.error);
       }
-      return true;
-    },
+      return user;
+    } catch (error) {
+      console.error("Error en la solicitud POST:", error);
+      // Puedes manejar el error de alguna otra manera si es necesario
+      return false; // Otra opción es retornar un valor específico en caso de error
+    }
+  }
+  return true;
+},
+
     // Ejemplo en tus callbacks de next-auth
 async jwt({ token, user }) {
   if (user?.roll) {

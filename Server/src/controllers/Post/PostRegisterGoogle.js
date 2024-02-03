@@ -34,9 +34,10 @@ async function PostRegisterGoogle(req, res) {
       res.status(200).json({
         token,
         message: "Inicio de sesión exitoso",
+        userId: existingUser.id,
+        name: existingUser.firstName,
         image: existingUser.image,
         email: existingUser.email,
-        name: existingUser.firstName,
         roll: existingUser.roll,
       });
     } else {

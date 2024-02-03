@@ -11,11 +11,11 @@ export interface Product {
   material: string;
   category: string;
   deleted: boolean;
+  count?: number
   averageScore?: number;
   countReviews?: number;
   Reviews?: Array<any>;
   handleAddToCart?: (productId: number) => void;
-  count?: number
 }
 
 export interface RootState {
