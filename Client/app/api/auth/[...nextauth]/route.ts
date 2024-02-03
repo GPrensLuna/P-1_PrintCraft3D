@@ -64,29 +64,34 @@ async signIn({ account, profile }: { account: any; profile?: ExtendedProfile }):
       return user;
     } catch (error) {
       console.error("Error en la solicitud POST:", error);
-      // Puedes manejar el error de alguna otra manera si es necesario
-      return false; // Otra opción es retornar un valor específico en caso de error
+      return false; 
     }
   }
   return true;
 },
-
-    // Ejemplo en tus callbacks de next-auth
-async jwt({ token, user }) {
-  if (user?.roll) {
-    token.userRoll = user.roll;
-  }
-  return token;
-},
-
+async jwt({ token, user, account }) {
+      if (account && user) {
+        const expiryTime = Date.now() + 1 * 60 * 60 * 1000; 
+        token.expiryTime = expiryTime;
+      }
+      return token;
+    },
 async session({ session, token }) {
-  if (token.userRoll) {
-    if (session.user) {
-      session.user.roll = typeof token.userRoll === 'string' ? token.userRoll : undefined;
-    } else {
-      session.user = { roll: typeof token.userRoll === 'string' ? token.userRoll : undefined };
-    }
+  if (typeof token.expiryTime === 'number' && Date.now() > token.expiryTime) {
+    return {
+      ...session,
+      expires: "1970-01-01T00:00:00Z", 
+      user: { ...session.user,id: "", name: "", email: "", image: "" } 
+    };
   }
+
+  if (token.userRoll) {
+    session.user = {
+      ...session.user,
+      roll: typeof token.userRoll === 'string' ? token.userRoll : undefined,
+    };
+  }
+
   return session;
 },
     async redirect({ url, baseUrl }) {

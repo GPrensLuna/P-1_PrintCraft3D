@@ -40,6 +40,19 @@ export const Navbar = () => {
 
   const isAdmin = session?.user?.roll === 'Admin';
 
+  const handleLogout = () => {
+    signOut({ redirect: false }).then(() => {
+      localStorage.removeItem('__paypal_storage__');
+      localStorage.removeItem('cart');
+      localStorage.removeItem('ally-supports-cache');
+      localStorage.removeItem('currentPage');
+      localStorage.removeItem('limit');
+      localStorage.removeItem('nextauth.message');
+      localStorage.removeItem('orderData');
+      window.location.href = '/LoginUp';
+    });
+  };
+
   const links = [
     { id: 1, href: "/", text: "🏠 Home" },
     { id: 2, href: "/ShoppingCart", text: "🛒 Cart" },
@@ -50,7 +63,7 @@ export const Navbar = () => {
     ...(!session
       ? [{ id: 5, href: "/LoginUp", text: "🦸 LoginUp" }]
       : [{ id: 6, href: "/Profile", text: `🦸 ${session.user.name}` },
-      { id: 7, href: "", text: "🚪Logout", onClick: () => signOut() }])
+      { id: 7, href: "", text: "🚪Logout", onClick: handleLogout }])
   ];
 
   const ListItem = ({ href, text, onClick, isActive }: Links) => {
