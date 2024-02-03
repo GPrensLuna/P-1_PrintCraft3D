@@ -1,18 +1,23 @@
-const { Order,  Order_Product } = require("../../db");
+const { Order, Order_Product, User } = require("../../db");
 
 const GetOrder = async (req, res) => {
   try {
-    let { idUser } = req.params;
+    let { userEmail } = req.params; // Cambiamos idUser por userEmail
 
-    // Obtener las órdenes del usuario
+    // Buscar al usuario por su email para obtener el ID
+    const user = await User.findOne({ where: { email: userEmail } });
+    if (!user) {
+      return res.status(404).send("Usuario no encontrado");
+    }
+    const idUser = user.id;
+
+    // Obtener las órdenes del usuario usando el ID obtenido
     let { count, rows } = await Order.findAndCountAll({
       where: { UserId: idUser },
     });
 
-    // Array para almacenar las órdenes con productos
-    let ordersWithProducts = [];
+    let ordersWithProducts = []; // Array para almacenar las órdenes con productos
 
-    // Iterar a través de cada orden y obtener los ProductIds asociados
     for (let i = 0; i < rows.length; i++) {
       let order = rows[i];
 
@@ -41,25 +46,8 @@ const GetOrder = async (req, res) => {
     console.log(error.message);
     res
       .status(500)
-      .send("Hubo un error obteniendo las ordenes de compra: " + error.message);
+      .send("Hubo un error obteniendo las órdenes de compra: " + error.message);
   }
 };
 
 module.exports = { GetOrder };
-
-// const { Order } = require("../../db");
-
-// const GetOrder = async (req, res) => {
-//     try {
-//         let {idUser} = req.params
-
-//         let {count, rows} = await Order.findAndCountAll({where: {UserId: idUser}})
-
-//         res.status(200).send({count: count, orders: rows});
-//     } catch (error) {
-//         console.log(error.message);
-//         res.status(500).send('Hubo un error obteniendo las ordenes de compra: ' + error.message)
-//     }
-// }
-
-// module.exports = {GetOrder}

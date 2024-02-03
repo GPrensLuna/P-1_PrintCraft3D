@@ -13,7 +13,7 @@ async function PostRegisterGoogle(req, res) {
     if (existingUser) {
       const token = jwt.sign(
         {
-          userId: existingUser.id,
+          id: existingUser.id,
           email: existingUser.email,
           name: existingUser.firstName,
           roll: existingUser.roll,
@@ -32,9 +32,9 @@ async function PostRegisterGoogle(req, res) {
 
       res.setHeader("Set-Cookie", tokenCookie);
       res.status(200).json({
-        token,
         message: "Inicio de sesión exitoso",
-        userId: existingUser.id,
+        token,
+        id: existingUser.id,
         name: existingUser.firstName,
         image: existingUser.image,
         email: existingUser.email,

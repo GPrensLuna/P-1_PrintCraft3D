@@ -4,6 +4,9 @@
 import { useState, useEffect } from "react";
 import { Product } from "@/Ts/Product";
 import * as Components from '@/Components'
+import { useSession } from "next-auth/react";
+import Swal from 'sweetalert2';
+
 
 export default function Cart() {
     const [cartItems, setCartItems] = useState<Product[]>([]);
@@ -11,7 +14,7 @@ export default function Cart() {
     const [productToRemove, setProductToRemove] = useState<number | null>(null);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [showEmptyCartWarning, setShowEmptyCartWarning] = useState(false);
-
+    const { data: session, status } = useSession();
 
     useEffect(() => {
         const storedCart = localStorage.getItem("cart");
@@ -71,11 +74,19 @@ export default function Cart() {
     const handlePaymentClick = () => {
         if (cartItems.length === 0) {
             setShowEmptyCartWarning(true);
+        } else if (status !== "authenticated") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Necesitas iniciar sesión para realizar una compra.',
+                footer: '<a href="/api/auth/signin">¿Quieres iniciar sesión?</a>'
+            });
         } else {
             setShowPaymentModal(true);
-            console.log('Modal should show now');
         }
     };
+
+
 
     const handleRemoveAllProducts = () => {
         if (cartItems.length === 0) {
@@ -88,7 +99,6 @@ export default function Cart() {
 
     return (
         <section className="grid-products bg-white shadow rounded-lg max-w-7xl mx-auto mt-10 grid-Shopping gap-4 p-6">
-            {/* Encabezado del Carrito */}
             <header className="col-span-3 border-b border-gray-200 p-6">
                 <h1 className="text-2xl font-semibold text-gray-900 text-aling">
                     Carrito de compras
@@ -96,15 +106,12 @@ export default function Cart() {
             </header>
 
             <article className="col-span-2">
-                {/* Contenido del Carrito */}
                 {cartItems.length === 0 ? (
                     <div className="text-center py-8">
-                        {/* Mensaje Carrito Vacío */}
                         <p className="text-gray-600">Tu carrito está vacío</p>
                     </div>
                 ) : (
                     <article>
-                        {/* Lista de Productos */}
                         <ul className="divide-y divide-gray-200">
                             {cartItems.map((item: Product) => (
                                 <li
@@ -118,7 +125,6 @@ export default function Cart() {
                                         <span>X</span>
                                     </button>
 
-                                    {/* Imagen del Producto */}
                                     <div className="pr-5 pl-3">
                                         <img
                                             src={item.image}
@@ -127,19 +133,16 @@ export default function Cart() {
                                         />
                                     </div>
                                     <div className="flex-grow">
-                                        {/* Nombre y Descripción del Producto */}
                                         <h2 className="text-lg font-medium text-gray-900">
                                             {item.name}
                                         </h2>
                                         <p className="text-sm text-gray-600">{item.description}</p>
                                     </div>
                                     <div className="flex flex-col items-end">
-                                        {/* Precio y Controles de Cantidad */}
                                         <p className="text-lg font-semibold text-gray-900">
                                             {formatCurrency(item.price)}
                                         </p>
                                         <div className="flex items-center mt-4">
-                                            {/* Botones para modificar la cantidad */}
                                             <button
                                                 onClick={() => handleDownProduct(item.id)}
                                                 className="flex items-center justify-center bg-white hover:bg-red-600 text-gray-500 hover:text-gray-700 p-2 rounded"

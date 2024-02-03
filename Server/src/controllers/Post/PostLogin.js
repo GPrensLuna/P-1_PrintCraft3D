@@ -40,8 +40,8 @@ const PostLogin = async (req, res) => {
         res.setHeader("Set-Cookie", tokenCookie);
 
         res.status(200).json({
-          token,
           message: "Inicio de sesión exitoso",
+          token,
           id: user.id,
           image: user.image,
           email: user.email,

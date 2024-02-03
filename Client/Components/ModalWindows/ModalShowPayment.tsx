@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { ModalShowPaymentProps } from '@/Ts/ModalWindows';
 import { URL_BACKEND } from '@/config';
 
+
 export const ModalShowPayment = ({ title, total, cartItems, onConfirm, onCancel }: ModalShowPaymentProps) => {
   const { data: session } = useSession();
   const clientId = String(process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID);
@@ -33,17 +34,13 @@ export const ModalShowPayment = ({ title, total, cartItems, onConfirm, onCancel 
       if (!response.ok) {
         throw new Error('Failed to create order. ' + (orderData.error || 'Unknown error'));
       }
-      // Guarda el objeto orderData completo
       localStorage.setItem('orderData', JSON.stringify(orderData))
-      console.log("orderData", orderData)
-      return orderData.id; // Aunque este retorno es correcto, asegúrate de que es necesario para tu flujo.
+      return orderData.id;
     } catch (error) {
       console.error("Error creating order:", error);
       Swal.fire("Error", "No se pudo iniciar el proceso de pago.", "error");
     }
   };
-
-
 
   const onApprove = async () => {
     try {
@@ -63,7 +60,6 @@ export const ModalShowPayment = ({ title, total, cartItems, onConfirm, onCancel 
           orderID: orderData.id,
           cart: cartItems,
           userData: session?.user
-
         }),
       });
 
@@ -73,16 +69,16 @@ export const ModalShowPayment = ({ title, total, cartItems, onConfirm, onCancel 
         throw new Error('Failed to capture order. ' + (captureData.error || 'Unknown error'));
       }
 
-      Swal.fire("Success", "El pago se ha completado con éxito.", "success");
-      if (onConfirm) onConfirm(captureData);
+      Swal.fire("Success", "El pago se ha completado con éxito.", "success").then(() => {
+        localStorage.removeItem('cart');
+        if (onConfirm) onConfirm(captureData);
+        window.location.href = '/Profile';
+      });
     } catch (error) {
       console.error("Error capturing order:", error);
       Swal.fire("Error", "El pago no pudo ser procesado.", "error");
     }
   };
-
-
-
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">

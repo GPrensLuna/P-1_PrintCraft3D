@@ -42,7 +42,7 @@ const deleteOneFromCart = require("../controllers/deleteOneFromCart.js");
 const deleteItemsFromCart = require("../controllers/deleteItemsFromCart.js");
 const deleteShoppingCart = require("../controllers/deleteShoppingCart.js");
 
-const { GetUserById } = require("../controllers/Get/GetUserById.js");
+const { GetUserByEmail } = require("../controllers/Get/GetUserByEmail.js");
 
 router.get("/", (req, res) => {
   return res.json("hola desde router PrintCraft3D");
@@ -75,8 +75,8 @@ router.get("/User", GetUser);
 router.put("/User/:id", PutUser);
 router.get("/ProductsLista", GetProducts);
 
-router.get("/User/:idUser", GetUserById);
-router.get("/Compras/:idUser", GetOrder);
+router.get("/User/:userEmail", GetUserByEmail);
+router.get("/Compras/:userEmail", GetOrder);
 router.post("/BuyOrder", PostBuyOrder);
 router.get("/Ventas", GetVentas);
 router.get("/Metrics", GetMetrics);
