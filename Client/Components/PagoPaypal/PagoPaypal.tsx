@@ -8,13 +8,11 @@ interface PagoPaypalProps {
     setCart: (cart: any[]) => void;
 }
 interface YourUserType {
-    userId: number; // Replace with the actual properties in your user type
-    // Add other properties as needed
+    userId: number;
 }
 
 interface YourStateType {
-    userData: YourUserType; // Replace with the actual structure of your Redux state
-    // Add other properties as needed
+    userData: YourUserType;
 }
 
 export default function PagoPaypal({ cart, setCart }: PagoPaypalProps) {
@@ -24,7 +22,6 @@ export default function PagoPaypal({ cart, setCart }: PagoPaypalProps) {
         let userData: YourUserType | undefined;
         if (user?.userId) {
             userData = user;
-            console.log(userData);
         }
 
         const script = document.createElement("script");
@@ -100,7 +97,6 @@ export default function PagoPaypal({ cart, setCart }: PagoPaypalProps) {
                                     resultMessage(
                                         `Transaction ${transaction.status}: ${transaction.id}<br><br>See console for all available details`
                                     );
-                                    console.log("Capture result", orderData, JSON.stringify(orderData, null, 2));
                                     localStorage.removeItem("cart");
                                     setCart([]);
                                 }

@@ -16,7 +16,6 @@ const fetchProductData = async (productId: number) => {
 
 export const OrderProducts = ({ orders }: OrdersProps) => {
     const [productsData, setProductsData] = useState<{ [key: number]: Product }>({});
-    console.log(productsData)
 
     useEffect(() => {
         orders.ordersWithProducts.forEach((orderWithProducts) => {
