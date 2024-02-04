@@ -3,20 +3,32 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { URL_BACKEND } from "@/config.js";
 
+interface PagoPaypalProps {
+    cart: any[];
+    setCart: (cart: any[]) => void;
+}
+interface YourUserType {
+    userId: number; // Replace with the actual properties in your user type
+    // Add other properties as needed
+}
 
-export default function PagoPaypal({ cart, setCart }) {
-    const user = useSelector((state) => state.userData);
+interface YourStateType {
+    userData: YourUserType; // Replace with the actual structure of your Redux state
+    // Add other properties as needed
+}
+
+export default function PagoPaypal({ cart, setCart }: PagoPaypalProps) {
+    const user = useSelector((state: YourStateType) => state.userData);
 
     useEffect(() => {
-        let userData;
+        let userData: YourUserType | undefined;
         if (user?.userId) {
             userData = user;
-            console.log(userData)
+            console.log(userData);
         }
 
         const script = document.createElement("script");
-        script.src =
-            process.env.NEXT_PUBLIC_PAYPAL;
+        script.src = process.env.NEXT_PUBLIC_PAYPAL!;
         script.async = true;
 
         script.onload = () => {
@@ -34,8 +46,6 @@ export default function PagoPaypal({ cart, setCart }) {
                                 headers: {
                                     "Content-Type": "application/json",
                                 },
-                                // use the "body" param to optionally pass additional order information
-                                // like product ids and quantities
                                 body: JSON.stringify({
                                     cart,
                                 }),
@@ -54,29 +64,24 @@ export default function PagoPaypal({ cart, setCart }) {
                             }
                         } catch (error) {
                             console.error(error);
-                            resultMessage(
-                                `Could not initiate PayPal Checkout...<br><br>${error}`
-                            );
+                            resultMessage(`Could not initiate PayPal Checkout...<br><br>${error}`);
                         }
                     },
-                    async onCancel(data) {
-                        alert("hola")
+                    async onCancel(data: any) {
+                        alert("hola");
                     },
-                    async onApprove(data, actions) {
+                    async onApprove(data: { orderID: any; }, actions: { restart: () => any; }) {
                         try {
-                            const response = await fetch(
-                                `${URL}api/orders/${data.orderID}/capture`,
-                                {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                    },
-                                    body: JSON.stringify({
-                                        cart,
-                                        userData,
-                                    }),
-                                }
-                            );
+                            const response = await fetch(`${URL}api/orders/${data.orderID}/capture`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                    cart,
+                                    userData,
+                                }),
+                            });
 
                             const orderData = await response.json();
                             const errorDetail = orderData?.details?.[0];
@@ -84,9 +89,7 @@ export default function PagoPaypal({ cart, setCart }) {
                             if (errorDetail?.issue === "INSTRUMENT_DECLINED") {
                                 return actions.restart();
                             } else if (errorDetail) {
-                                throw new Error(
-                                    `${errorDetail.description} (${orderData.debug_id})`
-                                );
+                                throw new Error(`${errorDetail.description} (${orderData.debug_id})`);
                             } else if (!orderData.purchase_units) {
                                 throw new Error(JSON.stringify(orderData));
                             } else {
@@ -96,19 +99,13 @@ export default function PagoPaypal({ cart, setCart }) {
                                 resultMessage(
                                     `Transaction ${transaction.status}: ${transaction.id}<br><br>See console for all available details`
                                 );
-                                console.log(
-                                    "Capture result",
-                                    orderData,
-                                    JSON.stringify(orderData, null, 2)
-                                );
+                                console.log("Capture result", orderData, JSON.stringify(orderData, null, 2));
                                 localStorage.removeItem("cart");
-                                setCart([])
+                                setCart([]);
                             }
                         } catch (error) {
                             console.error(error);
-                            resultMessage(
-                                `Sorry, your transaction could not be processed...<br><br>${error}`
-                            );
+                            resultMessage(`Sorry, your transaction could not be processed...<br><br>${error}`);
                         }
                     },
                 })
@@ -118,10 +115,10 @@ export default function PagoPaypal({ cart, setCart }) {
         document.body.appendChild(script);
 
         function resultMessage(message: any) {
-            alert("hola")
-
+            alert("hola");
         }
     }, [cart, user, setCart]);
+
     return (
         <div>
             {cart.length > 0 ? (
