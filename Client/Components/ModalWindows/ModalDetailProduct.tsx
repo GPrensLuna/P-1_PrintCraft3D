@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ModalDetailProductProps } from '@/Ts/ModalWindows';
 import { Product } from '@/Ts/Product';
 import { URL_BACKEND } from '@/config.js';
@@ -18,7 +18,7 @@ export const ModalDetailProduct = ({ isOpen, onClose, productId }: ModalDetailPr
   const [product, setProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    if (!productId) return; // Asegúrate de que haya un productId válido
+    if (!productId) return;
 
     loadProduct(productId)
       .then(data => {
@@ -37,7 +37,6 @@ export const ModalDetailProduct = ({ isOpen, onClose, productId }: ModalDetailPr
   if (!isOpen) return null;
 
   if (!product) {
-    // Renderiza un contenido alternativo cuando product es null
     return (
       <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center min-h-screen">
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75"></div>

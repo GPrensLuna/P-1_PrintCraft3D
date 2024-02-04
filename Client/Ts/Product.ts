@@ -18,6 +18,26 @@ export interface Product {
   handleAddToCart?: (productId: number) => void;
 }
 
+export interface Order {
+  order: {
+    id: number;
+    total: number;
+    paypalId: string;
+    UserId: number;
+    createdAt: string;
+    updatedAt: string;
+  };
+  productIds: number[];
+  products?: Product[]; // Añadido para almacenar los detalles del producto
+}
+
+export interface OrdersProps {
+  orders: {
+    count: number;
+    ordersWithProducts: Order[];
+  };
+}
+
 export interface RootState {
   products: Product[];
   error: string;
