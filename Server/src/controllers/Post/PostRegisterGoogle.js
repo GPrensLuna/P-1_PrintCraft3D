@@ -31,13 +31,13 @@ async function PostRegisterGoogle(req, res) {
       const tokenCookie = serialize("token", token, cookieOptions);
 
       res.setHeader("Set-Cookie", tokenCookie);
-      res.status(200).json({
+      return res.status(200).json({
         message: "Inicio de sesión exitoso",
         token,
         id: existingUser.id,
-        name: existingUser.firstName,
         image: existingUser.image,
         email: existingUser.email,
+        name: existingUser.firstName,
         roll: existingUser.roll,
       });
     } else {
@@ -46,7 +46,6 @@ async function PostRegisterGoogle(req, res) {
         firstName: req.body.firstName,
         email: req.body.email,
         roll: req.body.roll || "Client",
-        image: req.body.image,
         image: req.body.image,
       });
 

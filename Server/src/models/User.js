@@ -28,7 +28,7 @@ module.exports = (sequelize) => {
       email: {
         type: DataTypes.STRING,
         allowNull: true,
-        unique: true, // To ensure each email is unique
+        unique: true,
       },
       image: {
         type: DataTypes.STRING,
@@ -36,7 +36,6 @@ module.exports = (sequelize) => {
       },
       roll: {
         type: DataTypes.STRING,
-        defaultValue: "Client",
         allowNull: true,
       },
       password: {
