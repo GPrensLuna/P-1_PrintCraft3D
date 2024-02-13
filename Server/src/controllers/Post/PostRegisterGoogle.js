@@ -72,11 +72,13 @@ async function PostRegisterGoogle(req, res) {
       res.status(201).json({
         token,
         message: "Usuario registrado exitosamente",
-        id: newUser.id,
-        roll: newUser.roll,
-        name: newUser.firstName,
-        image: newUser.image,
-        email: newUser.email,
+        user: {
+          id: newUser.id,
+          roll: newUser.roll,
+          name: newUser.firstName,
+          image: newUser.image,
+          email: newUser.email,
+        },
       });
 
       sendWelcomeEmail(newUser);
