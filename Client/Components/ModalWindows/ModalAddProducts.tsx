@@ -10,7 +10,6 @@ interface ModalAddProductsProps {
 export const ModalAddProducts = ({ showModal, onClose }: ModalAddProductsProps) => {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [imageSelected, setImageSelected] = useState<File | null>(null);
-    console.log("imageSelected", imageSelected)
     const [producto, setProducto] = useState({
         name: "",
         description: "",
@@ -44,7 +43,6 @@ export const ModalAddProducts = ({ showModal, onClose }: ModalAddProductsProps) 
             }
 
             const data = await response.json();
-            console.log("data", data)
             setImagePreview(data.secure_url);
         } catch (error) {
             console.error("Error al subir la imagen:", error);
