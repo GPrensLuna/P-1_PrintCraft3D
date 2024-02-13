@@ -10,6 +10,8 @@ async function PostRegisterGoogle(req, res) {
       where: { email: req.body.email },
     });
 
+    console.log("existingUser", existingUser);
+
     if (existingUser) {
       const token = jwt.sign(
         {
