@@ -10,77 +10,86 @@ async function PostRegisterGoogle(req, res) {
       where: { email: req.body.email },
     });
 
-    console.log("existingUser", existingUser);
+    if (user) {
+      if (user.deleted) {
+        console.error("Cuenta bloqueada");
+        return res.status(403).json({ error: "Cuenta bloqueada" });
+      }
 
-    if (existingUser) {
-      const token = jwt.sign(
-        {
+      if (existingUser) {
+        const token = jwt.sign(
+          {
+            id: existingUser.id,
+            email: existingUser.email,
+            name: existingUser.firstName,
+            roll: existingUser.roll,
+            image: existingUser.image,
+          },
+          SECRETKEY,
+          { expiresIn: "1h" }
+        );
+
+        const cookieOptions = {
+          httpOnly: true,
+          maxAge: 3600000,
+        };
+
+        const tokenCookie = serialize("token", token, cookieOptions);
+
+        res.setHeader("Set-Cookie", tokenCookie);
+
+        return res.status(200).json({
+          message: "Inicio de sesión exitoso",
+          token,
           id: existingUser.id,
-          email: existingUser.email,
-          name: existingUser.firstName,
           roll: existingUser.roll,
+          name: existingUser.firstName,
           image: existingUser.image,
-        },
-        SECRETKEY,
-        { expiresIn: "1h" }
-      );
+          email: existingUser.email,
+        });
+      } else {
+        const newUser = await User.create({
+          firstName: req.body.firstName,
+          email: req.body.email,
+          roll: req.body.roll || "Client",
+          image: req.body.image,
+        });
 
-      const cookieOptions = {
-        httpOnly: true,
-        maxAge: 3600000,
-      };
+        const token = jwt.sign(
+          {
+            userId: newUser.id,
+            email: newUser.email,
+            name: newUser.firstName,
+            roll: newUser.roll,
+            image: newUser.image,
+          },
+          SECRETKEY,
+          { expiresIn: "1h" }
+        );
 
-      const tokenCookie = serialize("token", token, cookieOptions);
+        const cookieOptions = {
+          httpOnly: true,
+          maxAge: 3600000,
+        };
 
-      res.setHeader("Set-Cookie", tokenCookie);
-      return res.status(200).json({
-        message: "Inicio de sesión exitoso",
-        token,
-        id: existingUser.id,
-        roll: existingUser.roll,
-        name: existingUser.firstName,
-        image: existingUser.image,
-        email: existingUser.email,
-      });
-    } else {
-      const newUser = await User.create({
-        firstName: req.body.firstName,
-        email: req.body.email,
-        roll: req.body.roll || "Client",
-        image: req.body.image,
-      });
+        const tokenCookie = serialize("token", token, cookieOptions);
 
-      const token = jwt.sign(
-        {
-          userId: newUser.id,
-          email: newUser.email,
-          name: newUser.firstName,
+        res.setHeader("Set-Cookie", tokenCookie);
+        res.status(201).json({
+          token,
+          message: "Usuario registrado exitosamente",
+          id: newUser.id,
           roll: newUser.roll,
+          name: newUser.firstName,
           image: newUser.image,
-        },
-        SECRETKEY,
-        { expiresIn: "1h" }
-      );
+          email: newUser.email,
+        });
 
-      const cookieOptions = {
-        httpOnly: true,
-        maxAge: 3600000,
-      };
-
-      const tokenCookie = serialize("token", token, cookieOptions);
-
-      res.setHeader("Set-Cookie", tokenCookie);
-      res.status(201).json({
-        token,
-        message: "Usuario registrado exitosamente",
-        id: newUser.id,
-        roll: newUser.roll,
-        name: newUser.firstName,
-        image: newUser.image,
-        email: newUser.email,
-      });
-
-      sendWelcomeEmail(newUser);
+        sendWelcomeEmail(newUser);
+      }
+    } else {
+      console.error("Usuario no encontrado");
+      res.status(404).json({ error: "Usuario no encontrado" });
     }
   } catch (error) {
     console.error("Error en el registro:", error);
