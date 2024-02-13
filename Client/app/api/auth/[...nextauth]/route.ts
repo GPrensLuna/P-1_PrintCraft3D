@@ -71,10 +71,7 @@ export const handler: NextApiHandler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user, account }) {
-      console.log("user 1", user)
       if (account && user) {
-      console.log("user 2", user)
-
         const expiryTime = Date.now() + 1 * 60 * 60 * 1000;
         token.expiryTime = expiryTime;
         token.roll = user.roll;
