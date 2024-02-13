@@ -28,7 +28,6 @@ const googleAuthorize = async (credentials: any, req: any) => {
     throw new Error(data.error);
   }
 
-  // Aquí incluyes la respuesta del servidor junto con los datos del usuario
   const { token, id, roll, name, image, email } = data;
   return { token, id, roll, name, image, email, serverResponse: res };
 };
