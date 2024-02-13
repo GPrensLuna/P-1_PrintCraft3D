@@ -40,7 +40,7 @@ interface OAuthConfig {
   authorize: (credentials: any, req: any) => Promise<any>;
 }
 
-export const handler: NextApiHandler = NextAuth({
+const handler: NextApiHandler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
