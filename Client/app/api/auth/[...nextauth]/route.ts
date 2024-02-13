@@ -3,41 +3,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { URL_BACKEND, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "@/config";
-import { Profile } from "@/Ts/UserList";
 
-interface ExtendedProfile extends Profile {
-  email_verified?: boolean;
-}
-
-const googleAuthorize = async (credentials: any, req: any) => {
-  const res = await fetch(`${URL_BACKEND}Google`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(credentials),
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch user data");
-  }
-
-  const data = await res.json();
-
-  if (data.error) {
-    throw new Error(data.error);
-  }
-
-  const { token, id, roll, name, image, email } = data;
-  return { token, id, roll, name, image, email, serverResponse: res };
-};
-
-
-interface OAuthConfig {
-  clientId: string;
-  clientSecret: string;
-  authorize: (credentials: any, req: any) => Promise<any>;
-}
 
 const handler: NextApiHandler = NextAuth({
   providers: [
