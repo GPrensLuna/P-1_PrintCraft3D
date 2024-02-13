@@ -34,14 +34,15 @@ async function PostRegisterGoogle(req, res) {
       return res.status(200).json({
         message: "Inicio de sesión exitoso",
         token,
-        id: existingUser.id,
-        image: existingUser.image,
-        email: existingUser.email,
-        name: existingUser.firstName,
-        roll: existingUser.roll,
+        user: {
+          id: existingUser.id,
+          roll: existingUser.roll,
+          name: existingUser.firstName,
+          image: existingUser.image,
+          email: existingUser.email,
+        },
       });
     } else {
-      // Crear un nuevo usuario
       const newUser = await User.create({
         firstName: req.body.firstName,
         email: req.body.email,
