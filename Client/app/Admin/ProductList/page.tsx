@@ -2,7 +2,7 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import { Product } from "@/Ts/Product";
-import { ProductsRow, ModalEditProducts } from '@/Components';
+import { ProductsRow, ModalEditProducts, AddProductButton } from '@/Components';
 import { fetchProducts, updateProduct } from '@/redux/services/ProductService';
 
 export default function ProductList() {
@@ -66,6 +66,7 @@ export default function ProductList() {
         <main className="flex justify-center w-full py-10">
             <div className="container w-full max-w-7xl flex flex-col">
                 <h2 className="text-2xl text-center font-bold mb-8">Lista de Productos</h2>
+                <AddProductButton />
                 <table className="w-full bg-white rounded-lg shadow overflow-hidden">
                     <thead>
                         <tr className="text-left bg-gray-100">

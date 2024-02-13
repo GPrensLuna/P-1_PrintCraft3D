@@ -1,14 +1,46 @@
+import { NextApiHandler } from "next";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { URL_BACKEND, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "@/config";
-import { Profile } from '@/Ts/UserList';
+import { Profile } from "@/Ts/UserList";
 
 interface ExtendedProfile extends Profile {
   email_verified?: boolean;
 }
 
-const handler = NextAuth({
+const googleAuthorize = async (credentials: any, req: any) => {
+  const res = await fetch(`${URL_BACKEND}Google`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch user data");
+  }
+
+  const data = await res.json();
+
+  if (data.error) {
+    throw new Error(data.error);
+  }
+
+  // Aquí incluyes la respuesta del servidor junto con los datos del usuario
+  const { token, id, roll, name, image, email } = data;
+  return { token, id, roll, name, image, email, serverResponse: res };
+};
+
+
+interface OAuthConfig {
+  clientId: string;
+  clientSecret: string;
+  authorize: (credentials: any, req: any) => Promise<any>;
+}
+
+export const handler: NextApiHandler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -34,68 +66,47 @@ const handler = NextAuth({
     GoogleProvider({
       clientId: GOOGLE_CLIENT_ID as string,
       clientSecret: GOOGLE_CLIENT_SECRET as string,
-    }),
+      authorize: googleAuthorize,
+    } as OAuthConfig),
   ],
   callbacks: {
-async signIn({ account, profile }: { account: any; profile?: ExtendedProfile }): Promise<boolean | string> {
-  if (account.provider === "google" && profile) {
-    const requestBody = JSON.stringify({
-      email: profile.email,
-      firstName: profile.given_name,
-      lastName: profile.family_name,
-      image: profile.picture,
-    });
-
-    try {
-
-      const res = await fetch(`${URL_BACKEND}google`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: requestBody,
-      });
-
-      const user = await res.json();
-
-      if (user.error) {
-        throw new Error(user.error);
-      }
-      return user;
-    } catch (error) {
-      console.error("Error en la solicitud POST:", error);
-      return false; 
-    }
-  }
-  return true;
-},
-async jwt({ token, user, account }) {
+    async jwt({ token, user, account }) {
+      console.log("user 1", user)
       if (account && user) {
-        const expiryTime = Date.now() + 1 * 60 * 60 * 1000; 
+      console.log("user 2", user)
+
+        const expiryTime = Date.now() + 1 * 60 * 60 * 1000;
         token.expiryTime = expiryTime;
+        token.roll = user.roll;
       }
       return token;
     },
-async session({ session, token }) {
-  if (typeof token.expiryTime === 'number' && Date.now() > token.expiryTime) {
-    return {
-      ...session,
-      expires: "1970-01-01T00:00:00Z", 
-      user: { ...session.user,id: "", name: "", email: "", image: "" } 
-    };
-  }
 
-  if (token.userRoll) {
-    session.user = {
-      ...session.user,
-      roll: typeof token.userRoll === 'string' ? token.userRoll : undefined,
-    };
-  }
+    async session({ session, token }) {
+      if (
+        typeof token.expiryTime === "number" &&
+        Date.now() > token.expiryTime
+      ) {
+        return {
+          ...session,
+          expires: "1970-01-01T00:00:00Z",
+          user: { ...session.user, id: "", name: "", email: "", image: "" },
+        };
+      }
 
-  return session;
-},
+      if (token.roll) {
+        session.user = {
+          ...session.user,
+          roll: typeof token.roll === "string" ? token.roll : undefined,
+        };
+      }
+      return session;
+    },
     async redirect({ url, baseUrl }) {
-      if (url.startsWith(baseUrl + "/LoginUp") || url.startsWith(baseUrl + "/api/auth/signout")) {
+      if (
+        url.startsWith(baseUrl + "/LoginUp") ||
+        url.startsWith(baseUrl + "/api/auth/signout")
+      ) {
         return baseUrl + "/Profile";
       }
       return url.startsWith(baseUrl) ? url : baseUrl;
