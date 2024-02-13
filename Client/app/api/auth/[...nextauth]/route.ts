@@ -65,8 +65,7 @@ const handler: NextApiHandler = NextAuth({
     GoogleProvider({
       clientId: GOOGLE_CLIENT_ID as string,
       clientSecret: GOOGLE_CLIENT_SECRET as string,
-      authorize: googleAuthorize,
-    } as OAuthConfig),
+    } ),
   ],
   callbacks: {
     async jwt({ token, user, account }) {
