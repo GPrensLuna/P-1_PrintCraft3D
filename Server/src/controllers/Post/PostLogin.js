@@ -8,7 +8,11 @@ const PostLogin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    console.log("Email recibido:", email);
+
     const user = await User.findOne({ where: { email } });
+
+    console.log("Usuario encontrado en la base de datos:", user);
 
     if (user) {
       if (user.deleted) {
