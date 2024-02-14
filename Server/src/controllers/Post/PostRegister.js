@@ -26,7 +26,7 @@ async function PostRegister(req, res) {
       roll: req.body.roll,
     });
 
-    sendWelcomeEmail(newUser); // <--- envía el email de bienvenida
+    sendWelcomeEmail(newUser);
 
     res
       .status(201)

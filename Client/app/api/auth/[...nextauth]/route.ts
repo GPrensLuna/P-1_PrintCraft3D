@@ -48,7 +48,7 @@ async signIn({ account, profile }: { account: any; profile?: ExtendedProfile }):
 
     try {
 
-      const res = await fetch(`${URL_BACKEND}google`, {
+      const res = await fetch(`${URL_BACKEND}Google`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
