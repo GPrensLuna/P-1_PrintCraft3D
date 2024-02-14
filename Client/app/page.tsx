@@ -13,7 +13,7 @@ export default function Home() {
     const [selectedSize, setSelectedSize] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [errorr, setErrorr] = useState('');
-
+    console.log(selectedSize)
     const searchValue = useSelector((state: RootState) => state.search.value);
 
     const { data } = useGetProductsQuery({
@@ -80,6 +80,7 @@ export default function Home() {
                     onMaterialChange={handleMaterialChange}
                     onSizeChange={handleSizeChange}
                 />
+
             </div>
 
             <div className='px-5'>

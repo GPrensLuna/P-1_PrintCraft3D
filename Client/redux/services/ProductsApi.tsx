@@ -28,7 +28,7 @@ export const ProductsApi = createApi({
                     queryParams.set('category', Array.isArray(selectedCategory) ? selectedCategory.join(',') : selectedCategory);
                 }
                 if (selectedSize) {
-                    queryParams.set('size', Array.isArray(selectedSize) ? selectedSize.join(',') : selectedSize);
+                    queryParams.set('tamaño', Array.isArray(selectedSize) ? selectedSize.join(',') : selectedSize);
                 }
                 if (search) {
                     queryParams.set('search', search);
