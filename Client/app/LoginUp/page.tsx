@@ -17,7 +17,7 @@ export default function LoginUp() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
-
+  console.log("email", email)
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
