@@ -10,6 +10,8 @@ import {
 export const Aside = ({ count, onMaterialChange, onSizeChange }: Filter) => {
   const [showOptions, setShowOptions] = useState<ShowOptions>({ Material: false, Tamaño: false });
   const [activeFilters, setActiveFilters] = useState<{ [key: string]: string }>({});
+  const [selectedFilters, setSelectedFilters] = useState({});
+  const [showAlert, setShowAlert] = useState(false);
   const [error, setError] = useState<string>('');
 
   const filterOptions: FilterOptions = {
@@ -98,10 +100,21 @@ export const Aside = ({ count, onMaterialChange, onSizeChange }: Filter) => {
                   ))}
                 </div>
               )}
+
             </div>
           ))}
         </section>
       </section>
+      {showAlert && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50 z-50">
+          <div className="bg-white p-8 rounded-lg">
+            <h2 className="text-xl font-semibold mb-4">Alerta</h2>
+            <p>No hay productos que coincidan con los filtros seleccionados.</p>
+            <button onClick={() => setShowAlert(false)} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg">Cerrar</button>
+          </div>
+        </div>
+      )}
+
     </aside>
   );
 };

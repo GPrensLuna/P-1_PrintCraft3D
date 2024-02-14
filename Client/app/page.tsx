@@ -74,7 +74,6 @@ export default function Home() {
         <main
             className="grid-Home" >
 
-
             <div className='pt-1 pb-8 px-5'>
                 <Components.Aside
                     count={count}

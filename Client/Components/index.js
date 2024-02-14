@@ -11,6 +11,7 @@ export { ModalAlert } from "./ModalWindows/ModalAlert.tsx";
 export { LoginRedSocial } from "./LogIn/LoginRedSocial.tsx";
 export { ProductsRow } from "./ProductsList/ProductsRow.tsx";
 export { ModalAddProducts } from "./ModalWindows/ModalAddProducts.tsx";
+export { ModalSuccess } from "./ModalWindows/ModalSuccess.tsx";
 export { ModalRevisar } from "./ModalWindows/ModalRevisar.tsx";
 export { Modalwarning } from "./ModalWindows/Modalwarning.tsx";
 export { OrderProducts } from "./OrderProducts/OrderProducts.tsx";
