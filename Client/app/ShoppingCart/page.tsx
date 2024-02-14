@@ -33,16 +33,24 @@ export default function Cart() {
         setCartItems(newCartItems);
         localStorage.setItem("cart", JSON.stringify(newCartItems));
     };
+
     const handleDownProduct = (productId: number) => {
-        const newCartItems = cartItems.map((item) => {
-            if (item.id === productId && (item.count ?? 0) > 1) {
-                return { ...item, count: (item.count ?? 0) - 1 };
+        const newCartItems: Product[] = cartItems.map((item: Product) => {
+            if (item.id === productId) {
+                if ((item.count ?? 0) > 1) {
+                    return { ...item, count: (item.count ?? 0) - 1 };
+                } else {
+                    return null;
+                }
             }
             return item;
-        });
+        }).filter((item: Product | null): item is Product => item !== null);
+
         setCartItems(newCartItems);
         localStorage.setItem("cart", JSON.stringify(newCartItems));
     };
+
+
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat("es-CO", {
